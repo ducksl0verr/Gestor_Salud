@@ -3,9 +3,9 @@ spring:
     name: Gestor_Salud
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: jdbc:mysql://localhost:3306/Gestor_Salud
+    username: root
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
