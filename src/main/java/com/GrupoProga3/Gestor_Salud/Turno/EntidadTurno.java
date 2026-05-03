@@ -19,12 +19,13 @@ import java.util.Date;
 public class EntidadTurno {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id_turno;
+    private Long id_turno;
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Temporal(TemporalType.TIME)
     private Time hora;
     @NotBlank
+    @Column(length = 100, nullable = false)
     private String estado;
     /// Los sigueintes id's deben ser cambiados por intancias de las clases respectivas una vez las tengamos creadas.
     /// La relación es que recibe muchos
