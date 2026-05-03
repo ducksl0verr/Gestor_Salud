@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud;
+package com.GrupoProga3.Gestor_Salud.Contacto;
 
 
 import jakarta.persistence.*;
@@ -15,7 +15,7 @@ import lombok.*;
     @ToString
     @Entity
     @Table(name = "contactos")
-    public class Contactos {
+    public class EntidadContacto {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

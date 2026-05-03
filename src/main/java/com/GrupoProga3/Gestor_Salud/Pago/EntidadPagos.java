@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud;
+package com.GrupoProga3.Gestor_Salud.Pago;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 @Table(name = "Pagos")
-public class Pagos {
+public class EntidadPagos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

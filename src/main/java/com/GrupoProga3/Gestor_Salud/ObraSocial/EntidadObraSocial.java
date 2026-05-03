@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud;
+package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +14,7 @@ import lombok.*;
 @Entity
 @Table(name ="ObrasSociales")
 
-public class ObrasSociales {
+public class EntidadObraSocial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
