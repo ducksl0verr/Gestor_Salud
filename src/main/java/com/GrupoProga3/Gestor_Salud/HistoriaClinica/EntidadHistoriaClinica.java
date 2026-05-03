@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Turno;
+package com.GrupoProga3.Gestor_Salud.HistoriaClinica;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -7,30 +7,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
 import java.util.Date;
 
 @Entity
+@Table(name="Historias_Clinicas")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="Turnos")
-public class EntidadTurno {
+public class EntidadHistoriaClinica {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id_turno;
+    private int id_historiaClinica;
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Temporal(TemporalType.TIME)
-    private Time hora;
     @NotBlank
-    private String estado;
-    /// Los sigueintes id's deben ser cambiados por intancias de las clases respectivas una vez las tengamos creadas.
-    /// La relación es que recibe muchos
+    private String observaciones;
+    @NotBlank
+    private String evolucion;
+    /// Lo mismo, una vez que tengamos las clases se instancian acá, La relación es que recibe muchos
     private int id_paciente;
-    private int id_tratamiento;
-    private int id_sala;
     private int id_profesional;
-
 }
