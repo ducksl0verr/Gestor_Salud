@@ -33,6 +33,7 @@ public class EntidadUsuarios {
 
     @NotBlank(message = "El dni no puede estar vacío")
     @Pattern(regexp = "\\d{7,8}", message = "DNI inválido")
+    @Column(name = "dni",nullable = false)
     private String dni;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
