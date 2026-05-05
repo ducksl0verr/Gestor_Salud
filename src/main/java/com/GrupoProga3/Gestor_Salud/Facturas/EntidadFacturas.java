@@ -73,7 +73,7 @@ public class EntidadFacturas {
 
     //RELACION PARA QUE DESDE FACTURA SE PUEDA ACCEDER A LOS DETALLES DE LA FACTURA
 
-    @OneToMany(mappedBy = "facturas",cascade = CascadeType.ALL) // VER que hace a profundidad, basicamente guarda la factura y los detalles de la misma automaticamente
+    @OneToMany(mappedBy = "factura",cascade = CascadeType.ALL) // VER que hace a profundidad, basicamente guarda la factura y los detalles de la misma automaticamente
     private List<EntidadDetalleFacturas> detalles = new ArrayList<>();;
 
 
