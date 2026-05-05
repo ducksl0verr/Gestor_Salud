@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "pacientes")
-public class Paciente {
+public class EntidadPaciente {
 
 
     @Id
@@ -40,7 +40,7 @@ public class Paciente {
     private Date fecha_nacimiento;
 
 
-
+    //RELACIONES
 
     @ManyToOne
     @JoinColumn(name = "id_domicilio")

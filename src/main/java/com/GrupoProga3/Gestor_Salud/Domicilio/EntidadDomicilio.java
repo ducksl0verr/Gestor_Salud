@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Domicilio;
 
+import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
