@@ -1,9 +1,12 @@
 package com.GrupoProga3.Gestor_Salud.InterfazMapper;
 
 
+import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.Usuarios.UsuarioDTO;
 
+@org.mapstruct.Mapper(componentModel = "Spring")
 public interface Mapper{
 
-    D convertToDto(E entity);
-    E convertToEntity(D dto);
+    UsuarioDTO ToDto(EntidadUsuarios usuario);
+    EntidadUsuarios ToEntity(UsuarioDTO dto);
 }
