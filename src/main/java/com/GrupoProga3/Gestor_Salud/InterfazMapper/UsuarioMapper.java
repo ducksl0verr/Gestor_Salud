@@ -5,7 +5,7 @@ import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.UsuarioDTO;
 
 @org.mapstruct.Mapper(componentModel = "Spring")
-public interface Mapper{
+public interface UsuarioMapper {
 
     UsuarioDTO ToDto(EntidadUsuarios usuario);
     EntidadUsuarios ToEntity(UsuarioDTO dto);
