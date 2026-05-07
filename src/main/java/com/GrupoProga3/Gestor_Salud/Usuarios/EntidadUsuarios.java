@@ -44,8 +44,7 @@ public class EntidadUsuarios {
     @Column(name = "telefono", nullable = false, length = 20)
     private String telefono;
 
-    @NotBlank(message = "La matricula no puede estar vacía")
-    @Column(name = "matricula", nullable = false, length = 50)
+    @Column(name = "matricula", length = 50)
     private String matricula;
 
     @NotBlank(message = "El mail no puede estar vacío")
@@ -56,7 +55,6 @@ public class EntidadUsuarios {
 
     //RELACIONES
     /// Aca segun por lo que entiendo, un domicilio pueden tener muchos usuarios pero un usuario podra tener un solo domicilio
-
 
     @ManyToOne
     @JoinColumn(name = "id_domicilio")
