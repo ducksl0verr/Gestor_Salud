@@ -1,8 +1,5 @@
-package com.GrupoProga3.Gestor_Salud.InterfazMapper;
+package com.GrupoProga3.Gestor_Salud.Usuarios;
 
-
-import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
-import com.GrupoProga3.Gestor_Salud.Usuarios.UsuarioDTO;
 
 @org.mapstruct.Mapper(componentModel = "Spring")
 public interface UsuarioMapper {
