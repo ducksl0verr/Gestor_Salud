@@ -57,6 +57,7 @@ public class EntidadUsuarios {
     /// Aca segun por lo que entiendo, un domicilio pueden tener muchos usuarios pero un usuario podra tener un solo domicilio
 
     @ManyToOne
+
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
 
