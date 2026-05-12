@@ -28,4 +28,5 @@ public class EntidadPagos {
     @NotNull(message = "La fecha es obligatoria")
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
+
 }

@@ -32,4 +32,5 @@ public class EntidadDomicilio {
     private String codigo_postal;
     @Column(length=50, nullable=false)
     private String pais;
+
 }
