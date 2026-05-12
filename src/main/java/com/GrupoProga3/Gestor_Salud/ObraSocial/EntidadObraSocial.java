@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
+import com.GrupoProga3.Gestor_Salud.Domicilio.EntidadDomicilio;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -28,5 +29,10 @@ public class EntidadObraSocial {
     @Size(min = 2, message = "La cobertura debe tener al menos 2 caracteres")
     @Column(name = "cobertura", nullable = false, length = 100)
     private String cobertura;
+
+    @OneToOne
+    @JoinColumn (name = "id_domicilio")
+    private EntidadDomicilio domicilio;
+
 }
 

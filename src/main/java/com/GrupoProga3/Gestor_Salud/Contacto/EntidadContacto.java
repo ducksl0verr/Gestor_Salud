@@ -38,6 +38,7 @@ import lombok.*;
         )
         @Column(name = "telefono", nullable = false, length = 20)
         private String telefono;
+
     }
 
 

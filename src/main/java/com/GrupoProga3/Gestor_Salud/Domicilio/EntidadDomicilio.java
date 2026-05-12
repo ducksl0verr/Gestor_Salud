@@ -42,4 +42,5 @@ public class EntidadDomicilio {
     @Column(length=50, nullable=false)
     @NotBlank
     private String pais;
+
 }
