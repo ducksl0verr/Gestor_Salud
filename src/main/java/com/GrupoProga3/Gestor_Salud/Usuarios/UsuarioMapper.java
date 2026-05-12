@@ -9,5 +9,4 @@ public interface UsuarioMapper {
     UsuarioDTO ToDto(EntidadUsuarios usuario);
     EntidadUsuarios ToEntity(UsuarioDTO dto);
 
-    EntidadDomicilio lk();
 }
