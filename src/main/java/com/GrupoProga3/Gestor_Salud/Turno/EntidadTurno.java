@@ -1,5 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.Turno;
 
+import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
+import com.GrupoProga3.Gestor_Salud.Tratamientos.EntidadTratamiento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -29,9 +32,15 @@ public class EntidadTurno {
     private String estado;
     /// Los sigueintes id's deben ser cambiados por intancias de las clases respectivas una vez las tengamos creadas.
     /// La relación es que recibe muchos
-    private int id_paciente;
-    private int id_tratamiento;
-    private int id_sala;
+    @ManyToOne
+    @JoinColumn(name = "id_paciente")
+    private EntidadPaciente id_paciente;
+    @ManyToOne
+    @JoinColumn(name = "id_tratamiento")
+    private EntidadTratamiento id_tratamiento;
+    @ManyToOne
+    @JoinColumn(name="id_sala")
+    private EntidadSala id_sala;
     private int id_profesional;
 
 }
