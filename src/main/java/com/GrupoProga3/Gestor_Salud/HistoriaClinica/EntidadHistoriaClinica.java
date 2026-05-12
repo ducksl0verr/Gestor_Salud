@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.HistoriaClinica;
 
+import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,10 @@ public class EntidadHistoriaClinica {
     @Column(length = 100, nullable = false)
     private String evolucion;
     /// Lo mismo, una vez que tengamos las clases se instancian acá, La relación es que recibe muchos
-    private int id_paciente;
-    private int id_profesional;
+    @ManyToOne
+    @JoinColumn(name = "id_paciente_id")
+    private EntidadPaciente id_paciente;
+    @ManyToOne
+    @JoinColumn(name = "id_profesional_id")
+    private EntidadUsuarios id_profesional;
 }
