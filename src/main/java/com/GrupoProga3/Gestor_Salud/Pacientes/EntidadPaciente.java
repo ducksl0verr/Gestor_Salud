@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes;
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.Pago.EntidadPagos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,6 +47,10 @@ public class EntidadPaciente {
     @ManyToOne
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
+
+    @OneToMany
+    @JoinColumn(name="id_pago")
+    private List<EntidadPagos> pagos;
 
 
     @ManyToOne

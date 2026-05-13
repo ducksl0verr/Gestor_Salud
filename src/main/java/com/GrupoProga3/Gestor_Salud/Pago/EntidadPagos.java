@@ -30,7 +30,7 @@ public class EntidadPagos {
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn (name = "id_paciente")
     private EntidadPaciente idpaciente;
 
