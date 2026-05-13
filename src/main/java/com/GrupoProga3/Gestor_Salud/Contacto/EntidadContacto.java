@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Contacto;
 
 
+import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -38,6 +39,11 @@ import lombok.*;
         )
         @Column(name = "telefono", nullable = false, length = 20)
         private String telefono;
+
+        @OneToOne
+        @JoinColumn (name = "id_paciente")
+        private EntidadPaciente idpaciente;
+
 
     }
 

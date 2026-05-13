@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,9 +28,9 @@ public class EntidadObraSocial {
     @Column(name = "cobertura", nullable = false, length = 100)
     private String cobertura;
 
-    @OneToOne
+    @OneToMany
     @JoinColumn (name = "id_domicilio")
-    private EntidadDomicilio domicilio;
+    private List<EntidadDomicilio> domicilios;
 
 }
 

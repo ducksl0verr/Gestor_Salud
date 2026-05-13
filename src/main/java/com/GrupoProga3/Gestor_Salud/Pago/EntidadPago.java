@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Pago;
 
+import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -28,5 +29,10 @@ public class EntidadPagos {
     @NotNull(message = "La fecha es obligatoria")
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
+
+    @OneToOne
+    @JoinColumn (name = "id_paciente")
+    private EntidadPaciente idpaciente;
+
 
 }
