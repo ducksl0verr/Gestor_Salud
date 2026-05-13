@@ -41,7 +41,7 @@ import lombok.*;
         private String telefono;
 
         @OneToOne
-        @Column (name = "id_paciente")
+        @JoinColumn (name = "id_paciente")
         private EntidadPaciente idpaciente;
 
 
