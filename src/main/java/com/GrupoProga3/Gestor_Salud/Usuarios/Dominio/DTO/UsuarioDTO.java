@@ -1,8 +1,7 @@
-package com.GrupoProga3.Gestor_Salud.Usuarios;
+package com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GeneratedColumn;
 
 @Setter
 @Getter

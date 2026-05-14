@@ -17,7 +17,7 @@ public class ServicioDomicilio implements IServicioDomicilio{
 
     @Override
     public DomicilioDTO guardar(DomicilioDTO domicilioDTO) {
-        EntidadDomicilio guardado =repositorioDomicilio.save(domicilioMapper.toEntity(domicilioDTO));
+        EntidadDomicilio guardado = repositorioDomicilio.save(domicilioMapper.toEntity(domicilioDTO));
         System.out.println(guardado);
         return domicilioMapper.toDto(guardado);
     }
