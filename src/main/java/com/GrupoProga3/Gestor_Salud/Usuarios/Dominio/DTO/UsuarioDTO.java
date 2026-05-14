@@ -11,7 +11,6 @@ public record UsuarioDTO(@NotBlank String nombre,
                                  regexp = "^[0-9+\\-\\s]{6,20}$",
                                  message = "El teléfono tiene un formato inválido"
                          )String telefono,
-                         @NotBlank String matricula, // posible cambio debido a que puede ser null si no es profesional. VER
                          @NotBlank @Email String email){ // elimine el atributo de id_domicilioo FK, ver en usuarioMapperImpl.java si hay que cambiar, se encuentra en la carpeta target.
 }
 
