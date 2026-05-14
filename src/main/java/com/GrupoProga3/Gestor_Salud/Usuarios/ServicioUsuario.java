@@ -13,7 +13,7 @@ public class ServicioUsuario implements IServicioUsuario{
 
 
     private final RepositorioUsuario repositorioUsuario;
-    public final UsuarioMapper usuarioMapper;
+    private final UsuarioMapper usuarioMapper;
 
 
     @Override
