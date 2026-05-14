@@ -1,10 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios;
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +39,19 @@ public class ServicioUsuario implements IServicioUsuario{
 
     @Override
     public UsuarioDTO actualizar(Long id, UsuarioDTO usuarioDTO) {
-        return null;
+
+        EntidadUsuarios usu = repositorioUsuario.findById(id)
+                .orElseThrow();
+        usu.setNombre(usuarioDTO.nombre());
+        usu.setApellido(usuarioDTO.apellido());
+        usu.setDni(usuarioDTO.dni());
+        usu.setEmail(usuarioDTO.email());
+        usu.setTelefono(usuarioDTO.telefono());
+        usu.setMatricula(usuarioDTO.matricula());
+
+        EntidadUsuarios actualizado = repositorioUsuario.save(usu);
+
+        return usuarioMapper.ToDto(usu);
     }
 
     @Override
