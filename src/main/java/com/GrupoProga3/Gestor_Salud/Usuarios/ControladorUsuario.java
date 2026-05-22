@@ -35,6 +35,14 @@ public class ControladorUsuario {
         return new ResponseEntity<>(servicioUsuario.guardar(usuarioDTO), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> borrar (@PathVariable Long id)
+    {
+        servicioUsuario.borrar(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 
