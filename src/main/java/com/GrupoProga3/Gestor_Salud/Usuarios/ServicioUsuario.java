@@ -11,16 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ServicioUsuario implements IServicioUsuario{
 
-
     private final RepositorioUsuario repositorioUsuario;
     private final UsuarioMapper usuarioMapper;
-
 
     @Override
     public UsuarioDTO guardar(UsuarioDTO usuarioDTO) {
 
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ToEntity(usuarioDTO));
-        System.out.println(guardado);
+
         return usuarioMapper.ToDto(guardado);
     }
 
