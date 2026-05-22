@@ -1,11 +1,11 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +24,20 @@ public class ControladorUsuario {
     }
 
     @GetMapping("/id/{id}")
-    public
+    public ResponseEntity<UsuarioDTO> buscarPorId (@PathVariable Long id)
+    {
+        return ResponseEntity.ok(servicioUsuario.buscarPorId(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<UsuarioDTO> guardar (@RequestBody @Valid UsuarioDTO usuarioDTO)
+    {
+        return new ResponseEntity<>(servicioUsuario.guardar(usuarioDTO), HttpStatus.CREATED);
+    }
+
+
+
+
 
 
 
