@@ -26,7 +26,6 @@ public class EntidadPaciente {
     @Column(name = "apellido_paciente", nullable = false, length = 50)
     private String apellido;
     @Column(name = "fecha_nacimiento", nullable = false)
-    @Temporal(TemporalType.DATE)
     private Date fecha_nacimiento;
 
     //RELACIONES
