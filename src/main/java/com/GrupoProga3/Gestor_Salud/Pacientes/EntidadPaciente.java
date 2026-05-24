@@ -18,34 +18,21 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "pacientes")
 public class EntidadPaciente {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
     @Column(name = "nombre_paciente", nullable = false, length = 50)
     private String nombre;
-
-
-    @NotBlank
     @Column(name = "apellido_paciente", nullable = false, length = 50)
     private String apellido;
-
-
-    @NotBlank
     @Column(name = "fecha_nacimiento", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha_nacimiento;
 
-
     //RELACIONES
-
     @ManyToOne
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
-
 
     @ManyToOne
     @JoinColumn(name = "id_obra_social")
