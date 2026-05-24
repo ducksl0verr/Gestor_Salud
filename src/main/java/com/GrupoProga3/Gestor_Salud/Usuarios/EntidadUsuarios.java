@@ -21,31 +21,21 @@ public class EntidadUsuarios {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El nombre no puede estar vacío")
     @Column(name = "nombre_usuario", nullable = false, length = 50)
     private String nombre;
 
-    @NotBlank(message = "El apellido no puede estar vacío")
     @Column(name = "apellido_usuario", nullable = false, length = 50)
     private String apellido;
 
-    @NotBlank(message = "El dni no puede estar vacío")
-    @Pattern(regexp = "\\d{7,8}", message = "DNI inválido")
     @Column(name = "dni",nullable = false)
     private String dni;
 
-    @NotBlank(message = "El teléfono no puede estar vacío")
-    @Pattern(
-            regexp = "^[0-9+\\-\\s]{6,20}$",
-            message = "El teléfono tiene un formato inválido"
-    )
     @Column(name = "telefono", nullable = false, length = 20)
     private String telefono;
 
     @Column(name = "matricula", length = 50)
     private String matricula;
 
-    @NotBlank(message = "El mail no puede estar vacío")
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
