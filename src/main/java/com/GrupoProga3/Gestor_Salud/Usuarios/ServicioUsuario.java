@@ -3,12 +3,13 @@ package com.GrupoProga3.Gestor_Salud.Usuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor // solo genera constructor a aquellos atributos final
 public class ServicioUsuario implements IServicioUsuario{
 
     private final RepositorioUsuario repositorioUsuario;
