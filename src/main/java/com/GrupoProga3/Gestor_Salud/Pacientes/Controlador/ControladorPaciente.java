@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,10 @@ public class ControladorPaciente {
     private IServicioPaciente servicioPaciente;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDTO> buscarPorId
+    public ResponseEntity<PacienteDTO> buscarPorId(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(servicioPaciente.buscarPorid(id));
+    }
 
 
 }
