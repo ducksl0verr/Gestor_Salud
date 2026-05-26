@@ -2,7 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Facturas;
 
 import com.GrupoProga3.Gestor_Salud.DetalleFacturas.EntidadDetalleFacturas;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;

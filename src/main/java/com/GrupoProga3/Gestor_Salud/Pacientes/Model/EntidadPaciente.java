@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Pacientes;
+package com.GrupoProga3.Gestor_Salud.Pacientes.Model;
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -25,7 +25,7 @@ public class EntidadPaciente {
     @Column(name = "apellido_paciente", nullable = false, length = 50)
     private String apellido;
     @Column(name = "fecha_nacimiento", nullable = false)
-    private Date fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
 
     //RELACIONES
     @ManyToOne
@@ -35,25 +35,4 @@ public class EntidadPaciente {
     @ManyToOne
     @JoinColumn(name = "id_obra_social")
     private EntidadObraSocial obraSocial;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,13 +1,11 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO;
-
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
-
-import java.util.Date;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import java.time.LocalDate;
 
 public record PacienteDTO(@NotBlank String nombre,
                           @NotBlank String apellido,
-                          @Temporal(TemporalType.DATE) Date fecha_nacimiento){}
-
-
+                          @NotNull(message = "La fecha de nacimiento es obligatoria")
+                          @Past(message = "La fecha debe ser anterior a hoy")
+                          LocalDate fechaNacimiento) {}
