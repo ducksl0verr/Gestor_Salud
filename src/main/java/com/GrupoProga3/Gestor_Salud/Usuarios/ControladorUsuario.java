@@ -3,6 +3,7 @@ package com.GrupoProga3.Gestor_Salud.Usuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/usuarios")
 public class ControladorUsuario {
 
@@ -29,7 +30,7 @@ public class ControladorUsuario {
         return ResponseEntity.ok(servicioUsuario.buscarPorId(id));
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<UsuarioDTO> guardar (@RequestBody @Valid UsuarioDTO usuarioDTO)
     {
         return new ResponseEntity<>(servicioUsuario.guardar(usuarioDTO), HttpStatus.CREATED);
@@ -39,15 +40,13 @@ public class ControladorUsuario {
     public ResponseEntity<Void> borrar (@PathVariable Long id)
     {
         servicioUsuario.borrar(id);
-
         return ResponseEntity.noContent().build();
     }
 
-
-
-
-
-
-
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> actualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTO usuarioDTO)
+    {
+       return  ResponseEntity.ok(servicioUsuario.actualizar(id, usuarioDTO));
+    }
 
 }
