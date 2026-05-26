@@ -1,6 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Domicilio;
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioDTO;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DTO.DomicilioDTO;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DomicilioMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
