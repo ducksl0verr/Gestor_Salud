@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO;
+package com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DTO;
 
 import jakarta.validation.constraints.NotBlank;
 
