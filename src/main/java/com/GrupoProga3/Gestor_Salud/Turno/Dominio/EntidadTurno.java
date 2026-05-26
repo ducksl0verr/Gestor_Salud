@@ -1,6 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Turno.Dominio;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
 import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;

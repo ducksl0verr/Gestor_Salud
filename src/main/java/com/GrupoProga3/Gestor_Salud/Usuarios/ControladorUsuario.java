@@ -17,14 +17,13 @@ public class ControladorUsuario {
 
     private final IServicioUsuario servicioUsuario;
 
-
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> buscarTodos ()
     {
         return ResponseEntity.ok(servicioUsuario.buscarTodos());
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> buscarPorId (@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioUsuario.buscarPorId(id));
