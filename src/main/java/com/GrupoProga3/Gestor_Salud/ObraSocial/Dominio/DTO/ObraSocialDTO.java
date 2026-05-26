@@ -1,9 +1,15 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO;
 
-import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
-public record ObraSocialDTO
-        (@NotBlank String nombre,
-    @NotBlank String cobertura){}
-
+@NoArgsConstructor
+@Setter
+@AllArgsConstructor
+@Getter
+public class ObraSocialDTO {
+    private String nombre;
+    private String cobertura;
+}

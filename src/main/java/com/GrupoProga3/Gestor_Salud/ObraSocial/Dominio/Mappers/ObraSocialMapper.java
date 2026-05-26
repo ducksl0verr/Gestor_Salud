@@ -6,8 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ObraSocialMapper {
-
     EntidadObraSocial toEntity(ObraSocialDTO dto);
-
-    ObraSocialDTO toDto(EntidadObraSocial entidad);
+    ObraSocialDTO toDto(EntidadObraSocial entidadObraSocial);
 }
