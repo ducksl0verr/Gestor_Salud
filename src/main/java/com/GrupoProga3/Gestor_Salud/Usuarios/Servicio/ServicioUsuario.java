@@ -47,7 +47,6 @@ public class ServicioUsuario implements IServicioUsuario {
         usu.setDni(usuarioDTO.dni());
         usu.setEmail(usuarioDTO.email());
         usu.setTelefono(usuarioDTO.telefono());
-        usu.setMatricula(usuarioDTO.matricula());
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
