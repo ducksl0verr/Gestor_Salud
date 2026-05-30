@@ -3,7 +3,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteDTO;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper.PacienteMapper;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Pacientes.RepositorioPaciente.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

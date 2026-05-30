@@ -1,8 +1,9 @@
-package com.GrupoProga3.Gestor_Salud.Usuarios;
+package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
-import lombok.AllArgsConstructor;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor // solo genera constructor a aquellos atributos final
-public class ServicioUsuario implements IServicioUsuario{
+public class ServicioUsuario implements IServicioUsuario {
 
     private final RepositorioUsuario repositorioUsuario;
     private final UsuarioMapper usuarioMapper;

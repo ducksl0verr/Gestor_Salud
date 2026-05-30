@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio;
 
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
