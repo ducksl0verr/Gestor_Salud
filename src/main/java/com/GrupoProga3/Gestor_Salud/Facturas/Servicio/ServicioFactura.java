@@ -2,7 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Facturas.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaDTO;
 import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.Mapper.FacturaMapper;
-import com.GrupoProga3.Gestor_Salud.Facturas.Exceptions.FacturaNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.Facturas.Excepciones.FacturaNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.Facturas.Model.EntidadFacturas;
 import com.GrupoProga3.Gestor_Salud.Facturas.Repositorio.RepositorioFactura;
 import lombok.RequiredArgsConstructor;

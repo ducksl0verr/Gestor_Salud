@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.DetalleFacturas;
+package com.GrupoProga3.Gestor_Salud.DetalleFacturas.Model;
 
 import com.GrupoProga3.Gestor_Salud.Facturas.Model.EntidadFacturas;
 import com.GrupoProga3.Gestor_Salud.Turno.EntidadTurno;
@@ -27,7 +27,6 @@ public class EntidadDetalleFacturas {
     private Long id;
 
     //RELACIONES
-
     @ManyToOne
     @JoinColumn(name = "id_factura")
     private EntidadFacturas factura;
@@ -35,15 +34,11 @@ public class EntidadDetalleFacturas {
     @ManyToOne
     @JoinColumn(name = "id_turno")
     private EntidadTurno turno;
-
     //
 
-    @NotBlank(message = "El concepto no puede estar vacío")
     @Column(name = "concepto",nullable = false)
     private String concepto;
 
-    @NotNull(message = "El importe no puede ser nulo")
-    @DecimalMin(value = "0.0", inclusive = false, message = "El importe debe ser mayor a 0")
     @Column(name = "importe", nullable = false, precision = 10, scale = 2)
     private BigDecimal importe;
 
@@ -57,6 +52,5 @@ public class EntidadDetalleFacturas {
     @NotNull(message = "El subtotal no puede ser vacio")
     @Column(name = "subtotal",nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
-
 
 }
