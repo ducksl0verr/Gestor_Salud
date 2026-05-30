@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Usuarios;
+package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import java.util.List;

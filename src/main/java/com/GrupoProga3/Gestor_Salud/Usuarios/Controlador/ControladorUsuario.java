@@ -1,6 +1,7 @@
-package com.GrupoProga3.Gestor_Salud.Usuarios;
+package com.GrupoProga3.Gestor_Salud.Usuarios.Controlador;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Servicio.IServicioUsuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
