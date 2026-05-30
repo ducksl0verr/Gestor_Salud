@@ -1,11 +1,9 @@
-package com.GrupoProga3.Gestor_Salud.Usuarios;
+package com.GrupoProga3.Gestor_Salud.Usuarios.Model;
 
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Roles.Dominio.EntidadRol;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Entity

@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Pacientes.RepositorioPaciente;
+package com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio;
 
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import org.springframework.data.jpa.repository.JpaRepository;
