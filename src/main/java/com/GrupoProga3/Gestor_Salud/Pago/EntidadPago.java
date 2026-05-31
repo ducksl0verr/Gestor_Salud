@@ -23,11 +23,11 @@ public class EntidadPago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Positive(message = "El monto debe ser mayor a 0")
+
     @Column(name = "monto", nullable = false)
     private BigDecimal monto;
 
-    @NotNull(message = "La fecha es obligatoria")
+
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 

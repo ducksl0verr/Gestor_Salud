@@ -1,10 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Pago;
 
 import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoDTO;
-import com.GrupoProga3.Gestor_Salud.Pago.EntidadPago;
-import com.GrupoProga3.Gestor_Salud.Pago.IServicioPago;
 import com.GrupoProga3.Gestor_Salud.Pago.Mappers.PagoMapper;
-import com.GrupoProga3.Gestor_Salud.Pago.RepositorioPago;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,10 +50,9 @@ public class ServicioPago implements IServicioPago {
         EntidadPago entidad = repositorioPago.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Pago no encontrado con id: " + id));
 
-        BigDecimal montoDto = pagoDTO.getMonto();
-        if (montoDto != null) entidad.setMonto(montoDto);
-
-        if (pagoDTO.getFecha() != null) entidad.setFecha(pagoDTO.getFecha());
+        BigDecimal montoDto = pagoDTO.monto();
+        entidad.setMonto(pagoDTO.monto());
+        entidad.setFecha(pagoDTO.fecha());
 
         EntidadPago actualizado = repositorioPago.save(entidad);
         return pagoMapper.toDto(actualizado);
