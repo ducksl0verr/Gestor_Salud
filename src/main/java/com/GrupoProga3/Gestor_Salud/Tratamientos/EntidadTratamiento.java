@@ -16,7 +16,7 @@ public class EntidadTratamiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tratamiento")
-    private Long idTratamiento;
+    private Long id;
 
     @NotBlank(message = "El nombre del tratamiento no puede estar vacío")
     @Size(min = 2, max = 150, message = "El nombre debe tener entre 2 y 150 caracteres")
