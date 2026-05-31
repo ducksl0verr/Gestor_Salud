@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/domicilio")
+@RequestMapping("/domicilios")
 public class ControladorDomicilio {
     private final IServicioDomicilio servicioDomicilio;
     @GetMapping

@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios;
 
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.EntidadDomicilio;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
