@@ -16,7 +16,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "usuarios")
-
 public class EntidadUsuarios {
 
     @Id
