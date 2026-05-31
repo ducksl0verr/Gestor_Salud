@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public record DomicilioDTO (@NotBlank String calle,
                             @NotBlank String numero,
-                            String piso,
-                            String depto,
-                            String localidad,
-                            String provincia,
-                            String codigo_postal){
+                            @NotBlank String piso,
+                            @NotBlank String depto,
+                            @NotBlank String localidad,
+                            @NotBlank String provincia,
+                            @NotBlank String codigo_postal){
 }

@@ -1,6 +1,5 @@
 package com.GrupoProga3.Gestor_Salud.Domicilio.Dominio;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
