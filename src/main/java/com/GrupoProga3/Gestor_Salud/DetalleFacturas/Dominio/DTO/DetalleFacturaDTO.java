@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.DetalleFacturas.Dominio;
+package com.GrupoProga3.Gestor_Salud.DetalleFacturas.Dominio.DTO;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

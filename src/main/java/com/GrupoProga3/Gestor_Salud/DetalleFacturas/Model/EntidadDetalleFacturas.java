@@ -1,5 +1,4 @@
 package com.GrupoProga3.Gestor_Salud.DetalleFacturas.Model;
-
 import com.GrupoProga3.Gestor_Salud.Facturas.Model.EntidadFacturas;
 import com.GrupoProga3.Gestor_Salud.Turno.EntidadTurno;
 import jakarta.persistence.*;
@@ -42,15 +41,11 @@ public class EntidadDetalleFacturas {
     @Column(name = "importe", nullable = false, precision = 10, scale = 2)
     private BigDecimal importe;
 
-    @NotNull(message = "La cantidad no puede ser nula")
-    @Min(value = 1, message = "La cantidad debe ser al menos 1")
     @Column(name = "cantidad", nullable = false)
     private Long cantidad;
 
 // ANOTACION: ES POSIBLE QUE DEBAMOS MEJORAR ESTE ATRIBUTO SUBTOTAL PARA QUE SE CALCULE AUTOMATICAMENTE EN LA ENTIDAD, VER...
 
-    @NotNull(message = "El subtotal no puede ser vacio")
     @Column(name = "subtotal",nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
-
 }
