@@ -8,4 +8,4 @@ public record PacienteDTO(@NotBlank String nombre,
                           @NotBlank String apellido,
                           @NotNull(message = "La fecha de nacimiento es obligatoria")
                           @Past(message = "La fecha debe ser anterior a hoy")
-                          LocalDate fechaNacimiento) {}
+                          LocalDate fecha_nacimiento) {}

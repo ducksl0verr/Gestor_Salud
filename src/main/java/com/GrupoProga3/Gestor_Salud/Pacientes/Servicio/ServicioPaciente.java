@@ -36,7 +36,7 @@ public class ServicioPaciente implements IServicioPaciente{
 
         pac.setNombre(pacienteDTO.nombre());
         pac.setApellido(pacienteDTO.apellido());
-        pac.setFecha_nacimiento(pacienteDTO.fechaNacimiento());
+        pac.setFecha_nacimiento(pacienteDTO.fecha_nacimiento());
 
         EntidadPaciente actualizado = repositorioPaciente.save(pac);
         return pacienteMapper.toDTO(actualizado);
