@@ -1,13 +1,10 @@
-package com.GrupoProga3.Gestor_Salud.HistoriaClinica;
+package com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio;
 
 import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -17,6 +14,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class EntidadHistoriaClinica {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -30,10 +28,11 @@ public class EntidadHistoriaClinica {
     @Column(length = 100, nullable = false)
     private String evolucion;
     /// Lo mismo, una vez que tengamos las clases se instancian acá, La relación es que recibe muchos
-    @ManyToOne
-    @JoinColumn(name = "id_paciente_id")
+    @OneToOne
+    @JoinColumn(name = "id_paciente")
     private EntidadPaciente id_paciente;
+
     @ManyToOne
-    @JoinColumn(name = "id_profesional_id")
+    @JoinColumn(name = "id_profesional")
     private EntidadUsuarios id_profesional;
 }
