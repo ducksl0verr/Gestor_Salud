@@ -39,6 +39,4 @@ public interface HistoriaClinicaMapper {
     @Mapping(source="id_paciente.id", target="id_paciente")
     @Mapping(source="id_profesional.id", target="id_profesional")
     HistoriaClinicaRespuesta toDTO (EntidadHistoriaClinica historiaClinica);
-
-    //HistoriaClinicaRespuesta toDTO (HistoriaClinicaNueva historiaClinicaNueva);
 }
