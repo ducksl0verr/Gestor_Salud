@@ -4,7 +4,7 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
 import com.GrupoProga3.Gestor_Salud.Salas.RepositorioSala;
-import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
+import com.GrupoProga3.Gestor_Salud.Tratamientos.EntidadTratamiento;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.RepositorioTratamiento;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoActualizar;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoNuevo;
