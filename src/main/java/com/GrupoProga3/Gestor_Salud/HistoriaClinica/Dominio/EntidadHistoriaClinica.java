@@ -21,10 +21,8 @@ public class EntidadHistoriaClinica {
     private Long id_historiaClinica;
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @NotBlank
     @Column(length = 100, nullable = false)
     private String observaciones;
-    @NotBlank
     @Column(length = 100, nullable = false)
     private String evolucion;
     /// Lo mismo, una vez que tengamos las clases se instancian acá, La relación es que recibe muchos
