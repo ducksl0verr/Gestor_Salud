@@ -44,12 +44,13 @@ public class ServicioObraSocial implements IServicioObraSocial {
         EntidadObraSocial obra = repositorioObraSocial.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("ObraSocial no encontrada con id: " + id));
 
-        if (obrasocialDTO.getNombre() != null) obra.setNombre(obrasocialDTO.getNombre());
-        if (obrasocialDTO.getCobertura() != null) obra.setCobertura(obrasocialDTO.getCobertura());
+        obra.setNombre(obrasocialDTO.nombre());
+        obra.setCobertura(obrasocialDTO.cobertura());
 
         EntidadObraSocial actualizado = repositorioObraSocial.save(obra);
         return obraSocialMapper.toDto(actualizado);
     }
+
 
     @Override
     public List<ObraSocialDTO> buscarTodos() {
