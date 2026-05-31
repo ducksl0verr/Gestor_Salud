@@ -5,6 +5,7 @@ import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinica
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinicaRespuesta;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.EntidadHistoriaClinica;
 import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -38,4 +39,6 @@ public interface HistoriaClinicaMapper {
     @Mapping(source="id_paciente.id", target="id_paciente")
     @Mapping(source="id_profesional.id", target="id_profesional")
     HistoriaClinicaRespuesta toDTO (EntidadHistoriaClinica historiaClinica);
+
+    //HistoriaClinicaRespuesta toDTO (HistoriaClinicaNueva historiaClinicaNueva);
 }
