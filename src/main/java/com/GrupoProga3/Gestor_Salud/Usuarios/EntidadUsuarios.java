@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Usuarios;
 
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
+import com.GrupoProga3.Gestor_Salud.Roles.Dominio.EntidadRol;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -56,9 +57,9 @@ public class EntidadUsuarios {
     /// Aca segun por lo que entiendo, un domicilio pueden tener muchos usuarios pero un usuario podra tener un solo domicilio
 
     @ManyToOne
-
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
+
 
 }
 
