@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Usuarios.Model;
 
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
+import com.GrupoProga3.Gestor_Salud.Roles.Dominio.EntidadRol;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,6 +45,7 @@ public class EntidadUsuarios {
     @ManyToOne
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
+
 
 }
 
