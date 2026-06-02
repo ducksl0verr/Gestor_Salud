@@ -15,6 +15,7 @@ import java.util.List;
 public class ServicioDiagnostico implements IServicioDiagnostico {
     private final RepositorioDiagnostico repositorioDiagnostico;
     private final DiagnosticoMapper  diagnosticoMapper;
+
     @Override
     public DiagnosticoRespuesta crear(DiagnosticoNuevo diagnosticoNuevo) {
         System.out.println(diagnosticoNuevo);
