@@ -15,7 +15,10 @@ import lombok.Setter;
 public class EntidadDiagnostico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id; ///Pienso que deberiamos cambiar el tipo de ID, para que distintos pacientes tengan un mismo diagnostico
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private String descripcion;
 }
