@@ -3,7 +3,7 @@ package com.GrupoProga3.Gestor_Salud.Turno.Dominio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
-import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

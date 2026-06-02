@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Domicilio;
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioDTO;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DomicilioMapper;
 import com.GrupoProga3.Gestor_Salud.common.DomicilioNoEncontradoException;
@@ -16,8 +17,8 @@ public class ServicioDomicilio implements IServicioDomicilio{
     private final DomicilioMapper domicilioMapper;
 
     @Override
-    public DomicilioDTO guardar(DomicilioDTO domicilioDTO) {
-        EntidadDomicilio guardado = repositorioDomicilio.save(domicilioMapper.toEntity(domicilioDTO));
+    public DomicilioRespuesta guardar(DomicilioNuevo domicilioNuevo) {
+        EntidadDomicilio guardado = repositorioDomicilio.save(domicilioMapper.toEntity(domicilioNuevo));
         System.out.println(guardado);
         return domicilioMapper.toDto(guardado);
     }
@@ -28,28 +29,28 @@ public class ServicioDomicilio implements IServicioDomicilio{
     }
 
     @Override
-    public DomicilioDTO buscarPorId(Long id) {
+    public DomicilioRespuesta buscarPorId(Long id) {
         return repositorioDomicilio.findById(id)
                 .map(domicilioMapper::toDto)
                 .orElseThrow(()-> new DomicilioNoEncontradoException("No se ha encontrado el domicilio."));
     }
 
     @Override
-    public DomicilioDTO actualizar(Long id, DomicilioDTO domicilioDTO) {
+    public DomicilioRespuesta actualizar(Long id, DomicilioNuevo domicilioNuevo) {
         EntidadDomicilio dom = repositorioDomicilio.findById(id)
                 .orElseThrow();
-        dom.setCalle(domicilioDTO.calle());
-        dom.setDepto(domicilioDTO.depto());
-        dom.setPiso(domicilioDTO.piso());
-        dom.setLocalidad(domicilioDTO.localidad());
-        dom.setCodigo_postal(domicilioDTO.codigo_postal());
-        dom.setProvincia(domicilioDTO.provincia());
+        dom.setCalle(domicilioNuevo.calle());
+        dom.setDepto(domicilioNuevo.depto());
+        dom.setPiso(domicilioNuevo.piso());
+        dom.setLocalidad(domicilioNuevo.localidad());
+        dom.setCodigo_postal(domicilioNuevo.codigo_postal());
+        dom.setProvincia(domicilioNuevo.provincia());
         EntidadDomicilio actualizado = repositorioDomicilio.save(dom);
         return domicilioMapper.toDto(actualizado);
     }
 
     @Override
-    public List<DomicilioDTO> buscarTodos() {
+    public List<DomicilioRespuesta> buscarTodos() {
         return repositorioDomicilio.findAll().stream().map(domicilioMapper::toDto).toList();
     }
 }

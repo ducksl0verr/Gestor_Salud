@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Model;
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,4 +37,8 @@ public class EntidadPaciente {
     @ManyToOne
     @JoinColumn(name = "id_obra_social")
     private EntidadObraSocial obraSocial;
+
+    /// Esto lo agregó Dante, si algo no anda ya saben de quién es la culpa
+    @OneToMany(mappedBy = "pacientes")
+    private List<EntidadPrescripcionTratamiento> tratamientos;
 }

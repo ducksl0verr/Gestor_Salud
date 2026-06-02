@@ -4,12 +4,12 @@ import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinica
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinicaNueva;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinicaRespuesta;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.EntidadHistoriaClinica;
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "Spring")
-public interface HistoriaClinicaMapper {
+public interface  HistoriaClinicaMapper {
     //EntidadHistoriaClinica toEntity (HistoriaClinicaActualizar historiaClinicaActualizar);
 
     @Mapping(target="id_paciente", ignore = true)
