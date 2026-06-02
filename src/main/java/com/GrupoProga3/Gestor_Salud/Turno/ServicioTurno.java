@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Turno;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Pacientes.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
 import com.GrupoProga3.Gestor_Salud.Salas.RepositorioSala;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
@@ -11,8 +11,8 @@ import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoNuevo;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.EntidadTurno;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.Mapper.TurnoMapper;
-import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
-import com.GrupoProga3.Gestor_Salud.Usuarios.UsuarioRepositorio;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.List;
 public class ServicioTurno implements IServicioTurno {
     private final RepositorioTurno repositorioTurno;
     private final RepositorioPaciente repositorioPaciente;
-    private final UsuarioRepositorio repositorioUsuario;
+    private final RepositorioUsuario repositorioUsuario;
     private final RepositorioSala repositorioSala;
     private final RepositorioTratamiento repositorioTratamiento;
     private final TurnoMapper turnoMapper;

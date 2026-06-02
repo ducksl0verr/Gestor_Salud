@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Controlador;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteDTO;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Servicio.IServicioPaciente;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,21 +19,21 @@ public class ControladorPaciente {
     private IServicioPaciente servicioPaciente;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDTO> buscarPorId(@PathVariable Long id)
+    public ResponseEntity<PacienteRespuesta> buscarPorId(@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioPaciente.buscarPorid(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<PacienteDTO>> buscarTodos()
+    public ResponseEntity<List<PacienteRespuesta>> buscarTodos()
     {
         return ResponseEntity.ok(servicioPaciente.buscarTodos());
     }
 
     @PostMapping
-    public ResponseEntity<PacienteDTO> guardar (@RequestBody @Valid PacienteDTO pacienteDTO)
+    public ResponseEntity<PacienteRespuesta> guardar (@RequestBody @Valid PacienteNuevo pacienteNuevo)
     {
-        return new ResponseEntity<>(servicioPaciente.guardar(pacienteDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(servicioPaciente.guardar(pacienteNuevo), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -43,9 +44,9 @@ public class ControladorPaciente {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteDTO> actualizar (@PathVariable Long id, @RequestBody @Valid PacienteDTO pacienteDTO)
+    public ResponseEntity<PacienteRespuesta> actualizar (@PathVariable Long id, @RequestBody @Valid PacienteNuevo pacienteNuevo)
     {
-        return ResponseEntity.ok(servicioPaciente.actualizar(id,pacienteDTO));
+        return ResponseEntity.ok(servicioPaciente.actualizar(id, pacienteNuevo));
     }
 
 

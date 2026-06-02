@@ -1,6 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.DetalleFacturas.Model;
 import com.GrupoProga3.Gestor_Salud.Facturas.Model.EntidadFacturas;
-import com.GrupoProga3.Gestor_Salud.Turno.EntidadTurno;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.EntidadTurno;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

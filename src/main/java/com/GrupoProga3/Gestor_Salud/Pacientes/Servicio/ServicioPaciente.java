@@ -1,9 +1,13 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteDTO;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.RepositorioObraSocial;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper.PacienteMapper;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ObraSocialNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +18,21 @@ import java.util.List;
 public class ServicioPaciente implements IServicioPaciente{
 
     private final RepositorioPaciente repositorioPaciente;
+    private final RepositorioObraSocial repositorioObraSocial;
     private final PacienteMapper pacienteMapper;
 
     @Override
-    public PacienteDTO guardar(PacienteDTO pacienteDTO) {
-        EntidadPaciente guardado = repositorioPaciente.save(pacienteMapper.toEntity(pacienteDTO));
+    public PacienteRespuesta guardar(PacienteNuevo pacienteNuevo) {
+        System.out.println(pacienteNuevo);
+        EntidadPaciente buscado = pacienteMapper.toEntity(pacienteNuevo);
+
+        EntidadObraSocial obraSocial = repositorioObraSocial
+                .findById(pacienteNuevo.id_obraSocial())
+                        .orElseThrow(()->new ObraSocialNoEncontradaException("No se encontró la obra social"));
+
+        buscado.setObraSocial(obraSocial);
+
+        EntidadPaciente guardado = repositorioPaciente.save(buscado);
 
         return pacienteMapper.toDTO(guardado);
     }
@@ -30,27 +44,27 @@ public class ServicioPaciente implements IServicioPaciente{
     }
 
     @Override
-    public PacienteDTO actualizar(Long id, PacienteDTO pacienteDTO) {
+    public PacienteRespuesta actualizar(Long id, PacienteNuevo pacienteNuevo) {
         EntidadPaciente pac = repositorioPaciente.findById(id)
                 .orElseThrow();
 
-        pac.setNombre(pacienteDTO.nombre());
-        pac.setApellido(pacienteDTO.apellido());
-        pac.setFecha_nacimiento(pacienteDTO.fecha_nacimiento());
+        pac.setNombre(pacienteNuevo.nombre());
+        pac.setApellido(pacienteNuevo.apellido());
+        pac.setFecha_nacimiento(pacienteNuevo.fecha_nacimiento());
 
         EntidadPaciente actualizado = repositorioPaciente.save(pac);
         return pacienteMapper.toDTO(actualizado);
     }
 
     @Override
-    public PacienteDTO buscarPorid(Long id) {
+    public PacienteRespuesta buscarPorid(Long id) {
         return repositorioPaciente.findById(id)
                 .map(pacienteMapper::toDTO)
                 .orElseThrow();
     }
 
     @Override
-    public List<PacienteDTO> buscarTodos() {
+    public List<PacienteRespuesta> buscarTodos() {
         return repositorioPaciente.findAll().stream()
                 .map(pacienteMapper::toDTO)
                 .toList();

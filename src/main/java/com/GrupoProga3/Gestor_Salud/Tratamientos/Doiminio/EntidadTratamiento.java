@@ -1,7 +1,10 @@
 package com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio;
 
+import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tratamientos")
@@ -22,4 +25,6 @@ public class EntidadTratamiento {
     @Column(name = "descripcion", length = 500)
     private String descripcion;
 
+    @OneToMany(mappedBy = "tratamientos")
+    private List<EntidadPrescripcionTratamiento> pacientes;
 }

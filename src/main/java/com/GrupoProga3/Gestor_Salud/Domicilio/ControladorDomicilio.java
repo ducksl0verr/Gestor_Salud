@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Domicilio;
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DTO.DomicilioDTO;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,11 @@ import java.util.List;
 public class ControladorDomicilio {
     private final IServicioDomicilio servicioDomicilio;
     @GetMapping
-    public ResponseEntity<List<DomicilioDTO>> buscarTodos (){
+    public ResponseEntity<List<DomicilioRespuesta>> buscarTodos (){
         return ResponseEntity.ok(servicioDomicilio.buscarTodos());
     }
     @GetMapping("/{idDomicilio}")
-    public ResponseEntity<DomicilioDTO> buscarPorId (@PathVariable Long idDomicilio) {
+    public ResponseEntity<DomicilioRespuesta> buscarPorId (@PathVariable Long idDomicilio) {
         return  ResponseEntity.ok(servicioDomicilio.buscarPorId(idDomicilio));
     }
     /*@PostMapping          Pensadolo bien, realmente no es tan necesario un método http para CREAR un domicilio,
@@ -28,7 +29,7 @@ public class ControladorDomicilio {
     }
      */
     @PutMapping("/{id}")
-    public ResponseEntity<DomicilioDTO> actualizarDomicilio (@PathVariable Long id, @RequestBody @Valid DomicilioDTO domicilioDTO) {
-        return ResponseEntity.ok(servicioDomicilio.actualizar(id,domicilioDTO));
+    public ResponseEntity<DomicilioRespuesta> actualizarDomicilio (@PathVariable Long id, @RequestBody @Valid DomicilioNuevo domicilioNuevo) {
+        return ResponseEntity.ok(servicioDomicilio.actualizar(id, domicilioNuevo));
     }
 }

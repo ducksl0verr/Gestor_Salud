@@ -40,7 +40,7 @@ public class EntidadUsuarios {
 
 
     //RELACIONES
-    /// Aca segun por lo que entiendo, un domicilio pueden tener muchos usuarios pero un usuario podra tener un solo domicilio
+    /// Aca según por lo que entiendo, un domicilio pueden tener muchos usuarios pero un usuario podra tener un solo domicilio
 
     @ManyToOne
     @JoinColumn(name = "id_domicilio")
@@ -100,4 +100,4 @@ public class EntidadUsuarios {
 /// @Email en el campo ✅
 /// @Valid en el controller ✅
 ///
-/// Con eso ya valida solo.
+/// Con eso ya solo.

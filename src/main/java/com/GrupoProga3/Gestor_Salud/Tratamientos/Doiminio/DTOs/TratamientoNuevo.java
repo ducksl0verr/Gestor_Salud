@@ -8,6 +8,5 @@ public record TratamientoNuevo (@NotBlank(message = "El nombre del tratamiento n
                                 @Size(min = 2, max = 150, message = "El nombre debe tener entre 2 y 150 caracteres")
                                 String nombre,
                                 @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")
-                                String descripcion,
-                                @NotNull Boolean estado) {
+                                String descripcion) {
 }
