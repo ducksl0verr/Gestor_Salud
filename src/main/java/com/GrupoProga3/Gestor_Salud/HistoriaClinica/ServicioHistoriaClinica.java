@@ -6,10 +6,10 @@ import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinica
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.EntidadHistoriaClinica;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.MAPPER.HistoriaClinicaMapper;
 import com.GrupoProga3.Gestor_Salud.common.HistoriaClinicaNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Pacientes.RepositorioPaciente;
-import com.GrupoProga3.Gestor_Salud.Usuarios.EntidadUsuarios;
-import com.GrupoProga3.Gestor_Salud.Usuarios.UsuarioRepositorio;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
 import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
     private final RepositorioHistoriaClinica repositorioHistoriaClinica;
     /// No sé si es correcto que se instancien estos repositorios de usuario y paciente
     /// en el servioio, preguntar al profe.
-    private final UsuarioRepositorio usuarioRepositorio;
+    private final RepositorioUsuario usuarioRepositorio;
     private final RepositorioPaciente repositorioPaciente;
     private final HistoriaClinicaMapper historiaClinicaMapper;
 

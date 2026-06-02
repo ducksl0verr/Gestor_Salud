@@ -44,8 +44,4 @@ public class ServicioTratamiento implements IServicioTratamiento{
                 .orElseThrow(() -> new TratamientoNoEncontradoException("Tratamiento no encontrado"));
         repositorioTratamiento.delete(buscado);
     }
-
-    public void darBajaTratamiento (Long id) {
-
-    }
 }

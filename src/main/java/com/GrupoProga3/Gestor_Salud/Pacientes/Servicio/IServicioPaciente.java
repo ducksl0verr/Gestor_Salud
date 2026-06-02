@@ -1,14 +1,15 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteDTO;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 
 import java.util.List;
 
 public interface IServicioPaciente {
 
-    PacienteDTO guardar (PacienteDTO pacienteDTO);
+    PacienteRespuesta guardar (PacienteNuevo pacienteNuevo);
     void borrar(Long id);
-    PacienteDTO actualizar(Long id, PacienteDTO pacienteDTO);
-    PacienteDTO buscarPorid (Long id);
-    List<PacienteDTO> buscarTodos();
+    PacienteRespuesta actualizar(Long id, PacienteNuevo pacienteNuevo);
+    PacienteRespuesta buscarPorid (Long id);
+    List<PacienteRespuesta> buscarTodos();
 }

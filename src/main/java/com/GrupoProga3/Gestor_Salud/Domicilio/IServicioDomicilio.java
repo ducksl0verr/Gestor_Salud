@@ -1,13 +1,14 @@
 package com.GrupoProga3.Gestor_Salud.Domicilio;
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioDTO;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
 
 import java.util.List;
 
 public interface IServicioDomicilio {
-    DomicilioDTO guardar (DomicilioDTO domicilioDTO);
+    DomicilioRespuesta guardar (DomicilioNuevo domicilioNuevo);
     void borrar (Long id);
-    DomicilioDTO buscarPorId(Long id);
-    DomicilioDTO actualizar (Long id, DomicilioDTO domicilioDTO);
-    List<DomicilioDTO> buscarTodos();
+    DomicilioRespuesta buscarPorId(Long id);
+    DomicilioRespuesta actualizar (Long id, DomicilioNuevo domicilioNuevo);
+    List<DomicilioRespuesta> buscarTodos();
 }
