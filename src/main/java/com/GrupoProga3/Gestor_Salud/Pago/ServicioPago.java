@@ -53,10 +53,10 @@ public class ServicioPago implements IServicioPago {
         EntidadPago entidad = repositorioPago.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Pago no encontrado con id: " + id));
 
-        BigDecimal montoDto = pagoDTO.getMonto();
+        BigDecimal montoDto = pagoDTO.monto();
         if (montoDto != null) entidad.setMonto(montoDto);
 
-        if (pagoDTO.getFecha() != null) entidad.setFecha(pagoDTO.getFecha());
+        if (pagoDTO.fecha() != null) entidad.setFecha(pagoDTO.fecha());
 
         EntidadPago actualizado = repositorioPago.save(entidad);
         return pagoMapper.toDto(actualizado);
