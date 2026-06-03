@@ -13,12 +13,12 @@ public interface TurnoMapper {
 
     @Mapping(target="id_paciente", ignore = true)
     @Mapping(target="id_tratamiento", ignore = true)
-    @Mapping(target="id_sala", ignore = true)
+    @Mapping(target="consultorio", ignore = true)
     @Mapping(target="id_profesional", ignore = true)
     EntidadTurno toEntity (TurnoNuevo turnoNuevo);
     @Mapping(source="id_paciente.id", target="id_paciente")
     @Mapping(source="id_tratamiento.id", target="id_tratamiento")
-    @Mapping(source="id_sala.id", target="id_sala")
+    @Mapping(source="consultorio.id", target="id_consultorio")
     @Mapping(source="id_profesional.id", target="id_profesional")
     TurnoRespuesta toDto (EntidadTurno entidadTurno);
 }

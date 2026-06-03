@@ -3,6 +3,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Model;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
+import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.EntidadSalaInternacion;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,4 +42,8 @@ public class EntidadPaciente {
     /// Esto lo agregó Dante, si algo no anda ya saben de quién es la culpa
     @OneToMany(mappedBy = "pacientes")
     private List<EntidadPrescripcionTratamiento> tratamientos;
+
+    @ManyToOne
+    @JoinColumn(name="id_salaInternacion")
+    private EntidadSalaInternacion salaInternacion;
 }
