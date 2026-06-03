@@ -66,7 +66,17 @@ public class ServicioUsuario implements IServicioUsuario {
 
     @Override
     public ProfesionalDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO) {
-        return null;
+        EntidadUsuarios usu = repositorioUsuario.findById(id)
+                .orElseThrow();
+        usu.setNombre(profesionalDTO.nombre());
+        usu.setApellido(profesionalDTO.apellido());
+        usu.setDni(profesionalDTO.dni());
+        usu.setEmail(profesionalDTO.email());
+        usu.setTelefono(profesionalDTO.telefono());
+
+        EntidadUsuarios actualizado = repositorioUsuario.save(usu);
+
+        return usuarioMapper.ProfToDTO(actualizado);
     }
 
     @Override
@@ -76,6 +86,6 @@ public class ServicioUsuario implements IServicioUsuario {
 
     @Override
     public List<ProfesionalDTO> buscarTodosProfesionales() {
-        return List.of();
+        return repositorioUsuario.findAll().stream().map(usuarioMapper::ProfToDTO).toList();
     }
 }
