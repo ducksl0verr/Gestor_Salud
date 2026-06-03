@@ -17,7 +17,6 @@ public class ControladorDetalleFacturas {
 
     private final IServicioDetalleFactura servicioDetalleFactura;
 
-
     @PostMapping
     public ResponseEntity<DetalleFacturaDTO> guardar(@RequestBody @Valid DetalleFacturaDTO detalleFacturaDTO)
     {

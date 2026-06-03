@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
@@ -18,22 +19,32 @@ public class ServicioUsuario implements IServicioUsuario {
 
     @Override
     public UsuarioDTO guardar(UsuarioDTO usuarioDTO) {
-
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ToEntity(usuarioDTO));
-
         return usuarioMapper.ToDto(guardado);
+    }
+
+    @Override
+    public ProfesionalDTO guardarProfesional(ProfesionalDTO profesionalDTO) {
+        EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ProfToEntity(profesionalDTO));
+        return usuarioMapper.ProfToDTO(guardado);
     }
 
     @Override
     public void borrar(Long id) {
         this.repositorioUsuario.findById(id).ifPresent(repositorioUsuario::delete);
-
     }
 
     @Override
     public UsuarioDTO buscarPorId(Long id) {
         return repositorioUsuario.findById(id)
                 .map(usuarioMapper::ToDto)
+                .orElseThrow();
+    }
+
+    @Override
+    public ProfesionalDTO buscarPorIdProfesional(Long id) {
+        return repositorioUsuario.findById(id)
+                .map(usuarioMapper::ProfToDTO)
                 .orElseThrow();
     }
 
@@ -54,7 +65,17 @@ public class ServicioUsuario implements IServicioUsuario {
     }
 
     @Override
+    public ProfesionalDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO) {
+        return null;
+    }
+
+    @Override
     public List<UsuarioDTO> buscarTodos() {
         return repositorioUsuario.findAll().stream().map(usuarioMapper::ToDto).toList();
+    }
+
+    @Override
+    public List<ProfesionalDTO> buscarTodosProfesionales() {
+        return List.of();
     }
 }
