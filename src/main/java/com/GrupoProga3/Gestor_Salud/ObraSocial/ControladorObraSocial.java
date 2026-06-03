@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialDTO;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 public class ControladorObraSocial {
     private final ServicioObraSocial servicioObraSocial;
 
-    public ResponseEntity<ObraSocialDTO> buscarPorId (Long id){
+    public ResponseEntity<ObraSocialRespuesta> buscarPorId (Long id){
         return ResponseEntity.ok(servicioObraSocial.buscarPorId(id));
     }
 }

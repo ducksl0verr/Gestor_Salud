@@ -1,7 +1,9 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialDTO;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.Mappers.ObraSocialMapper;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialNueva;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.MAPPER.ObraSocialMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,10 @@ public class ServicioObraSocial implements IServicioObraSocial {
     private final ObraSocialMapper obraSocialMapper;
 
     @Override
-    public ObraSocialDTO guardar(ObraSocialDTO obrasocialDTO) {
+    public ObraSocialRespuesta guardar(ObraSocialNueva obrasocialDTO) {
         var entidad = obraSocialMapper.toEntity(obrasocialDTO);
         var guardado = repositorioObraSocial.save(entidad);
-        return obraSocialMapper.toDto(guardado);
+        return obraSocialMapper.toDTO(guardado);
     }
 
     @Override
@@ -32,15 +34,15 @@ public class ServicioObraSocial implements IServicioObraSocial {
     }
 
     @Override
-    public ObraSocialDTO buscarPorId(Long id) {
+    public ObraSocialRespuesta buscarPorId(Long id) {
         return repositorioObraSocial.findById(id)
-                .map(obraSocialMapper::toDto)
+                .map(obraSocialMapper::toDTO)
                 .orElseThrow(() -> new NoSuchElementException("ObraSocial no encontrada con id: " + id));
     }
 
     @Override
     @Transactional
-    public ObraSocialDTO actualizar(Long id, ObraSocialDTO obrasocialDTO) {
+    public ObraSocialRespuesta actualizar(Long id, ObraSocialDTO obrasocialDTO) {
         EntidadObraSocial obra = repositorioObraSocial.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("ObraSocial no encontrada con id: " + id));
 
@@ -48,13 +50,13 @@ public class ServicioObraSocial implements IServicioObraSocial {
         if (obrasocialDTO.getCobertura() != null) obra.setCobertura(obrasocialDTO.getCobertura());
 
         EntidadObraSocial actualizado = repositorioObraSocial.save(obra);
-        return obraSocialMapper.toDto(actualizado);
+        return obraSocialMapper.toDTO(actualizado);
     }
 
     @Override
-    public List<ObraSocialDTO> buscarTodos() {
+    public List<ObraSocialRespuesta> buscarTodos() {
         return repositorioObraSocial.findAll().stream()
-                .map(obraSocialMapper::toDto)
+                .map(obraSocialMapper::toDTO)
                  .toList();
     }
 }

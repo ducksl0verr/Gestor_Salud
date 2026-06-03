@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Contacto.Model;
 
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import jakarta.persistence.*;
 import lombok.*;
 
