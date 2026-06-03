@@ -4,17 +4,13 @@ import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoDTO;
 import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.Mappers.ContactoMapper;
 import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Contacto.Repositorio.RepositorioContacto;
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DTO.DomicilioDTO;
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DomicilioMapper;
-import com.GrupoProga3.Gestor_Salud.Domicilio.EntidadDomicilio;
-import com.GrupoProga3.Gestor_Salud.Domicilio.RepositorioDomicilio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 @AllArgsConstructor
-public class Servicio implements IServicioContacto {
+public class ServicioContacto implements IServicioContacto {
 
     private final RepositorioContacto repositorioContacto;
     private final ContactoMapper contactoMapper;
