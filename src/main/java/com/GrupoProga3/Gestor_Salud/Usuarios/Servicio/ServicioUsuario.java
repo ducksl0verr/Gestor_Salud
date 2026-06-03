@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor // solo genera constructor a aquellos atributos final
-public class ServicioUsuario implements IServicioUsuario {
+  public class ServicioUsuario implements IServicioUsuario {
 
     private final RepositorioUsuario repositorioUsuario;
     private final UsuarioMapper usuarioMapper;
