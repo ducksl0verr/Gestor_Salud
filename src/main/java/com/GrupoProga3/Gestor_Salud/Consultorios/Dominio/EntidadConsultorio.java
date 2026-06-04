@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Consultorios;
+package com.GrupoProga3.Gestor_Salud.Consultorios.Dominio;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

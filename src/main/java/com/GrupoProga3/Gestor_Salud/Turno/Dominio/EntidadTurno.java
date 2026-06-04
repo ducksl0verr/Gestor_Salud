@@ -1,8 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Turno.Dominio;
 
-import com.GrupoProga3.Gestor_Salud.Consultorios.EntidadConsultorio;
+import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.EntidadSalaInternacion;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
@@ -12,10 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 @Getter
