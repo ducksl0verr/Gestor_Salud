@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Cirugias;
 
+import com.GrupoProga3.Gestor_Salud.Cirugias.Dominio.Enums.EstadoCirugia;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Quirofanos.Dominio.EntidadQuirofano;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
@@ -23,6 +24,9 @@ public class EntidadCirugia {
     private Long id;
 
     private LocalDate fecha;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoCirugia estado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_paciente")
