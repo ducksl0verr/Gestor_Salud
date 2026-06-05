@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Cirugias.Dominio;
+package com.GrupoProga3.Gestor_Salud.Cirugias.Dominio.DTOs;
 
 import com.GrupoProga3.Gestor_Salud.Cirugias.Dominio.Enums.EstadoCirugia;
 
