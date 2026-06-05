@@ -1,4 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Cirugias;
+package com.GrupoProga3.Gestor_Salud.Cirugias.Dominio;
 
 import com.GrupoProga3.Gestor_Salud.Cirugias.Dominio.Enums.EstadoCirugia;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
