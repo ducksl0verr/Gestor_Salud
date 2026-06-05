@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface RepositorioProveedor extends JpaRepository<EntidadProveedor, Long> {
-    Optional<EntidadProveedor> buscarPorNombre(String nombre);
 }
