@@ -13,4 +13,5 @@ public interface SalaInternacionMapper {
     EntidadSalaInternacion toEntity (SalaInternacionNueva  salaInternacionNueva);
     SalaInternacionRespuesta toDTO (EntidadSalaInternacion entidadSalaInternacion);
     PacienteRespuesta toDTO(EntidadPaciente entidadPaciente);
+
 }
