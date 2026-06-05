@@ -47,7 +47,10 @@ public class ServicioProveedor implements IServicioProveedor{
     @Override
     public ProveedorRespuesta buscarPorNombre(String nombre) {
         EntidadProveedor buscado = repositorioProveedor
-                .buscarPorNombre(nombre)
+                .findAll()
+                .stream()
+                .filter(p-> p.getNombre().equalsIgnoreCase(nombre))
+                .findFirst()
                 .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró al proveedor."));
         return proveedorMapper.toDTO(buscado);
     }
