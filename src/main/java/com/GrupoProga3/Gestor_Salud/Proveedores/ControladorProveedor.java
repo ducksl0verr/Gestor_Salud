@@ -15,10 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/proveedores")
 public class ControladorProveedor {
+
     private final IServicioProveedor servicioProveedor;
 
     @PostMapping
-    ResponseEntity<ProveedorRespuesta> crear (@RequestBody ProveedorNuevo nuevo){
+    ResponseEntity<ProveedorRespuesta> crear (@RequestBody @Valid ProveedorNuevo nuevo){
         return new ResponseEntity<>(servicioProveedor.crear(nuevo), HttpStatus.CREATED);
     }
 
