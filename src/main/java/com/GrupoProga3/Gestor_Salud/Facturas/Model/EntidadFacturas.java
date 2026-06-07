@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Facturas.Model;
 import com.GrupoProga3.Gestor_Salud.DetalleFacturas.Model.EntidadDetalleFacturas;
+import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.ENUMS.EstadoFactura;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import jakarta.persistence.*;
@@ -30,8 +31,9 @@ public class EntidadFacturas {
     private LocalDate fechaVencimiento;
     @Column(name = "total",nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
-    @Column(name = "estado", nullable = false, length = 50)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private EstadoFactura estadoFactura;
 
     //RELACIONES
     @ManyToOne

@@ -4,6 +4,7 @@ import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcion
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,9 @@ public class EntidadTratamiento {
 
     @Column(name = "descripcion", length = 500)
     private String descripcion;
+
+    @Column(name = "precio", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
 
     @OneToMany(mappedBy = "tratamientos")
     private List<EntidadPrescripcionTratamiento> pacientes;

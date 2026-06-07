@@ -9,6 +9,8 @@ import com.GrupoProga3.Gestor_Salud.Tratamientos.RepositorioTratamiento;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoActualizar;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoNuevo;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoRespuesta;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.ENUMS.EstadoFacturacionDeTurno;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.ENUMS.EstadoTurno;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.EntidadTurno;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.Mapper.TurnoMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
@@ -23,6 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ServicioTurno implements IServicioTurno {
+
     private final RepositorioTurno repositorioTurno;
     private final RepositorioPaciente repositorioPaciente;
     private final RepositorioUsuario repositorioUsuario;
@@ -87,7 +90,7 @@ public class ServicioTurno implements IServicioTurno {
 
         buscado.setHora(turno.hora());
         buscado.setFecha(turno.fecha());
-        buscado.setEstado(turno.estado());
+        buscado.setEstadoTurno(turno.estadoTurno());
 
         EntidadTurno actualizado = repositorioTurno.save(buscado);
         return turnoMapper.toDto(actualizado);
@@ -101,4 +104,14 @@ public class ServicioTurno implements IServicioTurno {
 
         repositorioTurno.delete(buscado);
     }
+
+    @Override
+    public List<EntidadTurno> obtenerTurnosFacturables(Long idPaciente){
+
+        return repositorioTurno
+                .findByPacienteIdAndFacturadoFalseAndEstado(idPaciente,
+                        EstadoFacturacionDeTurno.NO_FACTURADO,
+                        EstadoTurno.REALIZADO);
+    }
+
 }

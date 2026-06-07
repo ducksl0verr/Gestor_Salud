@@ -3,9 +3,10 @@ package com.GrupoProga3.Gestor_Salud.Turno.Dominio;
 import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.ENUMS.EstadoTurno;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.ENUMS.EstadoFacturacionDeTurno;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,18 +32,20 @@ public class EntidadTurno {
     @Temporal(TemporalType.TIME)
     private LocalTime hora;
 
-    @NotBlank
-    @Column(length = 100, nullable = false)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoFacturacionDeTurno estadoFacturacionDeTurno;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoTurno estadoTurno;
     /// Los siguientes id's deben ser cambiados por instancias de las clases respectivas una vez las tengamos creadas.
     /// La relación es que recibe muchos
     @ManyToOne
     @JoinColumn(name = "id_paciente")
-    private EntidadPaciente id_paciente;
+    private EntidadPaciente id_paciente; /// lo mismo que abajo
 
     @ManyToOne
     @JoinColumn(name = "id_tratamiento")
-    private EntidadTratamiento id_tratamiento;
+    private EntidadTratamiento id_tratamiento; /// recomendacion no llamar id_tratamiento, sino tratamiento, id solo en la columna
 
     @ManyToOne
     @JoinColumn(name="id_consultorio")
