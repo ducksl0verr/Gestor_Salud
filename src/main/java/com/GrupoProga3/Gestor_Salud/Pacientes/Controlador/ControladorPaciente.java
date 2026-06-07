@@ -1,9 +1,12 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Controlador;
 
+import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteActualizar;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Servicio.IServicioPaciente;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoFacturable;
+import com.GrupoProga3.Gestor_Salud.Turno.IServicioTurno;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +33,7 @@ public class ControladorPaciente {
     {
         return ResponseEntity.ok(servicioPaciente.buscarTodos());
     }
+
 
     @PostMapping
     public ResponseEntity<PacienteRespuesta> guardar (@RequestBody @Valid PacienteNuevo pacienteNuevo)

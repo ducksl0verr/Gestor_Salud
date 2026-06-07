@@ -35,7 +35,7 @@ public class EntidadDetalleFacturas {
     private EntidadTurno turno;
     //
 
-    @Column(name = "concepto",nullable = false)
+    @Column(name = "concepto",nullable = false, length = 150)
     private String concepto;
 
     @Column(name = "importe", nullable = false, precision = 10, scale = 2)

@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Facturas.Controlador;
 
-import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaDTO;
+import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaNueva;
+import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaRespuesta;
 import com.GrupoProga3.Gestor_Salud.Facturas.Servicio.IServicioFactura;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,35 +17,22 @@ public class ControladorFactura {
 
     private final IServicioFactura servicioFactura;
 
-    @PostMapping
-    public ResponseEntity<FacturaDTO> guardar (@RequestBody @Valid FacturaDTO facturaDTO)
-    {
-        return new ResponseEntity<>(servicioFactura.guardar(facturaDTO), HttpStatus.CREATED);
-    }
-
     @GetMapping
-    public ResponseEntity<List<FacturaDTO>> buscarTodos()
+    public ResponseEntity<List<FacturaRespuesta>> buscarTodos()
     {
         return ResponseEntity.ok(servicioFactura.buscarTodos());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FacturaDTO> buscarPorId(@PathVariable Long id)
+    public ResponseEntity<FacturaRespuesta> buscarPorId(@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioFactura.buscarPorId(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FacturaDTO> actualizar (@PathVariable Long id, @RequestBody @Valid FacturaDTO facturaDTO)
-    {
-        return ResponseEntity.ok(servicioFactura.actualizar(id,facturaDTO));
-    }
+    @PostMapping
+    public ResponseEntity<?> crearFactura(@RequestBody @Valid FacturaNueva facturaNueva){
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrar (@PathVariable Long id)
-    {
-        servicioFactura.borrar(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(servicioFactura.crearFactura(facturaNueva));
     }
 
 }

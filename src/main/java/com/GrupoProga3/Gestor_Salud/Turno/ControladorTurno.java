@@ -32,6 +32,12 @@ public class ControladorTurno {
         return new ResponseEntity<>(servicioTurno.buscarPorId(id), HttpStatus.FOUND);
     }
 
+    @GetMapping("/pacientes/{id}/turnos-facturables")
+    public ResponseEntity<?> obtenerTurnosFacturables(@PathVariable Long id) {
+
+        return ResponseEntity.ok(servicioTurno.obtenerTurnosFacturables(id));
+    }
+
     @PutMapping("/{id}")
     ResponseEntity<TurnoRespuesta> actualizar (@Valid @RequestBody TurnoActualizar actualizacion, @PathVariable Long id) {
         return ResponseEntity.ok(servicioTurno.actualizar(id, actualizacion));

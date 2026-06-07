@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Turno.Dominio.Mapper;
 
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoActualizar;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoFacturable;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoNuevo;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.EntidadTurno;
@@ -21,4 +22,8 @@ public interface TurnoMapper {
     @Mapping(source="consultorio.id", target="id_consultorio")
     @Mapping(source="id_profesional.id", target="id_profesional")
     TurnoRespuesta toDto (EntidadTurno entidadTurno);
+
+    @Mapping(target = "tratamiento", source = "id_tratamiento.nombre")
+    TurnoFacturable toDTO(EntidadTurno turno);
+
 }

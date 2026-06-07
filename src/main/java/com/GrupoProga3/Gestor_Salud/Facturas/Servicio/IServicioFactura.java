@@ -1,13 +1,12 @@
 package com.GrupoProga3.Gestor_Salud.Facturas.Servicio;
 
-import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaDTO;
+import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaNueva;
+import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaRespuesta;
 
 import java.util.List;
 
 public interface IServicioFactura {
-    FacturaDTO guardar (FacturaDTO facturaDTO);
-    void borrar (Long id);
-    FacturaDTO actualizar(Long id, FacturaDTO facturaDTO);
-    FacturaDTO buscarPorId(Long id);
-    List<FacturaDTO> buscarTodos();
+    FacturaRespuesta buscarPorId(Long id);
+    List<FacturaRespuesta> buscarTodos();
+    FacturaRespuesta crearFactura(FacturaNueva facturaNueva);
 }
