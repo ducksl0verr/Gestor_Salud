@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.RepositorioObraSocial;
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteActualizar;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper.PacienteMapper;
@@ -44,13 +45,13 @@ public class ServicioPaciente implements IServicioPaciente{
     }
 
     @Override
-    public PacienteRespuesta actualizar(Long id, PacienteNuevo pacienteNuevo) {
+    public PacienteRespuesta actualizar(Long id, PacienteActualizar paciente) {
         EntidadPaciente pac = repositorioPaciente.findById(id)
                 .orElseThrow();
 
-        pac.setNombre(pacienteNuevo.nombre());
-        pac.setApellido(pacienteNuevo.apellido());
-        pac.setFecha_nacimiento(pacienteNuevo.fecha_nacimiento());
+        pac.setNombre(paciente.nombre());
+        pac.setApellido(paciente.apellido());
+        pac.setFecha_nacimiento(paciente.fecha_nacimiento());
 
         EntidadPaciente actualizado = repositorioPaciente.save(pac);
         return pacienteMapper.toDTO(actualizado);

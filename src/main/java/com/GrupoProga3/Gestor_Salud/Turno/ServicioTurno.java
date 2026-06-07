@@ -1,9 +1,9 @@
 package com.GrupoProga3.Gestor_Salud.Turno;
 
+import com.GrupoProga3.Gestor_Salud.Consultorios.RepositorioConsultorio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
-import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
-import com.GrupoProga3.Gestor_Salud.Salas.RepositorioSala;
+import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.RepositorioTratamiento;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoActualizar;
@@ -14,6 +14,7 @@ import com.GrupoProga3.Gestor_Salud.Turno.Dominio.Mapper.TurnoMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.*;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.Consultorios.ConsultorioNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class ServicioTurno implements IServicioTurno {
     private final RepositorioTurno repositorioTurno;
     private final RepositorioPaciente repositorioPaciente;
     private final RepositorioUsuario repositorioUsuario;
-    private final RepositorioSala repositorioSala;
+    private final RepositorioConsultorio repositorioConsultorio;
     private final RepositorioTratamiento repositorioTratamiento;
     private final TurnoMapper turnoMapper;
 
@@ -44,11 +45,11 @@ public class ServicioTurno implements IServicioTurno {
                 .orElseThrow(()-> new TratamientoNoEncontradoException("El tratamiento no existe."));
         entidadTurno.setId_tratamiento(tratamiento);
 
-        EntidadSala sala = repositorioSala
-                .findById(nuevo.id_sala())
+        EntidadConsultorio consultorio = repositorioConsultorio
+                .findById(nuevo.id_consultorio())
                 /// Agrega una verificación para poder ver si la sala ya está registrada para esa hora y fecha.
-                .orElseThrow(()-> new SalaNoEncontradaException("No se encontró la sala."));
-        entidadTurno.setId_sala(sala);
+                .orElseThrow(()-> new ConsultorioNoEncontradoException("No se encontró el consultorio."));
+        entidadTurno.setConsultorio(consultorio);
 
         EntidadUsuarios profesional = repositorioUsuario
                 .findById(nuevo.id_profesional())

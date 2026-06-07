@@ -4,7 +4,7 @@ import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.DTOs.DiagnosticoNuevo;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.DTOs.DiagnosticoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.EntidadDiagnostico;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.MAPPER.DiagnosticoMapper;
-import com.GrupoProga3.Gestor_Salud.common.DiagnosticoNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.DiagnosticoNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

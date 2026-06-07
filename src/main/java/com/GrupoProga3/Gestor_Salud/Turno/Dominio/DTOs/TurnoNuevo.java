@@ -5,13 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
-public record TurnoNuevo (@DateTimeFormat Date fecha,
-                          Time hora,
+public record TurnoNuevo (@DateTimeFormat LocalDate fecha,
+                          LocalTime hora,
                           @NotBlank String estado,
                           @NotNull Long id_paciente,
                           @NotNull Long id_tratamiento,
-                          @NotNull Long id_sala,
+                          @NotNull Long id_consultorio,
                           @NotNull Long id_profesional){
 }

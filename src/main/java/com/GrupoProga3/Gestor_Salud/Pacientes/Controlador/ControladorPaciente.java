@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Controlador;
 
+import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteActualizar;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Servicio.IServicioPaciente;
@@ -44,7 +45,7 @@ public class ControladorPaciente {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteRespuesta> actualizar (@PathVariable Long id, @RequestBody @Valid PacienteNuevo pacienteNuevo)
+    public ResponseEntity<PacienteRespuesta> actualizar (@PathVariable Long id, @RequestBody @Valid PacienteActualizar pacienteNuevo)
     {
         return ResponseEntity.ok(servicioPaciente.actualizar(id, pacienteNuevo));
     }

@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Turno.Dominio;
 
+import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Salas.EntidadSala;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
@@ -11,8 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -24,10 +24,13 @@ public class EntidadTurno {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+
     @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private LocalDate fecha;
+
     @Temporal(TemporalType.TIME)
-    private Time hora;
+    private LocalTime hora;
+
     @NotBlank
     @Column(length = 100, nullable = false)
     private String estado;
@@ -36,12 +39,15 @@ public class EntidadTurno {
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private EntidadPaciente id_paciente;
+
     @ManyToOne
     @JoinColumn(name = "id_tratamiento")
     private EntidadTratamiento id_tratamiento;
+
     @ManyToOne
-    @JoinColumn(name="id_sala")
-    private EntidadSala id_sala;
+    @JoinColumn(name="id_consultorio")
+    private EntidadConsultorio consultorio;
+
     /// Nos tenemos que fijar la relación entre "entidadUsuario" y turno. Creo que deberíamos crear una entidad "profesional"
     /// Momentaneamente, dejo la relacion como un "ManyToOne" para que el programa corra, pero creo que deberia ser
     /// "OneToMany" (un profesional tiene muchos turnos) y no "ManyToOne" (un turno tiene muchos profesionales).
