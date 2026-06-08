@@ -44,11 +44,11 @@ public class ServicioFactura implements IServicioFactura{
     @Transactional
     public FacturaRespuesta crearFactura(FacturaNueva facturaNueva){
 
-        // Buscar turnos
+        // Buscar  los turnos que ingreso el administrativo
 
         List<EntidadTurno> turnos = repositorioTurno.findAllById(facturaNueva.idsTurnos());
 
-        // Validar que existan
+        // Validaado que existan los turnos que ingreso el administrativo
 
         if (turnos.isEmpty()) {
             throw new RuntimeException(
@@ -89,7 +89,7 @@ public class ServicioFactura implements IServicioFactura{
             }
         }
 
-        // Crear factura
+        // Crear la factura
 
         EntidadFacturas factura = new EntidadFacturas();
         factura.setPaciente(paciente);
@@ -102,7 +102,7 @@ public class ServicioFactura implements IServicioFactura{
 
         List<EntidadDetalleFacturas> detalles = new ArrayList<>();
 
-        // Crear detalles
+        // Creacion de los detalles
 
         for (EntidadTurno turno : turnos)
         {
