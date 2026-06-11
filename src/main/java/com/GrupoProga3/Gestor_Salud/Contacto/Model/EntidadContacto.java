@@ -32,7 +32,7 @@ import lombok.*;
 
         @OneToOne
         @JoinColumn (name = "id_paciente")
-        private EntidadPaciente idpaciente;
+        private EntidadPaciente paciente;
 
 
     }

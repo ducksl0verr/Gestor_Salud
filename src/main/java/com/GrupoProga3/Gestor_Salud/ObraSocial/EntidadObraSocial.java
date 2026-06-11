@@ -28,7 +28,9 @@ public class EntidadObraSocial {
     @Column(name = "cobertura", nullable = false, length = 100)
     private String cobertura;
 
-    @OneToMany
+    @OneToMany(mappedBy = "obraSocial",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JoinColumn (name = "id_domicilio")
     private List<EntidadDomicilio> domicilios;
 
