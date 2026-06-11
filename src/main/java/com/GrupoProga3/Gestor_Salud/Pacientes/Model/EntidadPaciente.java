@@ -29,6 +29,10 @@ public class EntidadPaciente {
     private String apellido;
     @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDate fecha_nacimiento;
+    @Column(name = "dni", nullable = false,unique = true)
+    private String dni;
+    @Column(name = "numeroAfiliado",nullable = false,unique = true)
+    private Long numeroAfiliado;
 
     //RELACIONES
     @ManyToOne

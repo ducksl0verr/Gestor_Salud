@@ -7,6 +7,7 @@ import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.RepositorioTratamiento;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoActualizar;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoFacturable;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoNuevo;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.ENUMS.EstadoFacturacionDeTurno;
@@ -41,12 +42,12 @@ public class ServicioTurno implements IServicioTurno {
         EntidadPaciente paciente = repositorioPaciente
                 .findById(nuevo.id_paciente())
                 .orElseThrow(() -> new PacienteNoEncontradoException("Paciente no encontrado"));
-        entidadTurno.setId_paciente(paciente);
+        entidadTurno.setPaciente(paciente);
 
         EntidadTratamiento tratamiento = repositorioTratamiento
                 .findById(nuevo.id_tratamiento())
                 .orElseThrow(()-> new TratamientoNoEncontradoException("El tratamiento no existe."));
-        entidadTurno.setId_tratamiento(tratamiento);
+        entidadTurno.setTratamiento(tratamiento);
 
         EntidadConsultorio consultorio = repositorioConsultorio
                 .findById(nuevo.id_consultorio())
@@ -58,10 +59,10 @@ public class ServicioTurno implements IServicioTurno {
                 .findById(nuevo.id_profesional())
                 /// Agregar método para asegurarse de que el profrsional no tiende otro turno a esa hora y fecha
                 .orElseThrow(()-> new UsuarioNoEncontradoException("No se encontró al profesional."));
-        entidadTurno.setId_profesional(profesional);
+        entidadTurno.setProfesional(profesional);
 
         EntidadTurno guardado = repositorioTurno.save(entidadTurno);
-        return turnoMapper.toDto(guardado);
+        return turnoMapper.toRespuestaDto(guardado);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ServicioTurno implements IServicioTurno {
                 .findById(id)
                 .orElseThrow(()-> new TurnoNoEncontradoException("No se encontró ningún turno con ese id."));
 
-        return turnoMapper.toDto(turno);
+        return turnoMapper.toRespuestaDto(turno);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ServicioTurno implements IServicioTurno {
         return repositorioTurno
                 .findAll()
                 .stream()
-                .map(turnoMapper::toDto)
+                .map(turnoMapper::toRespuestaDto)
                 .toList();
     }
 
@@ -93,7 +94,7 @@ public class ServicioTurno implements IServicioTurno {
         buscado.setEstadoTurno(turno.estadoTurno());
 
         EntidadTurno actualizado = repositorioTurno.save(buscado);
-        return turnoMapper.toDto(actualizado);
+        return turnoMapper.toRespuestaDto(actualizado);
     }
 
     @Override
@@ -106,12 +107,16 @@ public class ServicioTurno implements IServicioTurno {
     }
 
     @Override
-    public List<EntidadTurno> obtenerTurnosFacturables(Long idPaciente){
-
-        return repositorioTurno
-                .findByPacienteIdAndFacturadoFalseAndEstado(idPaciente,
+    public List<TurnoFacturable> obtenerTurnosFacturables(Long idPaciente) {
+        return repositorioTurno.findByPacienteIdAndEstadoFacturacionDeTurnoAndEstadoTurno(idPaciente,
                         EstadoFacturacionDeTurno.NO_FACTURADO,
-                        EstadoTurno.REALIZADO);
+                        EstadoTurno.REALIZADO)
+                .stream()
+                .map(turnoMapper::toFacturableDTO)
+                .toList();
     }
+
+
+
 
 }

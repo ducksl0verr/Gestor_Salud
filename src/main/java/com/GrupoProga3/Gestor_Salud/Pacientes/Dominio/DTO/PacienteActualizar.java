@@ -12,6 +12,10 @@ public record PacienteActualizar(@NotBlank
                                  @NotBlank
                                  String apellido,
                                  LocalDate fecha_nacimiento,
+                                 @NotBlank
+                                 String dni,
+                                 @NotNull
+                                 Long numeroAfiliado,
                                  @NotNull
                                  DomicilioNuevo domicilio,
                                  @NotNull

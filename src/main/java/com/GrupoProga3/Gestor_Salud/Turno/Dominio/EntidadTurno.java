@@ -20,7 +20,7 @@ import java.time.LocalTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="Turnos")
+@Table(name="turnos")
 public class EntidadTurno {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -41,11 +41,11 @@ public class EntidadTurno {
     /// La relación es que recibe muchos
     @ManyToOne
     @JoinColumn(name = "id_paciente")
-    private EntidadPaciente id_paciente; /// lo mismo que abajo
+    private EntidadPaciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "id_tratamiento")
-    private EntidadTratamiento id_tratamiento; /// recomendacion no llamar id_tratamiento, sino tratamiento, id solo en la columna
+    private EntidadTratamiento tratamiento;
 
     @ManyToOne
     @JoinColumn(name="id_consultorio")
@@ -56,6 +56,6 @@ public class EntidadTurno {
     /// "OneToMany" (un profesional tiene muchos turnos) y no "ManyToOne" (un turno tiene muchos profesionales).
     @ManyToOne
     @JoinColumn(name="id_profesional")
-    private EntidadUsuarios id_profesional;
+    private EntidadUsuarios profesional;
 
 }

@@ -28,9 +28,9 @@ public class EntidadHistoriaClinica {
     /// Lo mismo, una vez que tengamos las clases se instancian acá, La relación es que recibe muchos
     @OneToOne
     @JoinColumn(name = "id_paciente")
-    private EntidadPaciente id_paciente;
+    private EntidadPaciente paciente;
 
     @ManyToOne
     @JoinColumn(name = "id_profesional")
-    private EntidadUsuarios id_profesional;
+    private EntidadUsuarios profesional;
 }

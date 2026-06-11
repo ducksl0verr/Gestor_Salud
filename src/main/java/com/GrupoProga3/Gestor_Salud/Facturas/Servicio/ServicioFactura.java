@@ -63,12 +63,12 @@ public class ServicioFactura implements IServicioFactura{
         }
 
         // Obtener paciente del primer turno
-        EntidadPaciente paciente = turnos.get(0).getId_paciente();
+        EntidadPaciente paciente = turnos.get(0).getPaciente();
 
         // Validar que todos sean del mismo paciente
         for (EntidadTurno turno : turnos) {
 
-            if (!turno.getId_paciente()
+            if (!turno.getPaciente()
                     .getId()
                     .equals(paciente.getId())) {
 
@@ -106,13 +106,13 @@ public class ServicioFactura implements IServicioFactura{
 
         for (EntidadTurno turno : turnos)
         {
-            BigDecimal precio = turno.getId_tratamiento().getPrecio();
+            BigDecimal precio = turno.getTratamiento().getPrecio();
 
             EntidadDetalleFacturas detalleFactura = new EntidadDetalleFacturas();
 
             detalleFactura.setFactura(factura);
             detalleFactura.setTurno(turno);
-            detalleFactura.setConcepto(turno.getId_tratamiento().getNombre());
+            detalleFactura.setConcepto(turno.getTratamiento().getNombre());
             detalleFactura.setCantidad(1L);
             detalleFactura.setImporte(precio);
             detalleFactura.setSubtotal(precio);

@@ -35,12 +35,12 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
         EntidadUsuarios profesional = usuarioRepositorio
                 .findById(historiaClinica.id_profesional())
                         .orElseThrow(()->new UsuarioNoEncontradoException("No se ha encontrado al profesional"));
-        historial.setId_profesional(profesional);
+        historial.setProfesional(profesional);
 
         EntidadPaciente paciente = repositorioPaciente
                 .findById(historiaClinica.id_paciente())
                 .orElseThrow(()->new PacienteNoEncontradoException("No se ha encontrado al paciente"));
-        historial.setId_paciente(paciente);
+        historial.setPaciente(paciente);
 
         EntidadHistoriaClinica guardado = repositorioHistoriaClinica.save(historial);
         System.out.println(guardado);
