@@ -12,8 +12,8 @@ import org.mapstruct.Mapping;
 public interface  HistoriaClinicaMapper {
     //EntidadHistoriaClinica toEntity (HistoriaClinicaActualizar historiaClinicaActualizar);
 
-    @Mapping(target="id_paciente", ignore = true)
-    @Mapping(target="id_profesional", ignore = true)
+    @Mapping(target="paciente", ignore = true)
+    @Mapping(target="profesional", ignore = true)
     EntidadHistoriaClinica toEntity (HistoriaClinicaNueva historiaClinicaNueva);
 
 ///  Estos métodos eran para asegurar el mapeo de los ids del dto a las entidades, pero por el momento no parencen necesarios.
@@ -35,8 +35,8 @@ public interface  HistoriaClinicaMapper {
 //        return entidadPaciente;
 //    }
 
-    @Mapping(source="id_paciente.id", target="id_paciente")
-    @Mapping(source="id_profesional.id", target="id_profesional")
+    @Mapping(source="paciente.id", target="id_paciente")
+    @Mapping(source="profesional.id", target="id_profesional")
     HistoriaClinicaRespuesta toDTO (EntidadHistoriaClinica historiaClinica);
 
     //HistoriaClinicaRespuesta toDTO (HistoriaClinicaNueva historiaClinicaNueva);

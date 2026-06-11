@@ -12,5 +12,9 @@ public record PacienteNuevo(@NotBlank String nombre,
                             @NotNull(message = "La fecha de nacimiento es obligatoria")
                             @Past(message = "La fecha debe ser anterior a hoy")
                             LocalDate fecha_nacimiento,
+                            @NotBlank
+                            String dni,
+                            @NotNull
+                            Long numeroAfiliado,
                             @Valid DomicilioNuevo domicilio,
                             @Valid Long id_obraSocial) {}
