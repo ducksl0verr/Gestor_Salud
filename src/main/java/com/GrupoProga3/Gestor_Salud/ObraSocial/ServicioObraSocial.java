@@ -1,9 +1,14 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
+import com.GrupoProga3.Gestor_Salud.Domicilio.RepositorioDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialDTO;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialNueva;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.MAPPER.ObraSocialMapper;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.ReglaNegocioException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,51 +18,159 @@ import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
+@Transactional
+
 public class ServicioObraSocial implements IServicioObraSocial {
+
     private final RepositorioObraSocial repositorioObraSocial;
     private final ObraSocialMapper obraSocialMapper;
 
+
     @Override
-    public ObraSocialRespuesta guardar(ObraSocialNueva obrasocialDTO) {
-        var entidad = obraSocialMapper.toEntity(obrasocialDTO);
-        var guardado = repositorioObraSocial.save(entidad);
-        return obraSocialMapper.toDTO(guardado);
+    @Transactional
+
+    public ObraSocialRespuesta guardar(ObraSocialNueva obraSocialNueva) {
+
+        if (repositorioObraSocial.existsByNombre(obraSocialNueva.nombre())) {
+            throw new RecursoExistenteException(
+                    "Ya existe una obra social con nombre: "
+                            + obraSocialNueva.nombre()
+            );
+        }
+
+        if (obraSocialNueva.domicilios() == null
+                || obraSocialNueva.domicilios().isEmpty()) {
+            throw new ReglaNegocioException(
+                    "La obra social debe tener al menos un domicilio."
+            );
+        }
+
+        EntidadObraSocial obraSocial =
+                obraSocialMapper.toEntity(obraSocialNueva);
+
+        EntidadObraSocial guardada =
+                repositorioObraSocial.save(obraSocial);
+
+        return obraSocialMapper.toDTO(guardada);
+    }
+
+    @Override
+    @Transactional
+    public ObraSocialRespuesta actualizar(Long id,
+                                          ObraSocialDTO obraSocialDTO) {
+
+        EntidadObraSocial obraSocial =
+                repositorioObraSocial.findById(id)
+                        .orElseThrow(() ->
+                                new RecursoNoEncontradoException(
+                                        "La obra social con id: "
+                                                + id
+                                                + " no existe."
+                                ));
+
+        if (obraSocialDTO.getNombre() != null
+                && !obraSocialDTO.getNombre().isBlank()) {
+
+            if (!obraSocial.getNombre().equalsIgnoreCase(obraSocialDTO.getNombre())
+                    && repositorioObraSocial.existsByNombre(obraSocialDTO.getNombre())) {
+
+                throw new ReglaNegocioException(
+                        "Ya existe una obra social con nombre: "
+                                + obraSocialDTO.getNombre()
+                );
+            }
+
+            obraSocial.setNombre(obraSocialDTO.getNombre());
+        }
+
+        if (obraSocialDTO.getCobertura() != null
+                && !obraSocialDTO.getCobertura().isBlank()) {
+
+            obraSocial.setCobertura(obraSocialDTO.getCobertura());
+        }
+
+        EntidadObraSocial actualizada =
+                repositorioObraSocial.save(obraSocial);
+
+        return obraSocialMapper.toDTO(actualizada);
     }
 
     @Override
     @Transactional
     public void borrar(Long id) {
-        if (!repositorioObraSocial.existsById(id)) {
-            throw new NoSuchElementException("ObraSocial no encontrada con id: " + id);
+
+        EntidadObraSocial obraSocial =
+                repositorioObraSocial.findById(id)
+                        .orElseThrow(() ->
+                                new RecursoNoEncontradoException(
+                                        "La obra social con id: "
+                                                + id
+                                                + " no existe."
+                                ));
+
+        if (obraSocial.getDomicilios() != null
+                && !obraSocial.getDomicilios().isEmpty()) {
+
+            throw new ReglaNegocioException(
+                    "No se puede eliminar una obra social que posee domicilios asociados."
+            );
         }
-        repositorioObraSocial.deleteById(id);
+
+        repositorioObraSocial.delete(obraSocial);
     }
 
-    @Override
-    public ObraSocialRespuesta buscarPorId(Long id) {
-        return repositorioObraSocial.findById(id)
+
+    public List<ObraSocialRespuesta> buscarObraSocial(
+            String nombre,
+            String cobertura) {
+
+        if (nombre != null && cobertura != null) {
+            return repositorioObraSocial
+                    .findByNombreContainingAndCoberturaContaining(
+                            nombre,
+                            cobertura)
+                    .stream()
+                    .map(obraSocialMapper::toDTO)
+                    .toList();
+        }
+
+        if (nombre != null) {
+            return repositorioObraSocial
+                    .findByNombreContaining(nombre)
+                    .stream()
+                    .map(obraSocialMapper::toDTO)
+                    .toList();
+        }
+
+        if (cobertura != null) {
+            return repositorioObraSocial
+                    .findByCoberturaContaining(cobertura)
+                    .stream()
+                    .map(obraSocialMapper::toDTO)
+                    .toList();
+        }
+
+        return repositorioObraSocial.findAll()
+                .stream()
                 .map(obraSocialMapper::toDTO)
-                .orElseThrow(() -> new NoSuchElementException("ObraSocial no encontrada con id: " + id));
+                .toList();
+
     }
 
-    @Override
-    @Transactional
-    public ObraSocialRespuesta actualizar(Long id, ObraSocialDTO obrasocialDTO) {
-        EntidadObraSocial obra = repositorioObraSocial.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("ObraSocial no encontrada con id: " + id));
+    public List<DomicilioNuevo> buscarDomiciliosPorObraSocial(Long idObraSocial) {
 
-        if (obrasocialDTO.getNombre() != null) obra.setNombre(obrasocialDTO.getNombre());
-        if (obrasocialDTO.getCobertura() != null) obra.setCobertura(obrasocialDTO.getCobertura());
+        EntidadObraSocial obraSocial =
+                repositorioObraSocial.findById(idObraSocial)
+                        .orElseThrow(() ->
+                                new RecursoNoEncontradoException(
+                                        "La obra social con id: "
+                                                + idObraSocial
+                                                + " no existe."
+                                ));
 
-        EntidadObraSocial actualizado = repositorioObraSocial.save(obra);
-        return obraSocialMapper.toDTO(actualizado);
-    }
-
-    @Override
-    public List<ObraSocialRespuesta> buscarTodos() {
-        return repositorioObraSocial.findAll().stream()
+        return obraSocial.getDomicilios()
+                .stream()
                 .map(obraSocialMapper::toDTO)
-                 .toList();
+                .toList();
     }
 }
-
