@@ -9,7 +9,6 @@ import java.util.List;
 public interface IServicioObraSocial {
     ObraSocialRespuesta guardar (ObraSocialNueva obrasocialDTO); // Crear
     void borrar (Long id);// delete
-    ObraSocialRespuesta buscarPorId(Long id); //findbyid READ
     ObraSocialRespuesta actualizar (Long id, ObraSocialDTO obrasocialDTO);//update
     List<ObraSocialRespuesta> buscarTodos();//findAll
 }
