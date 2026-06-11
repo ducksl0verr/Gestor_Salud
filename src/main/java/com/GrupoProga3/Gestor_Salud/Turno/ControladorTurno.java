@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Turno;
 
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoActualizar;
+import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoFacturable;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoNuevo;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.DTOs.TurnoRespuesta;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class ControladorTurno {
     }
 
     @GetMapping("/pacientes/{id}/turnos-facturables")
-    public ResponseEntity<?> obtenerTurnosFacturables(@PathVariable Long id) {
+    public ResponseEntity<List<TurnoFacturable>> obtenerTurnosFacturables(@PathVariable Long id) {
 
         return ResponseEntity.ok(servicioTurno.obtenerTurnosFacturables(id));
     }
