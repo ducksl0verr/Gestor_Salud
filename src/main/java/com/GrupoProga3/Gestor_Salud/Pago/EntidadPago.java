@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Pago;
 
+import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,9 +33,12 @@ public class EntidadPago {
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
-    @OneToOne
-    @JoinColumn (name = "id_paciente")
-    private EntidadPaciente idpaciente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_paciente", nullable = false)
+    private List<EntidadPaciente> pacientes;
+
+
 
 
 }
