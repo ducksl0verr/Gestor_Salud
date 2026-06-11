@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 
 public class ServicioObraSocial implements IServicioObraSocial {
 
@@ -169,6 +169,14 @@ public class ServicioObraSocial implements IServicioObraSocial {
                                 ));
 
         return obraSocial.getDomicilios()
+                .stream()
+                .map(obraSocialMapper::toDTO)
+                .toList();
+    }
+    @Override
+    @Transactional
+    public List<ObraSocialRespuesta> buscarTodos() {
+        return repositorioObraSocial.findAll()
                 .stream()
                 .map(obraSocialMapper::toDTO)
                 .toList();

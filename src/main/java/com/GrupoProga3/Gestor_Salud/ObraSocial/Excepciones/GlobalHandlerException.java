@@ -16,7 +16,7 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(RecursoExistenteException.class)
+    @ExceptionHandler(ReglaNegocioException.class)
     public ResponseEntity<String> handleReglaNegocio(ReglaNegocioException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
