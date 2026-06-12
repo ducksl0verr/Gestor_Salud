@@ -36,7 +36,7 @@ public class EntidadPaciente {
     private Long numeroAfiliado;
 
     //RELACIONES
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
 
@@ -48,7 +48,7 @@ public class EntidadPaciente {
     @OneToMany(mappedBy = "pacientes")
     private List<EntidadPrescripcionTratamiento> tratamientos;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contacto")
     private EntidadContacto contacto;
 
