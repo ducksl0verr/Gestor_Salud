@@ -19,5 +19,5 @@ public record PacienteActualizar(@NotBlank
                                  @NotNull
                                  DomicilioNuevo domicilio,
                                  @NotNull
-                                 ObraSocialNueva obraSocial) {
+                                 Long id_obraSocial) {
 }
