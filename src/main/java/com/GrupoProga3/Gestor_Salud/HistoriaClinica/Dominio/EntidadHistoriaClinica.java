@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,9 +19,10 @@ import java.util.Date;
 public class EntidadHistoriaClinica {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id_historiaClinica;
+    @Column(name="id_historiaClinica")
+    private Long id;
     @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private LocalDate fecha;
     @Column(length = 100, nullable = false)
     private String observaciones;
     @Column(length = 100, nullable = false)
