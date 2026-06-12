@@ -22,11 +22,11 @@ public class ControladorHistoriaClinica {
     }
     @GetMapping("/{id}")
     ResponseEntity<HistoriaClinicaRespuesta> buscarPorId (@PathVariable Long id){
-        return new ResponseEntity<>(servicioHistoriaClinica.buscarPorId(id), HttpStatus.FOUND);
+        return ResponseEntity.ok(servicioHistoriaClinica.buscarPorId(id));
     }
     @GetMapping
     ResponseEntity<List<HistoriaClinicaRespuesta>> buscarTodos(){
-        return new ResponseEntity<>(servicioHistoriaClinica.buscarTodos(), HttpStatus.FOUND);
+        return ResponseEntity.ok(servicioHistoriaClinica.buscarTodos());
     }
     @PutMapping("/{id}")
     ResponseEntity<HistoriaClinicaRespuesta> actualizar  (@PathVariable Long id, @Valid @RequestBody HistoriaClinicaActualizar actualizacion){

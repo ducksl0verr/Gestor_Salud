@@ -1,8 +1,9 @@
 package com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public record HistoriaClinicaRespuesta(Date fecha,
+public record HistoriaClinicaRespuesta(Long id,
+                                       LocalDate fecha,
                                        String observaciones,
                                        String evolucion,
                                        Long id_paciente,
