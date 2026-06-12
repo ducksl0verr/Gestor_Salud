@@ -34,7 +34,6 @@ import lombok.*;
         @JoinColumn (name = "id_paciente")
         private EntidadPaciente paciente;
 
-
     }
 
 
