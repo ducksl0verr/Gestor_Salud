@@ -16,4 +16,4 @@ public record PacienteNuevo(@NotBlank String nombre,
                             @NotNull
                             Long numeroAfiliado,
                             @Valid DomicilioNuevo domicilio,
-                            @Valid Long id_obraSocial) {}
+                            @NotNull Long id_obraSocial) {}
