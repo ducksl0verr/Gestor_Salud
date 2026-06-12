@@ -25,7 +25,7 @@ import java.util.List;
 public class ServicioContacto implements IServicioContacto {
 
     private final RepositorioContacto repositorioContacto;
-    private final RepositorioPaciente repositorioPaciente;
+    //private final RepositorioPaciente repositorioPaciente;
     private final ContactoMapper contactoMapper;
 
     @Override
@@ -34,12 +34,19 @@ public class ServicioContacto implements IServicioContacto {
 
         if (repositorioContacto.existsByTelefono(contactoNuevo.telefono())) {
             throw new RecursoExistenteException(
-                    "Ya existe un contacto con teléfono: "
+                    "Ya existe un contacto con el número: "
                             + contactoNuevo.telefono()
             );
         }
 
-        if (repositorioContacto.existsByPacienteId(contactoNuevo.idPaciente())) {
+        if (repositorioContacto.existsByEmail(contactoNuevo.email())) {
+            throw new RecursoExistenteException(
+                    "Ya existe un contacto con el email: "
+                    +contactoNuevo.email()
+            );
+        }
+
+        /*if (repositorioContacto.existsByPacienteId(contactoNuevo.idPaciente())) {
             throw new ReglaNegocioException(
                     "El paciente ya posee un contacto asociado."
             );
@@ -54,13 +61,12 @@ public class ServicioContacto implements IServicioContacto {
                                         + " no existe."
                         ));
 
-        EntidadContacto contacto =
-                contactoMapper.toEntity(contactoNuevo);
+      */
+        EntidadContacto contacto = contactoMapper.toEntity(contactoNuevo);
 
-        contacto.setPaciente(paciente);
+      //  contacto.setPaciente(paciente);
 
-        EntidadContacto guardado =
-                repositorioContacto.save(contacto);
+        EntidadContacto guardado = repositorioContacto.save(contacto);
 
         return contactoMapper.toDTO(guardado);
     }
@@ -79,7 +85,7 @@ public class ServicioContacto implements IServicioContacto {
                                                 + " no existe."
                                 ));
 
-        if (contactoNuevo.nombre() != null
+/*        if (contactoNuevo.nombre() != null
                 && !contactoNuevo.nombre().isBlank()) {
 
             contacto.setNombre(contactoNuevo.nombre());
@@ -90,6 +96,8 @@ public class ServicioContacto implements IServicioContacto {
 
             contacto.setApellido(contactoNuevo.apellido());
         }
+
+ */
 
         if (contactoNuevo.telefono() != null
                 && !contactoNuevo.telefono().isBlank()) {
@@ -105,6 +113,22 @@ public class ServicioContacto implements IServicioContacto {
             }
 
             contacto.setTelefono(contactoNuevo.telefono());
+        }
+
+        if (contactoNuevo.email() != null
+                && !contactoNuevo.email().isBlank()) {
+
+            if (!contacto.getEmail().equals(contactoNuevo.email())
+                    && repositorioContacto.existsByEmail(
+                    contactoNuevo.email())) {
+
+                throw new ReglaNegocioException(
+                        "Ya existe un contacto con el email: "
+                                + contactoNuevo.email()
+                );
+            }
+
+            contacto.setEmail(contactoNuevo.email());
         }
 
         EntidadContacto actualizado =
@@ -129,7 +153,7 @@ public class ServicioContacto implements IServicioContacto {
         repositorioContacto.delete(contacto);
     }
 
-    public List<ContactoRespuesta> buscarContacto(
+    /*public List<ContactoRespuesta> buscarContacto(
             String nombre,
             String apellido) {
 
@@ -164,6 +188,8 @@ public class ServicioContacto implements IServicioContacto {
                 .map(contactoMapper::toDTO)
                 .toList();
     }
+
+     */
 
     @Override
     @Transactional(readOnly = true)

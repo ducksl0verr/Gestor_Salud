@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Model;
 
+import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
@@ -46,6 +47,10 @@ public class EntidadPaciente {
     /// Esto lo agregó Dante, si algo no anda ya saben de quién es la culpa
     @OneToMany(mappedBy = "pacientes")
     private List<EntidadPrescripcionTratamiento> tratamientos;
+
+    @OneToOne
+    @JoinColumn(name = "contacto")
+    private EntidadContacto contacto;
 
     @ManyToOne
     @JoinColumn(name="id_salaInternacion")

@@ -1,4 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper;
+import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoNuevo;
+import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.EntidadDiagnostico;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
@@ -18,6 +20,8 @@ public interface PacienteMapper {
     /// Este método lo puse acá para que cuando el usuario cree un nuevo paciente
     /// una vez que ponga su domicilio, este se mapee automaticamente -Dante
     EntidadDomicilio toEntity (DomicilioNuevo domicilio);
+
+    EntidadContacto toEntity (ContactoNuevo contacto);
 
     @Mapping(target = "obraSocial", ignore = true)
     EntidadPaciente toEntity (PacienteNuevo pacienteNuevo);

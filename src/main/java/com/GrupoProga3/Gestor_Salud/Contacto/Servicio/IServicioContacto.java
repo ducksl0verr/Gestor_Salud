@@ -19,5 +19,5 @@ public interface IServicioContacto {
 
     List<ContactoRespuesta> buscarTodos();
 
-    List<ContactoRespuesta> buscarContacto(String nombre, String apellido);
+    //List<ContactoRespuesta> buscarContacto(String nombre, String apellido);
 }

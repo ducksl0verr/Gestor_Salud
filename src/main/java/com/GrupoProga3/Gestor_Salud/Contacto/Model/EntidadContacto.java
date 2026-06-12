@@ -19,20 +19,11 @@ import lombok.*;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @Column(name = "nombre", nullable = false, length = 100)
-        private String nombre;
-
-
-        @Column(name = "apellido", nullable = false, length = 100)
-        private String apellido;
-
+        @Column(nullable = false, length = 100)
+        private String email;
 
         @Column(name = "telefono", nullable = false, length = 20)
         private String telefono;
-
-        @OneToOne
-        @JoinColumn (name = "id_paciente")
-        private EntidadPaciente paciente;
 
     }
 

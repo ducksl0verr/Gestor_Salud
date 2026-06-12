@@ -21,6 +21,7 @@ import com.GrupoProga3.Gestor_Salud.common.excepciones.Consultorios.ConsultorioN
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -116,7 +117,11 @@ public class ServicioTurno implements IServicioTurno {
                 .toList();
     }
 
+    public void enviarRecordatorio (){
+        LocalDate manana = LocalDate.now().plusDays(1);
 
-
+        List<EntidadTurno> turnos =
+                repositorioTurno.findByFechaAndEstadoTurno(manana, EstadoTurno.NO_REALIZADO);
+    }
 
 }

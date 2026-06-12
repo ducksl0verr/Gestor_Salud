@@ -15,3 +15,11 @@ spring:
     properties:
      hibernate:
       format_sql: true
+  mail:
+    host: mailhog
+    port: 1025
+  jackson:
+    json:
+      read:
+        allow-single-quotes: true
+        allow-trailing-comma: true

@@ -65,7 +65,7 @@ public class ContactoControlador {
         );
     }
 
-    @GetMapping("/buscar")
+   /* @GetMapping("/buscar")
     public ResponseEntity<List<ContactoRespuesta>> buscarContacto(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String apellido) {
@@ -74,4 +74,6 @@ public class ContactoControlador {
                 servicioContacto.buscarContacto(nombre, apellido)
         );
     }
+
+    */
 }

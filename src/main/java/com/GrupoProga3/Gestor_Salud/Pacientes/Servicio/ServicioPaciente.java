@@ -1,6 +1,9 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
+import com.GrupoProga3.Gestor_Salud.Contacto.Repositorio.RepositorioContacto;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.RepositorioObraSocial;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteActualizar;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
@@ -19,6 +22,7 @@ import java.util.List;
 public class ServicioPaciente implements IServicioPaciente{
 
     private final RepositorioPaciente repositorioPaciente;
+    private final RepositorioContacto repositorioContacto;
     private final RepositorioObraSocial repositorioObraSocial;
     private final PacienteMapper pacienteMapper;
 
@@ -32,6 +36,16 @@ public class ServicioPaciente implements IServicioPaciente{
                         .orElseThrow(()->new ObraSocialNoEncontradaException("No se encontró la obra social"));
 
         buscado.setObraSocial(obraSocial);
+
+        if(repositorioContacto.existsByTelefono(pacienteNuevo.contacto().telefono()))
+        {
+            throw new RecursoExistenteException("Ya existe un contacto con este telefono: "
+            + pacienteNuevo.contacto().telefono());
+        }
+
+        if (repositorioContacto.existsByEmail(pacienteNuevo.contacto().email())){
+            throw new RecursoExistenteException("Ya existe un contacto con este email: "+ pacienteNuevo.contacto().email());
+        }
 
         EntidadPaciente guardado = repositorioPaciente.save(buscado);
 
@@ -51,7 +65,8 @@ public class ServicioPaciente implements IServicioPaciente{
 
         pac.setNombre(paciente.nombre());
         pac.setApellido(paciente.apellido());
-        pac.setFecha_nacimiento(paciente.fecha_nacimiento());
+        //pac.setFecha_nacimiento(paciente.fecha_nacimiento());
+        pac.setContacto(pacienteMapper.toEntity(paciente.contacto()));
 
         EntidadPaciente actualizado = repositorioPaciente.save(pac);
         return pacienteMapper.toDTO(actualizado);

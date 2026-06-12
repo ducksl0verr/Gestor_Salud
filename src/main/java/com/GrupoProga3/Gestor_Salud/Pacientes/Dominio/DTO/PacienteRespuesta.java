@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO;
 
+import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
 import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.DTOs.SalaInternacionRespuesta;
@@ -14,6 +15,7 @@ public record PacienteRespuesta(Long id,
                                 LocalDate fecha_nacimiento,
                                 String dni,
                                 Long numeroAfiliado,
+                                ContactoRespuesta contacto,
                                 DomicilioRespuesta domicilio,
                                 Long id_obraSocial,
                                 List<EntidadPrescripcionTratamiento> tratamientos,

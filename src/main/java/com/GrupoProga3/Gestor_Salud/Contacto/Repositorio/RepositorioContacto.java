@@ -14,9 +14,9 @@ public interface RepositorioContacto
 
     boolean existsByTelefono(String telefono);
 
-    boolean existsByPacienteId(Long idPaciente);
+    boolean existsByEmail(String email);
 
-    List<EntidadContacto> findByNombreContainingAndApellidoContaining(
+    /*List<EntidadContacto> findByNombreContainingAndApellidoContaining(
             String nombre,
             String apellido
     );
@@ -24,5 +24,9 @@ public interface RepositorioContacto
     List<EntidadContacto> findByNombreContaining(String nombre);
 
     List<EntidadContacto> findByApellidoContaining(String apellido);
+
+     */
+
 }
+
 

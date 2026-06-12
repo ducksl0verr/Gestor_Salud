@@ -1,4 +1,5 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO;
+import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoNuevo;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialNueva;
 import jakarta.validation.Valid;
@@ -17,4 +18,5 @@ public record PacienteNuevo(@NotBlank String nombre,
                             @NotNull
                             Long numeroAfiliado,
                             @Valid DomicilioNuevo domicilio,
-                            @Valid Long id_obraSocial) {}
+                            @Valid Long id_obraSocial,
+                            @NotNull ContactoNuevo contacto) {}
