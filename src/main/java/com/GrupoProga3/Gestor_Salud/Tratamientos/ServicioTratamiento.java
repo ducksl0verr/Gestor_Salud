@@ -16,6 +16,7 @@ public class ServicioTratamiento implements IServicioTratamiento{
     private final TratamientoMapper tratamientoMapper;
     @Override
     public TratamientoRespuesta crear(TratamientoNuevo tratamientoNuevo) {
+
         System.out.println(tratamientoNuevo);
         EntidadTratamiento tratamiento = tratamientoMapper.toEntity(tratamientoNuevo);
         EntidadTratamiento guardado = repositorioTratamiento.save(tratamiento);

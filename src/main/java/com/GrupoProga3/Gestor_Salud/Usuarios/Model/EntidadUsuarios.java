@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Model;
 
 
+import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Roles.Dominio.EntidadRol;
 import jakarta.persistence.*;
@@ -28,14 +29,14 @@ public class EntidadUsuarios {
     @Column(name = "dni",nullable = false)
     private String dni;
 
-    @Column(name = "telefono", nullable = false, length = 20)
-    private String telefono;
+    //@Column(name = "telefono", nullable = false, length = 20)
+    //private String telefono;
 
     @Column(name = "matricula", length = 50)
     private String matricula;
 
-    @Column(name = "email", nullable = false, length = 50)
-    private String email;
+    //@Column(name = "email", nullable = false, length = 50)
+    //private String email;
 
 
 
@@ -46,6 +47,8 @@ public class EntidadUsuarios {
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private EntidadContacto contacto;
 
 }
 

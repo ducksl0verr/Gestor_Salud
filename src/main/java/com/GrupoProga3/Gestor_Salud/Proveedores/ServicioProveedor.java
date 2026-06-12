@@ -61,7 +61,7 @@ public class ServicioProveedor implements IServicioProveedor{
             .findById(id)
             .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró al proveedor."));
 
-        buscado.setEmail(nuevo.email());
+        buscado.setContacto(proveedorMapper.toEntity(nuevo.contacto()));
         buscado.setNombre(nuevo.nombre());
 
         List<EntidadDomicilio> domicilios = nuevo.direccion()

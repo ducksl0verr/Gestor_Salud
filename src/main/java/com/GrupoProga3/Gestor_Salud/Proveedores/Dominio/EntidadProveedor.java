@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Proveedores.Dominio;
 
+import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Enums.TIPO_PROVEEDOR;
 import jakarta.persistence.*;
@@ -21,7 +22,10 @@ public class EntidadProveedor {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String nombre;
-    private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private EntidadContacto contacto;
+
     @Column(unique = true, length = 11)
     private String cuil;
 

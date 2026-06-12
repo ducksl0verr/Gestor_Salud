@@ -5,6 +5,7 @@ import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
+import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -56,23 +57,21 @@ import java.util.List;
         usu.setNombre(usuarioDTO.nombre());
         usu.setApellido(usuarioDTO.apellido());
         usu.setDni(usuarioDTO.dni());
-        usu.setEmail(usuarioDTO.email());
-        usu.setTelefono(usuarioDTO.telefono());
+        usu.setContacto(usuarioMapper.toEntity(usuarioDTO.contacto()));
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
-        return usuarioMapper.ToDto(usu);
+        return usuarioMapper.ToDto(actualizado);
     }
 
     @Override
     public ProfesionalDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO) {
         EntidadUsuarios usu = repositorioUsuario.findById(id)
-                .orElseThrow();
+                .orElseThrow(()-> new UsuarioNoEncontradoException("No se ha encontrado el profesional"));
         usu.setNombre(profesionalDTO.nombre());
         usu.setApellido(profesionalDTO.apellido());
         usu.setDni(profesionalDTO.dni());
-        usu.setEmail(profesionalDTO.email());
-        usu.setTelefono(profesionalDTO.telefono());
+        usu.setContacto(usuarioMapper.toEntity(profesionalDTO.contacto()));
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 

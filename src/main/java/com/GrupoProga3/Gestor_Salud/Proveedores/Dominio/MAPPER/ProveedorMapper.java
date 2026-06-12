@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.MAPPER;
 
+import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoNuevo;
+import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
@@ -19,4 +21,6 @@ public interface ProveedorMapper {
 
     /// Pongo este método para poder mappear la lista de domicilios del proveedor respuesta
     DomicilioRespuesta toDTO (EntidadDomicilio entidad);
+
+    EntidadContacto toEntity (ContactoNuevo nuevo);
 }
