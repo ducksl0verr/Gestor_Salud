@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Turno;
 
 import com.GrupoProga3.Gestor_Salud.Consultorios.RepositorioConsultorio;
+import com.GrupoProga3.Gestor_Salud.Notificaciones.ServicioEmail;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
@@ -34,6 +35,7 @@ public class ServicioTurno implements IServicioTurno {
     private final RepositorioConsultorio repositorioConsultorio;
     private final RepositorioTratamiento repositorioTratamiento;
     private final TurnoMapper turnoMapper;
+    private final ServicioEmail servicioEmail;
 
     @Override
     public TurnoRespuesta crear(TurnoNuevo nuevo) {
@@ -122,6 +124,13 @@ public class ServicioTurno implements IServicioTurno {
 
         List<EntidadTurno> turnos =
                 repositorioTurno.findByFechaAndEstadoTurno(manana, EstadoTurno.NO_REALIZADO);
+
+        for (EntidadTurno entidadTurno : turnos) {
+            servicioEmail.enviarRecordatorioTurno(
+                    entidadTurno.getPaciente(),
+                    entidadTurno
+            );
+        }
     }
 
 }

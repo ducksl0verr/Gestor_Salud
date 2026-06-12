@@ -17,7 +17,8 @@ public class ServicioEmail {
 
     public void enviarRecordatorioTurno (EntidadPaciente paciente, EntidadTurno turno) {
         String asunto ="RECORDATORIO DE TURNO";
-        String mensaje = "Se le recuerda que mañana usted tiene un turno a las "+turno.getHora();
+        String mensaje = paciente.getNombre().toUpperCase() + " "+
+                paciente.getApellido().toUpperCase() + ", se le recuerda que mañana tiene un turno a las: "+turno.getHora();
 
         enviarMail(paciente.getContacto().getEmail(), asunto, mensaje);
     }

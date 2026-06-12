@@ -15,7 +15,7 @@ import lombok.Setter;
 public class EntidadDomicilio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_domicilio;
+    private Long id;
     @Column(length=50, nullable=false)
     private String calle;
     @Column(length=50, nullable=false)

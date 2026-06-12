@@ -25,12 +25,12 @@ public class ControladorTurno {
 
     @GetMapping
     ResponseEntity<List<TurnoRespuesta>> buscarTodos () {
-        return new ResponseEntity<>(servicioTurno.buscarTodos(), HttpStatus.FOUND);
+        return ResponseEntity.ok(servicioTurno.buscarTodos());
     }
 
     @GetMapping("/{id}")
     ResponseEntity<TurnoRespuesta> buscarPorId (@PathVariable Long id) {
-        return new ResponseEntity<>(servicioTurno.buscarPorId(id), HttpStatus.FOUND);
+        return ResponseEntity.ok(servicioTurno.buscarPorId(id));
     }
 
     @GetMapping("/pacientes/{id}/turnos-facturables")

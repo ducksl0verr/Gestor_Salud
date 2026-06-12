@@ -32,7 +32,5 @@ public class EntidadObraSocial {
             orphanRemoval = true)
     @JoinColumn(name = "id_obra_social")
     private List<EntidadDomicilio> domicilios;
-
-
 }
 
