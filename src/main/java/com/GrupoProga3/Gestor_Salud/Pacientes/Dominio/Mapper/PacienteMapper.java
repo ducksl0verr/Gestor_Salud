@@ -9,8 +9,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PacienteMapper {
-    @Mapping(source = "obraSocial.id",
-    target = "id_obraSocial")
+    @Mapping(source = "obraSocial.id", target = "id_obraSocial")
+    @Mapping(source = "obraSocial.nombre", target = "nombreObraSocial")
+    @Mapping(source = "obraSocial.cobertura", target = "coberturaObraSocial")
     PacienteRespuesta toDTO (EntidadPaciente entidadPaciente);
 
     /// Este método lo puse acá para que cuando el usuario cree un nuevo paciente

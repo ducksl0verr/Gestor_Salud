@@ -16,7 +16,9 @@ public record PacienteRespuesta(Long id,
                                 String dni,
                                 Long numeroAfiliado,
                                 DomicilioRespuesta domicilio,
-                                ObraSocialRespuesta obraSocial,
+                                Long id_obraSocial,
+                                String nombreObraSocial,
+                                String coberturaObraSocial,
                                 List<EntidadPrescripcionTratamiento> tratamientos,
                                 SalaInternacionRespuesta salaInternacion) {
 }

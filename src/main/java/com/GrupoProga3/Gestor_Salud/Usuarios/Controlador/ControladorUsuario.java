@@ -1,7 +1,9 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Controlador;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Servicio.IServicioUsuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,37 +21,37 @@ public class ControladorUsuario {
     private final IServicioUsuario servicioUsuario;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> buscarTodos ()
+    public ResponseEntity<List<UsuarioRespuestaDTO>> buscarTodos ()
     {
         return ResponseEntity.ok(servicioUsuario.buscarTodos());
     }
 
     @GetMapping("/profesionales")
-    public ResponseEntity<List<ProfesionalDTO>> buscarTodosProfesionales()
+    public ResponseEntity<List<ProfesionalRespuestaDTO>> buscarTodosProfesionales()
     {
         return ResponseEntity.ok(servicioUsuario.buscarTodosProfesionales());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> buscarPorId (@PathVariable Long id)
+    public ResponseEntity<UsuarioRespuestaDTO> buscarPorId (@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioUsuario.buscarPorId(id));
     }
 
     @GetMapping("/profesionales/{id}")
-    public ResponseEntity<ProfesionalDTO> buscarPorIdProfesionales(@PathVariable Long id)
+    public ResponseEntity<ProfesionalRespuestaDTO> buscarPorIdProfesionales(@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioUsuario.buscarPorIdProfesional(id));
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> guardar (@RequestBody @Valid UsuarioDTO usuarioDTO)
+    public ResponseEntity<UsuarioRespuestaDTO> guardar (@RequestBody @Valid UsuarioDTO usuarioDTO)
     {
         return new ResponseEntity<>(servicioUsuario.guardar(usuarioDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/profesionales")
-    public ResponseEntity<ProfesionalDTO> guardarProfesional(@RequestBody @Valid ProfesionalDTO profesionalDTO)
+    public ResponseEntity<ProfesionalRespuestaDTO> guardarProfesional(@RequestBody @Valid ProfesionalDTO profesionalDTO)
     {
         return new ResponseEntity<>(servicioUsuario.guardarProfesional(profesionalDTO),HttpStatus.CREATED);
     }
@@ -62,13 +64,13 @@ public class ControladorUsuario {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> actualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTO usuarioDTO)
+    public ResponseEntity<UsuarioRespuestaDTO> actualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTO usuarioDTO)
     {
        return  ResponseEntity.ok(servicioUsuario.actualizar(id, usuarioDTO));
     }
 
     @PutMapping("/profesionales/{id}")
-    public ResponseEntity<ProfesionalDTO> actualizarProfesional(@PathVariable Long id, @RequestBody @Valid ProfesionalDTO profesionalDTO)
+    public ResponseEntity<ProfesionalRespuestaDTO> actualizarProfesional(@PathVariable Long id, @RequestBody @Valid ProfesionalDTO profesionalDTO)
     {
         return ResponseEntity.ok(servicioUsuario.actualizarProfesional(id,profesionalDTO));
     }
