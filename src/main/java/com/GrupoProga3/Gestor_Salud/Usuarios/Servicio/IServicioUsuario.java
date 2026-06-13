@@ -1,17 +1,20 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioRespuestaDTO;
+
 import java.util.List;
 
 public interface IServicioUsuario {
-    UsuarioDTO guardar (UsuarioDTO usuarioDTO);
-    ProfesionalDTO guardarProfesional (ProfesionalDTO profesionalDTO);
+    UsuarioRespuestaDTO guardar (UsuarioDTO usuarioDTO);
+    ProfesionalRespuestaDTO guardarProfesional (ProfesionalDTO profesionalDTO);
     void borrar (Long id);
-    UsuarioDTO buscarPorId(Long id);
-    ProfesionalDTO buscarPorIdProfesional(Long id);
-    UsuarioDTO actualizar(Long id, UsuarioDTO usuarioDTO);
-    ProfesionalDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO);
-    List<UsuarioDTO> buscarTodos();
-    List<ProfesionalDTO> buscarTodosProfesionales();
+    UsuarioRespuestaDTO buscarPorId(Long id);
+    ProfesionalRespuestaDTO buscarPorIdProfesional(Long id);
+    UsuarioRespuestaDTO actualizar(Long id, UsuarioDTO usuarioDTO);
+    ProfesionalRespuestaDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO);
+    List<UsuarioRespuestaDTO> buscarTodos();
+    List<ProfesionalRespuestaDTO> buscarTodosProfesionales();
 }

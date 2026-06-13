@@ -35,7 +35,7 @@ public class EntidadPaciente {
     private Long numeroAfiliado;
 
     //RELACIONES
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
 
