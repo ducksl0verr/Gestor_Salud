@@ -7,6 +7,7 @@ import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
@@ -15,4 +16,9 @@ public interface UsuarioMapper {
     ProfesionalDTO ProfToDTO (EntidadUsuarios entidadUsuarios);
     EntidadUsuarios ProfToEntity (ProfesionalDTO profesionalDTO);
     EntidadContacto toEntity (ContactoNuevo contacto);
+    @Mapping(source = "id", target = "idUsuarioProfesional")
+    ProfesionalRespuestaDTO toRespuestaProfesionalDTO (EntidadUsuarios entidadUsuarios);
+    @Mapping(source = "id", target = "idUsuario")
+    UsuarioRespuestaDTO toRespuestaUsuarioDTO(EntidadUsuarios entidadUsuarios);
+
 }

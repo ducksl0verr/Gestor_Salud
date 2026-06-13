@@ -41,8 +41,6 @@ public class EntidadUsuarios {
 
 
     //RELACIONES
-    /// Aca según por lo que entiendo, un domicilio pueden tener muchos usuarios pero un usuario podra tener un solo domicilio
-
     @ManyToOne
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
@@ -52,55 +50,3 @@ public class EntidadUsuarios {
 
 }
 
-
-
-//ANOTACIONES PARA EL FUTURO
-///   es necesario una validacion en los emails. Acepta cosas como @maxi.c2 o maxi@ etc... VER DESPUES
-
-///  supuestamente se debe de usar import jakarta.validation.constraints.Email;
-/// import jakarta.validation.constraints.NotBlank;
-
-/// Y en tu atributo:
-///
-/// @NotBlank(message = "El mail no puede estar vacío")
-/// @Email(message = "Formato de email inválido")
-/// @Column(name = "email", nullable = false, length = 50)
-/// private String email;
-
-
-
-/// ¿Qué hace cada uno?
-///
-/// @NotBlank → evita null, "" o " "
-/// @Email → valida formato tipo email
-///
-/// Acepta:
-///
-/// maxi@gmail.com
-/// juan.perez@hotmail.com
-/// test123@empresa.com.ar
-///
-/// Rechaza:
-///
-/// maxi
-/// maxi@
-/// @gmail.com
-/// maxi.gmail.com
-///
-/// Importante: para que Spring realmente valide cuando recibís requests, en tu controller o service necesitás usar @Valid.
-///
-/// Ejemplo:
-///
-/// @PostMapping
-/// public ResponseEntity<?> crearUsuario(@Valid @RequestBody EntidadUsuario usuario) {
-///     return ResponseEntity.ok(usuarioService.guardar(usuario));
-/// }
-///
-/// Sin @Valid, tus anotaciones están de adorno decorativo 😄.
-///
-/// Entonces checklist:
-///
-/// @Email en el campo ✅
-/// @Valid en el controller ✅
-///
-/// Con eso ya solo.

@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO;
 
 import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.ObraSocialRespuesta;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
 import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.DTOs.SalaInternacionRespuesta;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +19,8 @@ public record PacienteRespuesta(Long id,
                                 ContactoRespuesta contacto,
                                 DomicilioRespuesta domicilio,
                                 Long id_obraSocial,
+                                String nombreObraSocial,
+                                String coberturaObraSocial,
                                 List<EntidadPrescripcionTratamiento> tratamientos,
                                 SalaInternacionRespuesta salaInternacion) {
 }

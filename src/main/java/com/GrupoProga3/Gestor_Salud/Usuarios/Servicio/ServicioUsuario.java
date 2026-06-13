@@ -5,7 +5,6 @@ import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
-import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +18,15 @@ import java.util.List;
     private final UsuarioMapper usuarioMapper;
 
     @Override
-    public UsuarioDTO guardar(UsuarioDTO usuarioDTO) {
+    public UsuarioRespuestaDTO guardar(UsuarioDTO usuarioDTO) {
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ToEntity(usuarioDTO));
-        return usuarioMapper.ToDto(guardado);
+        return usuarioMapper.toRespuestaUsuarioDTO(guardado);
     }
 
     @Override
-    public ProfesionalDTO guardarProfesional(ProfesionalDTO profesionalDTO) {
+    public ProfesionalRespuestaDTO guardarProfesional(ProfesionalDTO profesionalDTO) {
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ProfToEntity(profesionalDTO));
-        return usuarioMapper.ProfToDTO(guardado);
+        return usuarioMapper.toRespuestaProfesionalDTO(guardado);
     }
 
     @Override
@@ -36,21 +35,21 @@ import java.util.List;
     }
 
     @Override
-    public UsuarioDTO buscarPorId(Long id) {
+    public UsuarioRespuestaDTO buscarPorId(Long id) {
         return repositorioUsuario.findById(id)
-                .map(usuarioMapper::ToDto)
+                .map(usuarioMapper::toRespuestaUsuarioDTO)
                 .orElseThrow();
     }
 
     @Override
-    public ProfesionalDTO buscarPorIdProfesional(Long id) {
+    public ProfesionalRespuestaDTO buscarPorIdProfesional(Long id) {
         return repositorioUsuario.findById(id)
-                .map(usuarioMapper::ProfToDTO)
+                .map(usuarioMapper::toRespuestaProfesionalDTO)
                 .orElseThrow();
     }
 
     @Override
-    public UsuarioDTO actualizar(Long id, UsuarioDTO usuarioDTO) {
+    public UsuarioRespuestaDTO actualizar(Long id, UsuarioDTO usuarioDTO) {
 
         EntidadUsuarios usu = repositorioUsuario.findById(id)
                 .orElseThrow();
@@ -61,13 +60,13 @@ import java.util.List;
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
-        return usuarioMapper.ToDto(actualizado);
+        return usuarioMapper.toRespuestaUsuarioDTO(actualizado);
     }
 
     @Override
-    public ProfesionalDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO) {
+    public ProfesionalRespuestaDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO) {
         EntidadUsuarios usu = repositorioUsuario.findById(id)
-                .orElseThrow(()-> new UsuarioNoEncontradoException("No se ha encontrado el profesional"));
+                .orElseThrow();
         usu.setNombre(profesionalDTO.nombre());
         usu.setApellido(profesionalDTO.apellido());
         usu.setDni(profesionalDTO.dni());
@@ -75,16 +74,26 @@ import java.util.List;
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
-        return usuarioMapper.ProfToDTO(actualizado);
+        return usuarioMapper.toRespuestaProfesionalDTO(actualizado);
     }
 
     @Override
-    public List<UsuarioDTO> buscarTodos() {
-        return repositorioUsuario.findAll().stream().map(usuarioMapper::ToDto).toList();
+    public List<UsuarioRespuestaDTO> buscarTodos() {
+        return repositorioUsuario.findAll()
+                .stream()
+                .filter(u->u.getMatricula() == null
+                || u.getMatricula().isBlank())
+                .map(usuarioMapper::toRespuestaUsuarioDTO)
+                .toList();
     }
 
     @Override
-    public List<ProfesionalDTO> buscarTodosProfesionales() {
-        return repositorioUsuario.findAll().stream().map(usuarioMapper::ProfToDTO).toList();
+    public List<ProfesionalRespuestaDTO> buscarTodosProfesionales() {
+        return repositorioUsuario.findAll()
+                .stream()
+                .filter(p-> p.getMatricula() != null
+                && !p.getMatricula().isBlank())
+                .map(usuarioMapper::toRespuestaProfesionalDTO)
+                .toList();
     }
 }
