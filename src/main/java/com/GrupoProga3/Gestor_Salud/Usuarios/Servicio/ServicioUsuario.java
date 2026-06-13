@@ -7,6 +7,8 @@ import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
+import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ProfesionalNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,15 +41,21 @@ import java.util.List;
     @Override
     public UsuarioRespuestaDTO buscarPorId(Long id) {
         return repositorioUsuario.findById(id)
+                .filter(usuario -> usuario.getMatricula() == null
+                        || usuario.getMatricula().isBlank())
                 .map(usuarioMapper::toRespuestaUsuarioDTO)
-                .orElseThrow();
+                .orElseThrow(() -> new UsuarioNoEncontradoException(
+                        "No se encontró un usuario con id " + id));
     }
 
     @Override
     public ProfesionalRespuestaDTO buscarPorIdProfesional(Long id) {
         return repositorioUsuario.findById(id)
+                .filter(usuario -> usuario.getMatricula() != null
+                        && !usuario.getMatricula().isBlank())
                 .map(usuarioMapper::toRespuestaProfesionalDTO)
-                .orElseThrow();
+                .orElseThrow(() -> new ProfesionalNoEncontradoException(
+                        "No se encontró un profesional con id " + id));
     }
 
     @Override
