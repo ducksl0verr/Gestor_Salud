@@ -10,7 +10,7 @@ public interface IServicioTratamiento {
     TratamientoRespuesta crear (TratamientoNuevo tratamientoNuevo);
     List<TratamientoRespuesta> buscarTodos();
     TratamientoRespuesta buscarPorId(Long id);
-    //TratamientoRespuesta actualizar (Long id, HistoriaClinicaActualizar actualizacion);
+    TratamientoRespuesta actualizar (Long id, TratamientoNuevo dto);
     /// No creo que sea necesario actualizar un tratamiento
     void borrar (Long id);
 }

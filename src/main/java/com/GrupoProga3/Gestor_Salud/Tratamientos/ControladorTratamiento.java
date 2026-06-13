@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tratamientos")
+@RequestMapping("/api/tratamientos")
 public class ControladorTratamiento {
     private final IServicioTratamiento servicioTratamiento;
 
@@ -29,6 +29,11 @@ public class ControladorTratamiento {
     @GetMapping("/{id}")
     ResponseEntity<TratamientoRespuesta> buscarPorId (@PathVariable Long id){
         return ResponseEntity.ok(servicioTratamiento.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<TratamientoRespuesta> actualizar (@PathVariable Long id, @Valid @RequestBody TratamientoNuevo tratamientoNuevo) {
+        return ResponseEntity.ok(servicioTratamiento.actualizar(id, tratamientoNuevo));
     }
 
     @DeleteMapping("/{id}")
