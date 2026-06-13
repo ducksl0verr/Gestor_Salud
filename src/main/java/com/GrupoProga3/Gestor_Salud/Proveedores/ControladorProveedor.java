@@ -28,7 +28,7 @@ public class ControladorProveedor {
         return ResponseEntity.ok(servicioProveedor.buscarPorId(id));
     }
 
-    @GetMapping("/{nombre}")
+    @GetMapping("/nombre/{nombre}")
     ResponseEntity<ProveedorRespuesta> buscarPorNombre (@PathVariable String nombre){
         return ResponseEntity.ok(servicioProveedor.buscarPorNombre(nombre));
     }

@@ -7,8 +7,8 @@ import com.GrupoProga3.Gestor_Salud.Gastos.Dominio.EntidadGasto;
 import com.GrupoProga3.Gestor_Salud.Gastos.Dominio.MAPPER.GastoMapper;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.EntidadProveedor;
 import com.GrupoProga3.Gestor_Salud.Proveedores.RepositorioProveedor;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Gastos.GastoNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Proveedores.ProveedorNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,10 @@ public class ServicioGasto implements IServicioGasto {
                 .stream()
                 .filter(p-> p.getNombre().equalsIgnoreCase(gastoNuevo.nombreProveedor()))
                 .findFirst()
-                .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró ningún proveedor con aquel nombre"));
+                .orElseThrow(()-> new EntidadNoEncontradaException("Proveedor",
+                        "No se ha encontrado.",
+                        1l,
+                        "No se ha encontrado ningún proveedor con aquel nombre."));
         gasto.setProveedor(proveedor);
 
         EntidadGasto creado = repositorioGasto.save(gasto);
