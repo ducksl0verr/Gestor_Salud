@@ -21,6 +21,5 @@ public record PacienteRespuesta(Long id,
                                 Long id_obraSocial,
                                 String nombreObraSocial,
                                 String coberturaObraSocial,
-                                List<EntidadPrescripcionTratamiento> tratamientos,
-                                SalaInternacionRespuesta salaInternacion) {
+                                List<EntidadPrescripcionTratamiento> tratamientos) {
 }

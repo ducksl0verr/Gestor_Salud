@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/salasInternaciones")
+@RequestMapping("/api/salasInternaciones")
 public class ControladorSalaInternacion {
     private final IServicioSalaInternacion servicioSalaInternacion;
 
@@ -35,5 +35,10 @@ public class ControladorSalaInternacion {
     @PutMapping("/{id}")
     ResponseEntity<SalaInternacionRespuesta> actualizar (@PathVariable Long id, @Valid @RequestBody SalaInternacionActualizar salaInternacionActualizar) {
         return ResponseEntity.ok(servicioSalaInternacion.actualizar(id, salaInternacionActualizar));
+    }
+
+    @PutMapping("/{idSala}/internar/{idPaciente}")
+    ResponseEntity<SalaInternacionRespuesta> internar (@PathVariable Long idSala, @PathVariable Long idPaciente) {
+        return ResponseEntity.ok(servicioSalaInternacion.internarPaciente(idSala,idPaciente));
     }
 }
