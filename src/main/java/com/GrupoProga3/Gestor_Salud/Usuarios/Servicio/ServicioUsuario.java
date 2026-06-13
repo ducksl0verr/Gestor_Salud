@@ -45,14 +45,20 @@ import java.util.List;
     public UsuarioRespuestaDTO buscarPorId(Long id) {
         return repositorioUsuario.findById(id)
                 .map(usuarioMapper::toRespuestaUsuarioDTO)
-                .orElseThrow();
+                .orElseThrow(()-> new EntidadNoEncontradaException("Usuario",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún usuario con aquel ID."));
     }
 
     @Override
     public ProfesionalRespuestaDTO buscarPorIdProfesional(Long id) {
         return repositorioUsuario.findById(id)
                 .map(usuarioMapper::toRespuestaProfesionalDTO)
-                .orElseThrow();
+                .orElseThrow(()-> new EntidadNoEncontradaException("Profesional",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún profesional con aquel ID."));
     }
 
     @Override
