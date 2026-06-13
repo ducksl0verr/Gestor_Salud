@@ -15,7 +15,7 @@ import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.MAPPER.RecetaMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Medicamentos.MedicamentoNoEncontradoException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,12 @@ public class ServicioReceta implements IServicioReceta {
 
         EntidadUsuarios profesional = repositorioUsuario
                 .findById(receta.id_profesional())
-                .orElseThrow(()-> new UsuarioNoEncontradoException("No es encontro al profesional"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        receta.id_profesional(),
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
         nueva.setProfesional(profesional);
 
         List<EntidadDetalleReceta> detalles = new ArrayList<>();

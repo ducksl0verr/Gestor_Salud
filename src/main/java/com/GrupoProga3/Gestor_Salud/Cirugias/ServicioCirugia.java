@@ -13,9 +13,9 @@ import com.GrupoProga3.Gestor_Salud.Quirofanos.RepositorioQuirofano;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaEnCursoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Quirofanos.QuirofanoNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,12 @@ public class ServicioCirugia implements IServicioCirugia {
         EntidadCirugia cirugia = cirugiaMapper.toEntity(cirugiaNueva);
 
         EntidadUsuarios cirujano = repositorioUsuario.findById(cirugiaNueva.idCirujano())
-                .orElseThrow(()-> new UsuarioNoEncontradoException("No se encontró ningún cirujano con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        cirugiaNueva.idCirujano(),
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
 
         cirugia.setCirujano(cirujano);
 
@@ -84,7 +89,12 @@ public class ServicioCirugia implements IServicioCirugia {
 
         EntidadUsuarios cirujanoNuevo = repositorioUsuario
                 .findById(cirugiaActualizar.idCirujano())
-                .orElseThrow(()-> new UsuarioNoEncontradoException("No existe ningún cirujano con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        cirugiaActualizar.idCirujano(),
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
         buscada.setCirujano(cirujanoNuevo);
 
         EntidadQuirofano quirofanoNuevo = repositorioQuirofano

@@ -10,13 +10,15 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "Spring")
 public interface TurnoMapper {
- //   EntidadTurno toEntity (TurnoRespuesta turnoRespuesta);
 
     @Mapping(target="paciente", ignore = true)
     @Mapping(target="tratamiento", ignore = true)
     @Mapping(target="consultorio", ignore = true)
     @Mapping(target="profesional", ignore = true)
+    @Mapping(target = "estadoTurno", ignore = true)
+    @Mapping(target = "estadoFacturacionDeTurno", ignore = true)
     EntidadTurno toEntity (TurnoNuevo turnoNuevo);
+
     @Mapping(source="paciente.id", target="id_paciente")
     @Mapping(source="tratamiento.id", target="id_tratamiento")
     @Mapping(source="consultorio.id", target="id_consultorio")

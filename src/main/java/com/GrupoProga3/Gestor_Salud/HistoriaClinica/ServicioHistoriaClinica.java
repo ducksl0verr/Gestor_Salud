@@ -11,7 +11,7 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.common.UsuarioNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,12 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
         /// Esto es para q se mapeen los ids a las entidades que hacen referencia correctamente
         EntidadUsuarios profesional = usuarioRepositorio
                 .findById(historiaClinica.id_profesional())
-                        .orElseThrow(()->new UsuarioNoEncontradoException("No se ha encontrado al profesional"));
+                        .orElseThrow(()->new EntidadNoEncontradaException(
+                                "Profesional",
+                                "No se ha encontrado.",
+                                historiaClinica.id_profesional(),
+                                "No se ha encontrado a ningún profesional con aquel ID."
+                        ));
         historial.setProfesional(profesional);
 
         EntidadPaciente paciente = repositorioPaciente

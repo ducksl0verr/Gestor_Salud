@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/turnos")
+@RequestMapping("/api/turnos")
 public class ControladorTurno {
     private final IServicioTurno servicioTurno;
 

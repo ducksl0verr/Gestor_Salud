@@ -11,8 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -26,19 +28,14 @@ public class EntidadTurno {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private LocalDate fecha;
-
-    @Temporal(TemporalType.TIME)
-    private LocalTime hora;
+    private LocalDateTime fechaHora;
 
     @Enumerated(EnumType.STRING)
     private EstadoFacturacionDeTurno estadoFacturacionDeTurno;
 
     @Enumerated(EnumType.STRING)
     private EstadoTurno estadoTurno;
-    /// Los siguientes id's deben ser cambiados por instancias de las clases respectivas una vez las tengamos creadas.
-    /// La relación es que recibe muchos
+
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private EntidadPaciente paciente;
@@ -51,9 +48,6 @@ public class EntidadTurno {
     @JoinColumn(name="id_consultorio")
     private EntidadConsultorio consultorio;
 
-    /// Nos tenemos que fijar la relación entre "entidadUsuario" y turno. Creo que deberíamos crear una entidad "profesional"
-    /// Momentaneamente, dejo la relacion como un "ManyToOne" para que el programa corra, pero creo que deberia ser
-    /// "OneToMany" (un profesional tiene muchos turnos) y no "ManyToOne" (un turno tiene muchos profesionales).
     @ManyToOne
     @JoinColumn(name="id_profesional")
     private EntidadUsuarios profesional;

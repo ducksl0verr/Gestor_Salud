@@ -16,8 +16,9 @@ spring:
      hibernate:
       format_sql: true
   mail:
-    host: mailhog
+    host: localhost
     port: 1025
+
   jackson:
     json:
       read:

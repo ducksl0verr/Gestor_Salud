@@ -16,4 +16,9 @@ public class RecordatorioScheduler {
         servicioTurno.enviarRecordatorio();
     }
 
+    @Scheduled(cron = "0 0 * * * *")
+    public void limpiarTurnosVencidos(){
+        servicioTurno.finalizarTurnosViejos();
+    }
+
 }
