@@ -11,4 +11,5 @@ public interface IServicioQuirofano {
     QuirofanoRespuesta actualizar (Long id, QuirofanoActualizar quirofanoActualizar);
     QuirofanoRespuesta buscarPorId(Long id);
     List<QuirofanoRespuesta> buscarTodos();
+    QuirofanoRespuesta ocuparQuirofano(Long id);
 }

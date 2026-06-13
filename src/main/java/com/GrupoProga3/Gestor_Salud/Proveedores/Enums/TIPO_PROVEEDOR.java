@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Proveedores.Enums;
 
 public enum TIPO_PROVEEDOR {
-        MODIFCAR_DESPUES
+    MEDICAMENTOS,
+    EQUIPAMIENTO_TECNOLOGICO,
+    MATERIAL_QUIRURGICO
 }

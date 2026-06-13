@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/quirofanos")
+@RequestMapping("/api/quirofanos")
 public class ControladorQuirofano {
     private final IServicioQuirofano servicioQuirofano;
 
@@ -34,6 +34,11 @@ public class ControladorQuirofano {
     @PutMapping("/{id}")
     ResponseEntity<QuirofanoRespuesta> actualizar(@PathVariable Long id, @RequestBody QuirofanoActualizar quirofanoActualizar){
         return ResponseEntity.ok(servicioQuirofano.actualizar(id, quirofanoActualizar));
+    }
+
+    @PutMapping("/{id}/ocupar")
+    ResponseEntity<QuirofanoRespuesta> ocuparQuirofano (@PathVariable Long id){
+        return ResponseEntity.ok(servicioQuirofano.ocuparQuirofano(id));
     }
 
 }

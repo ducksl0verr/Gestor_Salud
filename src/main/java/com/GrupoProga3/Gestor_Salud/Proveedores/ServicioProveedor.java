@@ -1,13 +1,12 @@
 package com.GrupoProga3.Gestor_Salud.Proveedores;
 
-import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.DTOs.ProveedorActualizar;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.DTOs.ProveedorNuevo;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.DTOs.ProveedorRespuesta;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.EntidadProveedor;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.MAPPER.ProveedorMapper;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Proveedores.ProveedorNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,10 @@ public class ServicioProveedor implements IServicioProveedor{
     public ProveedorRespuesta buscarPorId(Long id) {
         EntidadProveedor buscado = repositorioProveedor
                 .findById(id)
-                .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró al proveedor."));
+                .orElseThrow(()-> new EntidadNoEncontradaException("Proveedor",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún proveedor con aquel ID."));
         return proveedorMapper.toDTO(buscado);
     }
 
@@ -51,7 +53,10 @@ public class ServicioProveedor implements IServicioProveedor{
                 .stream()
                 .filter(p-> p.getNombre().equalsIgnoreCase(nombre))
                 .findFirst()
-                .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró al proveedor."));
+                .orElseThrow(()-> new EntidadNoEncontradaException("Usuario",
+                        "No se ha encontrado.",
+                        1l,
+                        "No se ha encontrado ningún proveedor con aquel nombre."));
         return proveedorMapper.toDTO(buscado);
     }
 
@@ -59,7 +64,10 @@ public class ServicioProveedor implements IServicioProveedor{
     public ProveedorRespuesta actualizar(Long id, ProveedorActualizar nuevo) {
         EntidadProveedor buscado = repositorioProveedor
             .findById(id)
-            .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró al proveedor."));
+            .orElseThrow(()-> new EntidadNoEncontradaException("Proveedor",
+                    "No se ha encontrado.",
+                    id,
+                    "No se ha encontrado ningún proveedor con aquel ID."));
 
         buscado.setContacto(proveedorMapper.toEntity(nuevo.contacto()));
         buscado.setNombre(nuevo.nombre());
@@ -83,7 +91,10 @@ public class ServicioProveedor implements IServicioProveedor{
     public void borrar(Long id) {
         EntidadProveedor buscado = repositorioProveedor
                 .findById(id)
-                .orElseThrow(()-> new ProveedorNoEncontradoException("No se encontró al proveedor."));
+                .orElseThrow(()-> new EntidadNoEncontradaException("Proveedor",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún proveedor con aquel ID."));
 
         repositorioProveedor.delete(buscado);
     }

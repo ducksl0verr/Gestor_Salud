@@ -14,7 +14,7 @@ public record ProveedorNuevo(@NotBlank String nombre,
                              ContactoNuevo contacto,
                              @NotBlank @Size(min = 11, max = 11, message = "El CUIL debe tener 11 caracteres")
                              String cuil,
-                             @NotNull (message = "Debe poner una direccion")
+                             @NotNull (message = "Debe poner al menos una direccion")
                              List<DomicilioNuevo> direccion,
                              @NotNull
                              TIPO_PROVEEDOR tipo) {

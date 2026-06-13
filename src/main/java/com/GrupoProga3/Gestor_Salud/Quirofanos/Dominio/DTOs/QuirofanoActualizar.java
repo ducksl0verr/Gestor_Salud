@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Quirofanos.Dominio.DTOs;
 
-public record QuirofanoActualizar(String nombre,
+import jakarta.validation.constraints.NotBlank;
+
+public record QuirofanoActualizar(@NotBlank String nombre,
                                   Boolean disponible) {
 }

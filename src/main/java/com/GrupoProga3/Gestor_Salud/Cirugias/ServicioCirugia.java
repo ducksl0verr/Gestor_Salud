@@ -15,7 +15,6 @@ import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaEnCursoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Quirofanos.QuirofanoNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -108,7 +107,10 @@ public class ServicioCirugia implements IServicioCirugia {
 
         EntidadQuirofano quirofanoNuevo = repositorioQuirofano
                 .findById(cirugiaActualizar.idQuirofano())
-                .orElseThrow(()-> new QuirofanoNoEncontradoException("No existe ningún quirofano con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException("Quirofano",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ninguna quirofano con aquel ID."));
 
         buscada.setQuirofano(quirofanoNuevo);
 
