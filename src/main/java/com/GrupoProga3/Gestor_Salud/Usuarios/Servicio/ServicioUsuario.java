@@ -1,10 +1,14 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.Mappers.UsuarioMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +22,21 @@ import java.util.List;
     private final UsuarioMapper usuarioMapper;
 
     @Override
+    @Transactional
     public UsuarioRespuestaDTO guardar(UsuarioDTO usuarioDTO) {
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ToEntity(usuarioDTO));
         return usuarioMapper.toRespuestaUsuarioDTO(guardado);
     }
 
     @Override
+    @Transactional
     public ProfesionalRespuestaDTO guardarProfesional(ProfesionalDTO profesionalDTO) {
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ProfToEntity(profesionalDTO));
         return usuarioMapper.toRespuestaProfesionalDTO(guardado);
     }
 
     @Override
+    @Transactional
     public void borrar(Long id) {
         this.repositorioUsuario.findById(id).ifPresent(repositorioUsuario::delete);
     }
@@ -49,10 +56,15 @@ import java.util.List;
     }
 
     @Override
+    @Transactional
     public UsuarioRespuestaDTO actualizar(Long id, UsuarioDTO usuarioDTO) {
-
         EntidadUsuarios usu = repositorioUsuario.findById(id)
-                .orElseThrow();
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Usuario",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún usuario con aquel ID."));
+
         usu.setNombre(usuarioDTO.nombre());
         usu.setApellido(usuarioDTO.apellido());
         usu.setDni(usuarioDTO.dni());
@@ -64,9 +76,15 @@ import java.util.List;
     }
 
     @Override
+    @Transactional
     public ProfesionalRespuestaDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO) {
         EntidadUsuarios usu = repositorioUsuario.findById(id)
-                .orElseThrow();
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún profesional con aquel ID."
+                ));
         usu.setNombre(profesionalDTO.nombre());
         usu.setApellido(profesionalDTO.apellido());
         usu.setDni(profesionalDTO.dni());

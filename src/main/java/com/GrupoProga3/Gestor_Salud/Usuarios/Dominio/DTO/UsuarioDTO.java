@@ -8,7 +8,8 @@ import jakarta.validation.constraints.Pattern;
 
 public record UsuarioDTO(@NotBlank String nombre,
                          @NotBlank String apellido,
-                         @NotBlank @Pattern(regexp = "\\d{7,8}", message = "DNI inválido") String dni,
+                         @NotBlank @Pattern(regexp = "\\d{7,8}", message = "DNI inválido")
+                         String dni,
                          /*@NotBlank @Pattern(
                                  regexp = "^[0-9+\\-\\s]{6,20}$",
                                  message = "El teléfono tiene un formato inválido"

@@ -38,14 +38,14 @@ public class EntidadUsuarios {
     //@Column(name = "email", nullable = false, length = 50)
     //private String email;
 
-
-
     //RELACIONES
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "id_domicilio")
     private EntidadDomicilio domicilio;
+     */
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="id_contacto")
     private EntidadContacto contacto;
 
 }
