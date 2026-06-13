@@ -1,5 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.Recetas.Dominio.MAPPER;
 
+import com.GrupoProga3.Gestor_Salud.DetallesRecetas.Dominio.DTOs.DetalleRecetaNuevo;
+import com.GrupoProga3.Gestor_Salud.DetallesRecetas.Dominio.DTOs.DetalleRecetaRespuesta;
+import com.GrupoProga3.Gestor_Salud.DetallesRecetas.Dominio.EntidadDetalleReceta;
 import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.DTOs.RecetaNueva;
 import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.DTOs.RecetaRespuesta;
 import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.EntidadReceta;
@@ -17,5 +20,18 @@ public interface RecetaMapper {
     @Mapping(source = "profesional.id",
     target = "id_profesional")
     RecetaRespuesta toDTO (EntidadReceta entidadReceta);
+
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "medicamento", ignore = true)
+    @Mapping(target = "receta", ignore = true)
+    EntidadDetalleReceta toEntity (DetalleRecetaNuevo detalleRecetaNuevo);
+
+
+    @Mapping(source = "medicamento.nombre",
+            target = "nombreMedicamento")
+    @Mapping(source = "medicamento.id",
+            target = "idMedicamento")
+    DetalleRecetaRespuesta toDTO (EntidadDetalleReceta entidadDetalleReceta);
 
 }

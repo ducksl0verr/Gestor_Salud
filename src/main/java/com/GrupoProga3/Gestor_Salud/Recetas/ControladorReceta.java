@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/recetas")
+@RequestMapping("/api/recetas")
 public class ControladorReceta {
     private final IServicioReceta servicioReceta;
 

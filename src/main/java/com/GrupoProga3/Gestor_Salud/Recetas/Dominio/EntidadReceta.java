@@ -33,6 +33,8 @@ public class EntidadReceta {
     @JoinColumn(name = "id_profesional")
     private EntidadUsuarios profesional;
 
-    @OneToMany(mappedBy = "receta")
+    @OneToMany(mappedBy = "receta",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true)
     private List<EntidadDetalleReceta> detalles;
 }

@@ -12,7 +12,6 @@ import com.GrupoProga3.Gestor_Salud.Quirofanos.Dominio.EntidadQuirofano;
 import com.GrupoProga3.Gestor_Salud.Quirofanos.RepositorioQuirofano;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
-import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaEnCursoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
@@ -47,12 +46,22 @@ public class ServicioCirugia implements IServicioCirugia {
         cirugia.setCirujano(cirujano);
 
         EntidadPaciente paciente = repositorioPaciente.findById(cirugiaNueva.idPaciente())
-                .orElseThrow(()-> new PacienteNoEncontradoException("No se encontró al paciente"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Paciente",
+                        "No se ha encontrado.",
+                        cirugiaNueva.idPaciente(),
+                        "No se ha encontrado a ningún paciente con aquel ID."
+                ));
 
         cirugia.setPaciente(paciente);
 
         EntidadQuirofano quirofano = repositorioQuirofano.findById(cirugiaNueva.idQuirofano())
-                .orElseThrow(()-> new QuirofanoNoEncontradoException("No se encontró ningún quirofano con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Quirofano",
+                        "No se ha encontrado.",
+                        cirugiaNueva.idQuirofano(),
+                        "No se ha encontrado a ningún quirofano con aquel ID."
+                ));
 
         cirugia.setQuirofano(quirofano);
 

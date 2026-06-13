@@ -9,13 +9,15 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface DetalleRecetaMapper {
 
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     @Mapping(target = "medicamento", ignore = true)
     @Mapping(target = "receta", ignore = true)
     EntidadDetalleReceta toEntity (DetalleRecetaNuevo detalleRecetaNuevo);
 
     @Mapping(source = "medicamento.nombre",
     target = "nombreMedicamento")
-    DetalleRecetaRespuesta  toDTO (EntidadDetalleReceta entidadDetalleReceta);
+    @Mapping(source = "medicamento.id",
+    target = "idMedicamento")
+    DetalleRecetaRespuesta toDTO (EntidadDetalleReceta entidadDetalleReceta);
 
 }

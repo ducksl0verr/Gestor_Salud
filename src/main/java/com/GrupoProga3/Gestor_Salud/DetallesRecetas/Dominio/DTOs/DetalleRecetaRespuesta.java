@@ -4,5 +4,6 @@ public record DetalleRecetaRespuesta(Long id,
                                      String dosis,
                                      String frecuencia,
                                      Integer cantidad,
-                                     String nombreMedicamento) {
+                                     String nombreMedicamento,
+                                     Long idMedicamento) {
 }

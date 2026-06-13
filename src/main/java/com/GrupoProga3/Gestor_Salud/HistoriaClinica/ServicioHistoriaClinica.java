@@ -10,7 +10,6 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
-import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,7 +43,12 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
 
         EntidadPaciente paciente = repositorioPaciente
                 .findById(historiaClinica.id_paciente())
-                .orElseThrow(()->new PacienteNoEncontradoException("No se ha encontrado al paciente"));
+                .orElseThrow(()->new EntidadNoEncontradaException(
+                        "Paciente",
+                        "No se ha encontrado.",
+                        historiaClinica.id_paciente(),
+                        "No se ha encontrado a ningún paciente con aquel ID."
+                ));
         historial.setPaciente(paciente);
 
         EntidadHistoriaClinica guardado = repositorioHistoriaClinica.save(historial);

@@ -14,10 +14,9 @@ import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.EntidadReceta;
 import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.MAPPER.RecetaMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
-import com.GrupoProga3.Gestor_Salud.common.PacienteNoEncontradoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Medicamentos.MedicamentoNoEncontradoException;
-import jakarta.persistence.EntityNotFoundException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.Medicamentos.MedicamentoSinStockException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +37,7 @@ public class ServicioReceta implements IServicioReceta {
     private final RecetaMapper recetaMapper;
 
     @Override
+    @Transactional
     public RecetaRespuesta crear(RecetaNueva receta) {
         System.out.println(receta);
         EntidadReceta nueva = recetaMapper.toEntity(receta);
@@ -46,7 +46,12 @@ public class ServicioReceta implements IServicioReceta {
 
         EntidadPaciente paciente = repositorioPaciente
                 .findById(receta.id_paciente())
-                .orElseThrow(()-> new PacienteNoEncontradoException("No se encontro el paciente"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Paciente",
+                        "No se ha encontrado.",
+                        receta.id_paciente(),
+                        "No se ha encontrado a ningún paciente con aquel ID."
+                ));
         nueva.setPaciente(paciente);
 
         EntidadUsuarios profesional = repositorioUsuario
@@ -64,10 +69,15 @@ public class ServicioReceta implements IServicioReceta {
         for (DetalleRecetaNuevo detallesdto : receta.detalles()){
             EntidadMedicamento medicamento =
                     repositorioMedicamento.findById(detallesdto.id_medicamento())
-                            .orElseThrow(()->new MedicamentoNoEncontradoException("Medicamento no encontrado"));
+                            .orElseThrow(()->new EntidadNoEncontradaException(
+                                    "Medicamento",
+                                    "No se ha encontrado.",
+                                    detallesdto.id_medicamento(),
+                                    "No se ha encontrado a ningún medicamento con aquel ID."
+                            ));
 
             if (medicamento.getStock()<detallesdto.cantidad()){
-                throw  new RuntimeException("Stock insuficiente para "+ medicamento.getNombre());
+                throw new MedicamentoSinStockException("Stock insuficiente para "+ medicamento.getNombre());
             }
 
             medicamento.descontarStock(detallesdto.cantidad());
@@ -92,7 +102,12 @@ public class ServicioReceta implements IServicioReceta {
     public RecetaRespuesta buscarPorId(Long id) {
         EntidadReceta buscada = repositorioReceta
                 .findById(id)
-                .orElseThrow(()->new EntityNotFoundException("No se ha encontrado la receta"));
+                .orElseThrow(()->new EntidadNoEncontradaException(
+                        "Receta",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado a ninguna receta con aquel ID."
+                ));
 
         return recetaMapper.toDTO(buscada);
     }
@@ -111,7 +126,7 @@ public class ServicioReceta implements IServicioReceta {
         return repositorioReceta
                 .findAll()
                 .stream()
-                .filter(p->p.getPaciente().getId()==id_paciente)
+                .filter(p->p.getPaciente().getId().equals(id_paciente))
                 .map(recetaMapper::toDTO)
                 .toList();
     }

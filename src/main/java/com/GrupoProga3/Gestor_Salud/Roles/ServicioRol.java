@@ -4,11 +4,10 @@ import com.GrupoProga3.Gestor_Salud.Roles.Dominio.DTOs.RolActualizar;
 import com.GrupoProga3.Gestor_Salud.Roles.Dominio.DTOs.RolRespuesta;
 import com.GrupoProga3.Gestor_Salud.Roles.Dominio.EntidadRol;
 import com.GrupoProga3.Gestor_Salud.Roles.Dominio.MAPPER.RolMapper;
-import com.GrupoProga3.Gestor_Salud.common.RoleNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.List;
 
 @Service
@@ -28,7 +27,12 @@ public class ServicioRol implements IServicioRol {
     public RolRespuesta actualizar(Long id, RolActualizar rolActualizar) {
         EntidadRol buscado = repositorioRol
                 .findById(id)
-                .orElseThrow(()->new RoleNoEncontradoException("No se encontró el rol."));
+                .orElseThrow(()->new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
         buscado.setNombre(rolActualizar.nombre());
         EntidadRol actualizado=repositorioRol.save(buscado);
         return rolMapper.toDTO(actualizado);
@@ -38,7 +42,12 @@ public class ServicioRol implements IServicioRol {
     public RolRespuesta buscarPorId(Long id) {
         EntidadRol buscado = repositorioRol
                 .findById(id)
-                .orElseThrow(()-> new RoleNoEncontradoException("No se encontro el rol."));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
         return rolMapper.toDTO(buscado);
     }
 

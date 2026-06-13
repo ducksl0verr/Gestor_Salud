@@ -11,6 +11,7 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper.PacienteMapper;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.ObraSocialNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,12 @@ public class ServicioPaciente implements IServicioPaciente{
     @Override
     public PacienteRespuesta actualizar(Long id, PacienteActualizar paciente) {
         EntidadPaciente pac = repositorioPaciente.findById(id)
-                .orElseThrow();
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Paciente",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado a ningún paciente con aquel ID."
+                ));
 
         pac.setNombre(paciente.nombre());
         pac.setApellido(paciente.apellido());

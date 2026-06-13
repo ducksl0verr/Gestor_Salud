@@ -5,7 +5,7 @@ import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.DTOs.MedicamentoNuevo;
 import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.DTOs.MedicamentoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.EntidadMedicamento;
 import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.MAPPER.MedicamentoMapper;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Medicamentos.MedicamentoNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,12 @@ public class ServicioMedicamento implements IServicioMedicamento {
 
         EntidadMedicamento buscado = repositorioMedicamento
                 .findById(id)
-                .orElseThrow(() -> new MedicamentoNoEncontradoException("Medicamento no encontrado"));
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Medicamento",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado a ningún medicamento con aquel ID."
+                ));
 
         return medicamentoMapper.toDTO(buscado);
     }
@@ -47,7 +52,12 @@ public class ServicioMedicamento implements IServicioMedicamento {
                 .stream()
                 .filter(m->m.getNombre().equalsIgnoreCase(nombre))
                 .findFirst()
-                .orElseThrow(() -> new MedicamentoNoEncontradoException("Medicamento no encontrado"));
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Medicamento",
+                        "No se ha encontrado.",
+                        1l,
+                        "No se ha encontrado a ningún medicamento con aquel nombre."
+                ));
 
         return medicamentoMapper.toDTO(buscado);
     }
@@ -75,7 +85,12 @@ public class ServicioMedicamento implements IServicioMedicamento {
     public MedicamentoRespuesta actualizar(Long id, MedicamentoActualizar medicamentoActualizar) {
         EntidadMedicamento buscado = repositorioMedicamento
                 .findById(id)
-                .orElseThrow(() -> new MedicamentoNoEncontradoException("Medicamento no encontrado"));
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Medicamento",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado a ningún medicamento con aquel ID."
+                ));
 
         buscado.setNombre(medicamentoActualizar.nombre());
         buscado.setPrincipioActivo(medicamentoActualizar.principioActivo());
