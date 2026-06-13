@@ -85,7 +85,7 @@ public class ServicioSalaInternacion implements IServicioSalaInternacion {
                                 id,
                                 "No se ha encontrado ninguna sala de internación con aquel ID."));
 
-        buscada.setCapacidad_maxima(buscada.getCapacidad_maxima());
+        buscada.setCapacidad_maxima(salaInternacionActualizar.capacidad_maxima());
 
         EntidadSalaInternacion actualizada = repositorioSalaInternacion.save(buscada);
 
