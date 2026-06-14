@@ -24,3 +24,7 @@ spring:
       read:
         allow-single-quotes: true
         allow-trailing-comma: true
+
+jwt:
+ secret: ${JWT_SECRET}
+ expiration: ${JWT_EXPIRATION}
