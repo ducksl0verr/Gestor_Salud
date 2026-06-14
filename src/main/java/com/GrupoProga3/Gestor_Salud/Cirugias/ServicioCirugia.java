@@ -12,9 +12,9 @@ import com.GrupoProga3.Gestor_Salud.Quirofanos.Dominio.EntidadQuirofano;
 import com.GrupoProga3.Gestor_Salud.Quirofanos.RepositorioQuirofano;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaEnCursoException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Cirugias.CirugiaNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +30,7 @@ public class ServicioCirugia implements IServicioCirugia {
     private final CirugiaMapper  cirugiaMapper;
 
     @Override
+    @Transactional
     public CirugiaRespuesta crear(CirugiaNueva cirugiaNueva) {
         System.out.println(cirugiaNueva);
         EntidadCirugia cirugia = cirugiaMapper.toEntity(cirugiaNueva);
@@ -64,6 +65,8 @@ public class ServicioCirugia implements IServicioCirugia {
 
         cirugia.setQuirofano(quirofano);
 
+        cirugia.setEstado(EstadoCirugia.PROGRAMADA);
+
         EntidadCirugia guardado =  repositorioCirugia.save(cirugia);
 
         System.out.println(guardado);
@@ -74,7 +77,12 @@ public class ServicioCirugia implements IServicioCirugia {
     @Override
     public CirugiaRespuesta buscarPorID(Long id) {
         EntidadCirugia buscada = repositorioCirugia.findById(id)
-                .orElseThrow(()-> new CirugiaNoEncontradaException("No existe ninguna cirugia con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Cirugia",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ninguna cirugia con aquel ID."
+                ));
         return cirugiaMapper.toDTO(buscada);
     }
 
@@ -88,9 +96,15 @@ public class ServicioCirugia implements IServicioCirugia {
     }
 
     @Override
+    @Transactional
     public CirugiaRespuesta actualizar(Long id, CirugiaActualizar cirugiaActualizar) {
         EntidadCirugia buscada = repositorioCirugia.findById(id)
-                .orElseThrow(()-> new CirugiaNoEncontradaException("No existe ninguna cirugia con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Cirugia",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ninguna cirugia con aquel ID."
+                ));
 
         buscada.setEstado(cirugiaActualizar.estado());
         buscada.setFecha(cirugiaActualizar.fecha());
@@ -122,14 +136,20 @@ public class ServicioCirugia implements IServicioCirugia {
     }
 
     @Override
+    @Transactional
     public void borrar(Long id) {
         EntidadCirugia buscada = repositorioCirugia.findById(id)
-                .orElseThrow(()-> new CirugiaNoEncontradaException("No existe ninguna cirugia con aquel ID"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Cirugia",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ninguna cirugia con aquel ID."
+                ));
 
         if(buscada.getEstado().equals(EstadoCirugia.CANCELADA) ||  buscada.getEstado().equals(EstadoCirugia.FINALIZADA)) {
             repositorioCirugia.delete(buscada);
         } else {
-            throw new CirugiaEnCursoException("La cirugía está en curso, no se peude eliminar");
+            throw new RecursoOcupadoException("La cirugía está en curso, no se peude eliminar");
         }
     }
 

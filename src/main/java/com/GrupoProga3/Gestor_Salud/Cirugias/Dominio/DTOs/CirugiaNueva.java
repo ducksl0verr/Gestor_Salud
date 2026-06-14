@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public record CirugiaNueva(@NotNull
                            LocalDate fecha,
-                           EstadoCirugia estado,
                            @NotNull
                            Long idPaciente,
                            @NotNull

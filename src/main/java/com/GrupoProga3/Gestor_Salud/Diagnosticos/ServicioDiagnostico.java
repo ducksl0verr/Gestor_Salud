@@ -7,6 +7,7 @@ import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.MAPPER.DiagnosticoMappe
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.EntidadHistoriaClinica;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.RepositorioHistoriaClinica;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     private final DiagnosticoMapper  diagnosticoMapper;
 
     @Override
+    @Transactional
     public DiagnosticoRespuesta crear(DiagnosticoNuevo diagnosticoNuevo) {
         System.out.println(diagnosticoNuevo);
         EntidadDiagnostico diagnostico=diagnosticoMapper.toEntity(diagnosticoNuevo);
@@ -64,6 +66,7 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     }
 
     @Override
+    @Transactional
     public DiagnosticoRespuesta actualizar(Long id, DiagnosticoNuevo diagnosticoNuevo) {
         EntidadDiagnostico buscado = repositorioDiagnostico
                 .findById(id)
@@ -80,6 +83,7 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     }
 
     @Override
+    @Transactional
     public void borrar(Long id) {
         EntidadDiagnostico buscado = repositorioDiagnostico
                 .findById(id)

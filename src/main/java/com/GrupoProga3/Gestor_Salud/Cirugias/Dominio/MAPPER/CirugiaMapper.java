@@ -27,5 +27,6 @@ public interface CirugiaMapper {
     @Mapping(target = "paciente", ignore = true)
     @Mapping(target ="quirofano", ignore = true)
     @Mapping(target = "cirujano", ignore = true)
+    @Mapping(target = "estado", ignore = true)
     EntidadCirugia toEntity (CirugiaNueva cirugiaNueva);
 }

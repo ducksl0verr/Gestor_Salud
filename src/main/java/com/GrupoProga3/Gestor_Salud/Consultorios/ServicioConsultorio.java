@@ -5,7 +5,8 @@ import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.DTOs.ConsultorioNuevo;
 import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.DTOs.ConsultorioRespuesta;
 import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.Consultorios.Dominio.MAPPER.ConsultorioMapper;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Consultorios.ConsultorioNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class ServicioConsultorio implements  IServicioConsultorio{
     private final ConsultorioMapper consultorioMapper;
 
     @Override
+    @Transactional
     public ConsultorioRespuesta crear(ConsultorioNuevo consultorioNuevo) {
         System.out.println(consultorioNuevo);
         EntidadConsultorio consultorio = repositorioConsultorio.save(consultorioMapper.toEntity(consultorioNuevo));
@@ -28,7 +30,12 @@ public class ServicioConsultorio implements  IServicioConsultorio{
     @Override
     public ConsultorioRespuesta buscarPorId(Long id) {
         EntidadConsultorio buscado = repositorioConsultorio.findById(id)
-                .orElseThrow(()-> new ConsultorioNoEncontradoException("Consultorio no encontrado"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Consultorio",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún consultorio con aquel ID."
+                ));
         return consultorioMapper.toDTO(buscado);
     }
 
@@ -42,9 +49,15 @@ public class ServicioConsultorio implements  IServicioConsultorio{
     }
 
     @Override
+    @Transactional
     public ConsultorioRespuesta actualizar(Long id, ConsultorioActualizar consultorioActualizar) {
         EntidadConsultorio buscado = repositorioConsultorio.findById(id)
-                .orElseThrow(()-> new ConsultorioNoEncontradoException("Consultorio no encontrado"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Consultorio",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún consultorio con aquel ID."
+                ));
 
         buscado.setNombre(consultorioActualizar.nombre());
 
@@ -54,9 +67,15 @@ public class ServicioConsultorio implements  IServicioConsultorio{
     }
 
     @Override
+    @Transactional
     public void borrar(Long id) {
         EntidadConsultorio buscado = repositorioConsultorio.findById(id)
-                .orElseThrow(()-> new ConsultorioNoEncontradoException("Consultorio no encontrado"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Consultorio",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún consultorio con aquel ID."
+                ));
         repositorioConsultorio.delete(buscado);
     }
 }
