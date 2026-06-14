@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/historiasClinicas")
+@RequestMapping("/api/historiasClinicas")
 public class ControladorHistoriaClinica {
     private final IServicioHistoriaClinica servicioHistoriaClinica;
     @PostMapping

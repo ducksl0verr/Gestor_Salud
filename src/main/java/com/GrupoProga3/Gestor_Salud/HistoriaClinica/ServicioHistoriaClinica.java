@@ -5,7 +5,6 @@ import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinica
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.DTOs.HistoriaClinicaRespuesta;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.EntidadHistoriaClinica;
 import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.MAPPER.HistoriaClinicaMapper;
-import com.GrupoProga3.Gestor_Salud.common.HistoriaClinicaNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
@@ -65,14 +64,24 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
 
     public HistoriaClinicaRespuesta buscarPorId(Long id){
         EntidadHistoriaClinica buscado = repositorioHistoriaClinica.findById(id)
-                .orElseThrow(()->new HistoriaClinicaNoEncontradaException("Historia Clinica no encontrada"));
+                .orElseThrow(()->new EntidadNoEncontradaException(
+                        "Historia Clinica",
+                        "No encontrada",
+                        id,
+                        "No se ha encontrado la historia clinica."
+                ));
         return historiaClinicaMapper.toDTO(buscado);
     }
 
     public HistoriaClinicaRespuesta actualizar (Long id, HistoriaClinicaActualizar historiaClinica){
         EntidadHistoriaClinica buscado = repositorioHistoriaClinica
                 .findById(id)
-                .orElseThrow(()-> new HistoriaClinicaNoEncontradaException("Historia Clinica no encontrada"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Historia Clinica",
+                        "No encontrada",
+                        id,
+                        "No se ha encontrado la historia clinica."
+                ));
         buscado.setEvolucion(historiaClinica.evolucion());
         buscado.setObservaciones(historiaClinica.observaciones());
         EntidadHistoriaClinica actualizado = repositorioHistoriaClinica.save(buscado);
@@ -82,7 +91,12 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
     public void borrar(Long id){
         EntidadHistoriaClinica buscado = repositorioHistoriaClinica
                 .findById(id)
-                .orElseThrow(()->new HistoriaClinicaNoEncontradaException("Historia Clinica no encontrada"));
+                .orElseThrow(()->new EntidadNoEncontradaException(
+                        "Historia Clinica",
+                        "No encontrada",
+                        id,
+                        "No se ha encontrado la historia clinica."
+                ));
         repositorioHistoriaClinica.delete(buscado);
     }
 
