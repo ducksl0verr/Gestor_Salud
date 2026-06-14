@@ -8,7 +8,6 @@ import com.GrupoProga3.Gestor_Salud.Gastos.Dominio.MAPPER.GastoMapper;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.EntidadProveedor;
 import com.GrupoProga3.Gestor_Salud.Proveedores.RepositorioProveedor;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Gastos.GastoNoEncontradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,12 @@ public class ServicioGasto implements IServicioGasto {
     public GastoRespuesta buscarPorId(Long id) {
         EntidadGasto gasto = repositorioGasto
                 .findById(id)
-                .orElseThrow(() -> new GastoNoEncontradoException("No existe tal gasto"));
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Gasto",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún gasto con aquel id."
+                ));
         return gastoMapper.toDTO(gasto);
     }
 
@@ -75,7 +79,12 @@ public class ServicioGasto implements IServicioGasto {
     public GastoRespuesta actualizar(Long id, GastoActualizar gastoActualizar) {
         EntidadGasto gasto = repositorioGasto
                 .findById(id)
-                .orElseThrow(() -> new GastoNoEncontradoException("No existe tal gasto"));
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Gasto",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún gasto con aquel id."
+                ));
 
         gasto.setDescripcion(gastoActualizar.descripcion());
         gasto.setTipoGasto(gastoActualizar.tipoGasto());
@@ -93,7 +102,12 @@ public class ServicioGasto implements IServicioGasto {
     public void borrar(Long id) {
         EntidadGasto gasto = repositorioGasto
                 .findById(id)
-                .orElseThrow(() -> new GastoNoEncontradoException("No existe tal gasto"));
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Gasto",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún gasto con aquel id."
+                ));
 
         repositorioGasto.delete(gasto);
     }
