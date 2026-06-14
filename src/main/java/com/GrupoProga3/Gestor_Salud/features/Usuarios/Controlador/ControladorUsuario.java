@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Controlador;
 
+import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
@@ -46,9 +47,9 @@ public class ControladorUsuario {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioRespuestaDTO> guardar (@RequestBody @Valid UsuarioDTO usuarioDTO)
+    public ResponseEntity<UsuarioRespuestaDTO> guardar (@RequestBody @Valid CuentaNueva cuentaNueva)
     {
-        return new ResponseEntity<>(servicioUsuario.guardar(usuarioDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(servicioUsuario.guardar(cuentaNueva), HttpStatus.CREATED);
     }
 
     @PostMapping("/profesionales")

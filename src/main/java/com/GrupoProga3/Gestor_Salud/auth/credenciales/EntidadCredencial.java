@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Enabled
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,26 +34,24 @@ public class EntidadCredencial implements UserDetails {
     private String password;
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean enabled;
+
+    @Column(name="refresh_token", length = 2048, unique = true)
+    private String refreshToken;
+
     @OneToOne
     @JoinColumn(name="id_usuario", referencedColumnName = "id", unique = true)
     private EntidadUsuarios usuario;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(
-            name ="roles_credenciales",
-            joinColumns = @JoinColumn(name="id_credencial"),
-            inverseJoinColumns = @JoinColumn(name="id_role")
-    )
-    private Set<EntidadRole> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name="id_role")
+    private EntidadRole role;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        roles.forEach(role -> authorities.add(
+        return List.of(
                 new SimpleGrantedAuthority(role.getRole().name())
-        ));
-        return authorities;
+        );
     }
 
     @Override

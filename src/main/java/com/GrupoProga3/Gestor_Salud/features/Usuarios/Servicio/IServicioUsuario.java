@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
@@ -9,7 +10,7 @@ import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.UsuarioRespues
 import java.util.List;
 
 public interface IServicioUsuario {
-    UsuarioRespuestaDTO guardar (UsuarioDTO usuarioDTO);
+    UsuarioRespuestaDTO guardar (CuentaNueva nueva);
     ProfesionalRespuestaDTO guardarProfesional (ProfesionalDTO profesionalDTO);
     void borrar (Long id);
     UsuarioRespuestaDTO buscarPorId(Long id);

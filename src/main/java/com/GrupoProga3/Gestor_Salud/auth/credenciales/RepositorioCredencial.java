@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface RepositorioCredencial extends JpaRepository<EntidadCredencial,Long> {
-    Optional<EntidadCredencial> findByNombre(String nombre);
+    Optional<EntidadCredencial> findByUsername(String us);
 }

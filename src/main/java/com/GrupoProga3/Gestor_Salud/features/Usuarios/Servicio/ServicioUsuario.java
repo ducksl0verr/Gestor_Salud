@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
+import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.ServicioEmail;
 import com.GrupoProga3.Gestor_Salud.features.Proveedores.Dominio.EntidadProveedor;
@@ -29,7 +31,11 @@ import java.util.List;
 
     @Override
     @Transactional
-    public UsuarioRespuestaDTO guardar(UsuarioDTO usuarioDTO) {
+    public UsuarioRespuestaDTO guardar(CuentaNueva nueva) {
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(nueva.nombre(),
+                nueva.apellido(), nueva.dni(), nueva.contacto());
+
         EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ToEntity(usuarioDTO));
         return usuarioMapper.toRespuestaUsuarioDTO(guardado);
     }
@@ -79,7 +85,6 @@ import java.util.List;
 
         usu.setNombre(usuarioDTO.nombre());
         usu.setApellido(usuarioDTO.apellido());
-        usu.setDni(usuarioDTO.dni());
         usu.setContacto(usuarioMapper.toEntity(usuarioDTO.contacto()));
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
@@ -99,7 +104,6 @@ import java.util.List;
                 ));
         usu.setNombre(profesionalDTO.nombre());
         usu.setApellido(profesionalDTO.apellido());
-        usu.setDni(profesionalDTO.dni());
         usu.setContacto(usuarioMapper.toEntity(profesionalDTO.contacto()));
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);

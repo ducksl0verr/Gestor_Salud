@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Model;
 
 
+import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,27 +25,21 @@ public class EntidadUsuarios {
     @Column(name = "apellido_usuario", nullable = false, length = 50)
     private String apellido;
 
-    @Column(name = "dni",nullable = false)
-    private String dni;
-
-    //@Column(name = "telefono", nullable = false, length = 20)
-    //private String telefono;
-
     @Column(name = "matricula", length = 50)
     private String matricula;
-
-    //@Column(name = "email", nullable = false, length = 50)
-    //private String email;
-
-    //RELACIONES
-    /*@ManyToOne
-    @JoinColumn(name = "id_domicilio")
-    private EntidadDomicilio domicilio;
-     */
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="id_contacto")
     private EntidadContacto contacto;
+
+    private String dni;
+
+    private String username;
+    private String password;
+    @ManyToOne
+    @JoinColumn(name="id_role")
+    private EntidadRole rol;
+    private Boolean enabled;
 
 }
 

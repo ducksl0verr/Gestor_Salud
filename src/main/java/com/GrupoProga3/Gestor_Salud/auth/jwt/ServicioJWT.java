@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,10 +26,13 @@ public class ServicioJWT implements  IServicioJWT {
     private String jwtSecretKey;
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
+    @Value("${jwt.refresh-expiration}")
+    private Long refreshTokenExpiration;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities().stream()
@@ -37,6 +41,7 @@ public class ServicioJWT implements  IServicioJWT {
         claims.put("roles", roles);
         return buildToken(claims, userDetails, jwtExpiration);
     }
+
     public List<GrantedAuthority> extractAuthorities(String token) {
         Claims claims = extractAllClaims(token);
         List<?> rawRoles = claims.get("roles", List.class);
@@ -80,7 +85,7 @@ public class ServicioJWT implements  IServicioJWT {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()
-                + expiration))
+                        + expiration))
                 .signWith(getSignInKey())
                 .compact();
     }
@@ -95,5 +100,27 @@ public class ServicioJWT implements  IServicioJWT {
     public boolean isTokenExpired(String token) {
         Date expiration = extractClaim(token, Claims::getExpiration);
         return expiration.before(new Date());
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("type", "refresh");
+        return buildToken(claims, userDetails, refreshTokenExpiration);
+    }
+
+    public boolean validateRefreshToken(String refreshToken, UserDetails
+            userDetails) {
+        try {
+            Jwts.parser()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(refreshToken);
+            final String username = extractUsername(refreshToken);
+            return (username.equals(userDetails.getUsername())) &&
+                    !isTokenExpired(refreshToken);
+        } catch (JwtException e) {
+            return false; // Invalid token
+
+        }
     }
 }
