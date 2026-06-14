@@ -1,6 +1,5 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 
-import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Contacto.Repositorio.RepositorioContacto;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
@@ -12,7 +11,6 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper.PacienteMapper;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.ObraSocialNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,12 @@ public class ServicioPaciente implements IServicioPaciente{
 
         EntidadObraSocial obraSocial = repositorioObraSocial
                 .findById(pacienteNuevo.id_obraSocial())
-                        .orElseThrow(()->new ObraSocialNoEncontradaException("No se encontró la obra social"));
+                        .orElseThrow(()->new EntidadNoEncontradaException(
+                                "Obra Social",
+                                "No encontrada",
+                                pacienteNuevo.id_obraSocial(),
+                                "No se ha encontrado ninguna obra social con ese ID."
+                        ));
 
         buscado.setObraSocial(obraSocial);
 
@@ -72,6 +75,17 @@ public class ServicioPaciente implements IServicioPaciente{
         pac.setNombre(paciente.nombre());
         pac.setApellido(paciente.apellido());
         //pac.setFecha_nacimiento(paciente.fecha_nacimiento());
+
+        EntidadObraSocial obraSocial = repositorioObraSocial
+                .findById(paciente.id_obraSocial())
+                .orElseThrow(()->new EntidadNoEncontradaException(
+                        "Obra Social",
+                        "No encontrada",
+                        paciente.id_obraSocial(),
+                        "No se ha encontrado ninguna obra social con ese ID."
+                ));
+
+        pac.setObraSocial(obraSocial);
         pac.setContacto(pacienteMapper.toEntity(paciente.contacto()));
 
         EntidadPaciente actualizado = repositorioPaciente.save(pac);
