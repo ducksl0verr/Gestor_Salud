@@ -27,7 +27,6 @@ public class ServicioObraSocial implements IServicioObraSocial {
 
     @Override
     @Transactional
-
     public ObraSocialRespuesta guardar(ObraSocialNueva obraSocialNueva) {
 
         if (repositorioObraSocial.existsByNombre(obraSocialNueva.nombre())) {

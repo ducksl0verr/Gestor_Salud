@@ -10,6 +10,7 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
     private final RepositorioPaciente repositorioPaciente;
     private final HistoriaClinicaMapper historiaClinicaMapper;
 
+
+    @Override
+    @Transactional
     public HistoriaClinicaRespuesta crear (HistoriaClinicaNueva historiaClinica){
         System.out.println(historiaClinica);
         EntidadHistoriaClinica historial= historiaClinicaMapper.toEntity(historiaClinica);
@@ -73,6 +77,8 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
         return historiaClinicaMapper.toDTO(buscado);
     }
 
+    @Override
+    @Transactional
     public HistoriaClinicaRespuesta actualizar (Long id, HistoriaClinicaActualizar historiaClinica){
         EntidadHistoriaClinica buscado = repositorioHistoriaClinica
                 .findById(id)
@@ -88,6 +94,8 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
         return historiaClinicaMapper.toDTO(actualizado);
     }
 
+    @Override
+    @Transactional
     public void borrar(Long id){
         EntidadHistoriaClinica buscado = repositorioHistoriaClinica
                 .findById(id)

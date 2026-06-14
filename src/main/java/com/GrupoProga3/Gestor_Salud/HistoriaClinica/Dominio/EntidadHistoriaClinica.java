@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio;
 
+import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.EntidadDiagnostico;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="Historias_Clinicas")
@@ -35,4 +37,7 @@ public class EntidadHistoriaClinica {
     @ManyToOne
     @JoinColumn(name = "id_profesional")
     private EntidadUsuarios profesional;
+
+    @OneToMany(mappedBy = "historiaClinica")
+    private List<EntidadDiagnostico> diagnosticos;
 }

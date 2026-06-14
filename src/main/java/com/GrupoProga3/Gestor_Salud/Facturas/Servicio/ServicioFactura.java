@@ -5,13 +5,14 @@ import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaNueva;
 import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.DTO.FacturaRespuesta;
 import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.ENUMS.EstadoFactura;
 import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.Mapper.FacturaMapper;
-import com.GrupoProga3.Gestor_Salud.Facturas.Excepciones.FacturaNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.Facturas.Model.EntidadFacturas;
 import com.GrupoProga3.Gestor_Salud.Facturas.Repositorio.RepositorioFactura;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.ENUMS.EstadoFacturacionDeTurno;
 import com.GrupoProga3.Gestor_Salud.Turno.Dominio.EntidadTurno;
 import com.GrupoProga3.Gestor_Salud.Turno.RepositorioTurno;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,13 @@ public class ServicioFactura implements IServicioFactura{
 
     @Override
     public FacturaRespuesta buscarPorId(Long id) {
-        return repositorioFactura.findById(id).map(facturaMapper::toRespuestaDTO).orElseThrow(FacturaNoEncontradaException::new);
+        return repositorioFactura.findById(id).map(facturaMapper::toRespuestaDTO)
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Factura",
+                        "No encontrada",
+                        id,
+                        "No se ha encontrado ninguna factura con aquel ID."
+                ));
     }
 
     @Override
@@ -51,15 +58,17 @@ public class ServicioFactura implements IServicioFactura{
         // Validaado que existan los turnos que ingreso el administrativo
 
         if (turnos.isEmpty()) {
-            throw new RuntimeException(
-                    "No se encontraron turnos"
-            );
+            throw new EntidadNoEncontradaException("Turnos",
+                    "No encontrado",
+                    1l,
+                    "No se ha encontrado ningún turno.");
         }
 
         if (turnos.size() != facturaNueva.idsTurnos().size()) { // esto es en el caso de que no se encuentre algun turno de la lista
-            throw new RuntimeException(
-                    "Uno o más turnos no existen"
-            );
+            throw new EntidadNoEncontradaException("Turnos",
+                    "No encontrado",
+                    1l,
+                    "No se ha encontrado ningún turno.");
         }
 
         // Obtener paciente del primer turno
@@ -72,7 +81,7 @@ public class ServicioFactura implements IServicioFactura{
                     .getId()
                     .equals(paciente.getId())) {
 
-                throw new RuntimeException(
+                throw new RecursoOcupadoException(
                         "Los turnos pertenecen a distintos pacientes"
                 );
             }
@@ -83,7 +92,7 @@ public class ServicioFactura implements IServicioFactura{
 
             if (turno.getEstadoFacturacionDeTurno().equals(EstadoFacturacionDeTurno.FACTURADO)) {
 
-                throw new RuntimeException(
+                throw new RecursoOcupadoException(
                         "El turno " + turno.getId() + " ya fue facturado"
                 );
             }

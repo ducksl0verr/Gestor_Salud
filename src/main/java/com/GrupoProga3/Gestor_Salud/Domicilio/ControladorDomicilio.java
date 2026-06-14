@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/domicilios")
+@RequestMapping("/api/domicilios")
 public class ControladorDomicilio {
     private final IServicioDomicilio servicioDomicilio;
     @GetMapping
@@ -31,5 +31,11 @@ public class ControladorDomicilio {
     @PutMapping("/{id}")
     public ResponseEntity<DomicilioRespuesta> actualizarDomicilio (@PathVariable Long id, @RequestBody @Valid DomicilioNuevo domicilioNuevo) {
         return ResponseEntity.ok(servicioDomicilio.actualizar(id, domicilioNuevo));
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> eliminarDomicilio (@PathVariable Long idDomicilio) {
+        servicioDomicilio.borrar(idDomicilio);
+        return ResponseEntity.ok().build();
     }
 }

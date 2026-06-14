@@ -8,6 +8,7 @@ import com.GrupoProga3.Gestor_Salud.Gastos.Dominio.MAPPER.GastoMapper;
 import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.EntidadProveedor;
 import com.GrupoProga3.Gestor_Salud.Proveedores.RepositorioProveedor;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class ServicioGasto implements IServicioGasto {
     private final GastoMapper gastoMapper;
 
     @Override
+    @Transactional
     public GastoRespuesta crear(GastoNuevo gastoNuevo) {
         System.out.println(gastoNuevo);
 
@@ -76,6 +78,7 @@ public class ServicioGasto implements IServicioGasto {
     }
 
     @Override
+    @Transactional
     public GastoRespuesta actualizar(Long id, GastoActualizar gastoActualizar) {
         EntidadGasto gasto = repositorioGasto
                 .findById(id)
@@ -99,6 +102,7 @@ public class ServicioGasto implements IServicioGasto {
     }
 
     @Override
+    @Transactional
     public void borrar(Long id) {
         EntidadGasto gasto = repositorioGasto
                 .findById(id)

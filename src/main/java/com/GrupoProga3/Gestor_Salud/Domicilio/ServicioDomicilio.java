@@ -4,7 +4,8 @@ import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.Mappers.DomicilioMapper;
-import com.GrupoProga3.Gestor_Salud.common.DomicilioNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class ServicioDomicilio implements IServicioDomicilio{
     private final DomicilioMapper domicilioMapper;
 
     @Override
+    @Transactional
     public DomicilioRespuesta guardar(DomicilioNuevo domicilioNuevo) {
         EntidadDomicilio guardado = repositorioDomicilio.save(domicilioMapper.toEntity(domicilioNuevo));
         System.out.println(guardado);
@@ -24,6 +26,7 @@ public class ServicioDomicilio implements IServicioDomicilio{
     }
 
     @Override
+    @Transactional
     public void borrar(Long id) {
         this.repositorioDomicilio.findById(id).ifPresent(repositorioDomicilio::delete);
     }
@@ -32,13 +35,20 @@ public class ServicioDomicilio implements IServicioDomicilio{
     public DomicilioRespuesta buscarPorId(Long id) {
         return repositorioDomicilio.findById(id)
                 .map(domicilioMapper::toDto)
-                .orElseThrow(()-> new DomicilioNoEncontradoException("No se ha encontrado el domicilio."));
+                .orElseThrow(()-> new EntidadNoEncontradaException("Domicilio",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún domicilio con aquel ID."));
     }
 
     @Override
+    @Transactional
     public DomicilioRespuesta actualizar(Long id, DomicilioNuevo domicilioNuevo) {
         EntidadDomicilio dom = repositorioDomicilio.findById(id)
-                .orElseThrow();
+                .orElseThrow(()-> new EntidadNoEncontradaException("Domicilio",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún domicilio con aquel ID."));
         dom.setCalle(domicilioNuevo.calle());
         dom.setDepto(domicilioNuevo.depto());
         dom.setPiso(domicilioNuevo.piso());

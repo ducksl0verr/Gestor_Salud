@@ -4,7 +4,9 @@ import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.DTOs.DiagnosticoNuevo;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.DTOs.DiagnosticoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.EntidadDiagnostico;
 import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.MAPPER.DiagnosticoMapper;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.DiagnosticoNoEncontradoException;
+import com.GrupoProga3.Gestor_Salud.HistoriaClinica.Dominio.EntidadHistoriaClinica;
+import com.GrupoProga3.Gestor_Salud.HistoriaClinica.RepositorioHistoriaClinica;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ServicioDiagnostico implements IServicioDiagnostico {
     private final RepositorioDiagnostico repositorioDiagnostico;
+    private final RepositorioHistoriaClinica repositorioHistoriaClinica;
     private final DiagnosticoMapper  diagnosticoMapper;
 
     @Override
     public DiagnosticoRespuesta crear(DiagnosticoNuevo diagnosticoNuevo) {
         System.out.println(diagnosticoNuevo);
-        EntidadDiagnostico diagnostico=repositorioDiagnostico.save(diagnosticoMapper.toEntity(diagnosticoNuevo));
-        System.out.println(diagnostico);
-        return diagnosticoMapper.toDTO(diagnostico);
+        EntidadDiagnostico diagnostico=diagnosticoMapper.toEntity(diagnosticoNuevo);
+        EntidadHistoriaClinica hc= repositorioHistoriaClinica
+                .findById(diagnosticoNuevo.idHistoriaClinica())
+                        .orElseThrow(()-> new EntidadNoEncontradaException(
+                                "Historia Clinica",
+                                "No encontrada",
+                                diagnosticoNuevo.idHistoriaClinica(),
+                                "No se ha encontrado ninguna historia clinica con aquel ID."
+                        ));
+
+        diagnostico.setHistoriaClinica(hc);
+        hc.getDiagnosticos().add(diagnostico);
+
+        EntidadDiagnostico guardado = repositorioDiagnostico.save(diagnostico);
+
+        System.out.println(guardado);
+        return diagnosticoMapper.toDTO(guardado);
     }
 
     @Override
@@ -37,7 +54,12 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     public DiagnosticoRespuesta buscarPorId(Long id) {
         EntidadDiagnostico buscado = repositorioDiagnostico
                 .findById(id)
-                .orElseThrow(()-> new DiagnosticoNoEncontradoException("No se ha encontrado aquel diagnostico"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Diagnostico",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún diagnostico con aquel ID."
+                ));
         return diagnosticoMapper.toDTO(buscado);
     }
 
@@ -45,7 +67,12 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     public DiagnosticoRespuesta actualizar(Long id, DiagnosticoNuevo diagnosticoNuevo) {
         EntidadDiagnostico buscado = repositorioDiagnostico
                 .findById(id)
-                .orElseThrow(()-> new DiagnosticoNoEncontradoException("No se ha encontrado aquel diagnostico"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Diagnostico",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún diagnostico con aquel ID."
+                ));
         buscado.setNombre(diagnosticoNuevo.nombre());
         buscado.setDescripcion(diagnosticoNuevo.descripcion());
         EntidadDiagnostico actualizado=repositorioDiagnostico.save(buscado);
@@ -56,7 +83,12 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     public void borrar(Long id) {
         EntidadDiagnostico buscado = repositorioDiagnostico
                 .findById(id)
-                .orElseThrow(()-> new DiagnosticoNoEncontradoException("No se ha encontrado aquel diagnostico"));
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Diagnostico",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún diagnostico con aquel ID."
+                ));
         repositorioDiagnostico.delete(buscado);
     }
 }
