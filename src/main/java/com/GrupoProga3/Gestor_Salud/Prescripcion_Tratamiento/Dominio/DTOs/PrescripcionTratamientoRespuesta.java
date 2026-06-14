@@ -1,6 +1,4 @@
-package com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio;
-
-import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
+package com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.DTOs;
 
 import java.time.LocalDate;
 

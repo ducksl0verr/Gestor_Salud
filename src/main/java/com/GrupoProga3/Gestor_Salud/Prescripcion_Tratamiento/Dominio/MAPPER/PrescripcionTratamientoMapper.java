@@ -1,16 +1,17 @@
-package com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.MAPPER;
+package com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.MAPPER;
 
-import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.DTOs.PrescripcionTratamientoNueva;
-import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.PrescripcionTratamientoRespuesta;
-import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
+import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.DTOs.PrescripcionTratamientoRespuesta;
+import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.EntidadPrescripcionTratamiento;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PrescripcionTratamientoMapper {
-    @Mapping(target = "pacientes", ignore = true)
+    @Mapping(target = "paciente", ignore = true)
     @Mapping(target = "tratamientos", ignore = true)
+    @Mapping(target = "profesional", ignore = true)
+    @Mapping(target = "activo", ignore = true)
     EntidadPrescripcionTratamiento toEntity (PrescripcionTratamientoNueva  prescripcionTratamiento);
 
     @Mapping(source="tratamientos.id",

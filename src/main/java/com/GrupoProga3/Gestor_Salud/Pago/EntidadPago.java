@@ -35,7 +35,9 @@ public class EntidadPago {
 
 
     @ManyToOne
-    @JoinColumn(name = "id_paciente", nullable = false)
+    @JoinTable(name = "id_paciente",
+    joinColumns =  @JoinColumn(name = "id_pago"),
+    inverseJoinColumns = @JoinColumn(name = "id_paciente"))
     private List<EntidadPaciente> pacientes;
 
 

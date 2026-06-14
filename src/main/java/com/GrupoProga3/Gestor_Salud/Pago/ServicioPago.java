@@ -9,6 +9,7 @@ import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoDTO;
 import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoNuevo;
 import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pago.Mappers.PagoMapper;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,15 +42,26 @@ public class ServicioPago implements IServicioPago {
                             + pagoNuevo.fecha()
             );
         }
-        if (pagoNuevo.pacientes() == null
-                || pagoNuevo.pacientes().isEmpty()) {
 
+        if (pagoNuevo.idsPacientes() == null || pagoNuevo.idsPacientes().isEmpty()) {
             throw new ReglaNegocioException(
                     "El pago debe tener al menos un paciente asociado."
             );
         }
 
         EntidadPago pago = pagoMapper.toEntity(pagoNuevo);
+
+        List<EntidadPago> pacientes =
+                repositorioPago.findAllById(pagoNuevo.idsPacientes());
+
+        if (pacientes.size() != pagoNuevo.idsPacientes().size()) {
+            throw new EntidadNoEncontradaException(
+                    "Pago",
+                    "No encontrado",
+                    1l,
+                    "No se ha encontrado a ningún pago con ID."
+            );
+        }
 
         if (pago.getFecha() == null) {
             pago.setFecha(LocalDateTime.now());
@@ -67,8 +79,11 @@ public class ServicioPago implements IServicioPago {
 
         EntidadPago pago = repositorioPago.findById(id)
                 .orElseThrow(() ->
-                        new RecursoNoEncontradoException(
-                                "El pago con id: " + id + " no existe."
+                        new EntidadNoEncontradaException(
+                                "Pago",
+                                "No encontrado",
+                                id,
+                                "No se ha encontrado ningún pago realizado con ese ID."
                         ));
 
         if (pagoDTO.monto() != null
@@ -92,8 +107,11 @@ public class ServicioPago implements IServicioPago {
 
         EntidadPago pago = repositorioPago.findById(id)
                 .orElseThrow(() ->
-                        new RecursoNoEncontradoException(
-                                "El pago con id: " + id + " no existe."
+                        new EntidadNoEncontradaException(
+                                "Pago",
+                                "No encontrado",
+                                id,
+                                "No se ha encontrado ningún pago realizado con ese ID."
                         ));
 
         repositorioPago.delete(pago);
@@ -139,8 +157,11 @@ public class ServicioPago implements IServicioPago {
 
         EntidadPago pago = repositorioPago.findById(id)
                 .orElseThrow(() ->
-                        new RecursoNoEncontradoException(
-                                "El pago con id: " + id + " no existe."
+                        new EntidadNoEncontradaException(
+                                "Pago",
+                                "No encontrado",
+                                id,
+                                "No se ha encontrado ningún pago realizado con ese ID."
                         ));
 
         return pagoMapper.toDTO(pago);
@@ -150,8 +171,11 @@ public class ServicioPago implements IServicioPago {
 
         EntidadPago pago = repositorioPago.findById(idPago)
                 .orElseThrow(() ->
-                        new RecursoNoEncontradoException(
-                                "El pago con id: " + idPago + " no existe."
+                        new EntidadNoEncontradaException(
+                                "Pago",
+                                "No encontrado",
+                                idPago,
+                                "No se ha encontrado ningún pago realizado con ese ID."
                         ));
 
         return pago.getPacientes()

@@ -3,7 +3,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Model;
 import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
-import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
+import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.EntidadPrescripcionTratamiento;
 import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.EntidadSalaInternacion;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class EntidadPaciente {
     private EntidadObraSocial obraSocial;
 
     /// Esto lo agregó Dante, si algo no anda ya saben de quién es la culpa
-    @OneToMany(mappedBy = "pacientes")
+    @OneToMany(mappedBy = "paciente")
     private List<EntidadPrescripcionTratamiento> tratamientos;
 
     @OneToOne(cascade = CascadeType.ALL)

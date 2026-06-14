@@ -1,13 +1,11 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper;
 import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoNuevo;
 import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
-import com.GrupoProga3.Gestor_Salud.Diagnosticos.Dominio.EntidadDiagnostico;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.MAPPER.PrescripcionTratamientoMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,7 +1,8 @@
-package com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento;
+package com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio;
 
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Tratamientos.Doiminio.EntidadTratamiento;
+import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,10 +23,16 @@ public class EntidadPrescripcionTratamiento {
     private Long id;
 
     @ManyToOne
-    private EntidadPaciente pacientes;
+    @JoinColumn(name="id_paciente", nullable = false)
+    private EntidadPaciente paciente;
 
     @ManyToOne
+    @JoinColumn(name="id_tratamiento", nullable = false)
     private EntidadTratamiento tratamientos;
+
+    @ManyToOne
+    @JoinColumn(name="id_profesional")
+    private EntidadUsuarios profesional;
 
     private Boolean activo;
 
