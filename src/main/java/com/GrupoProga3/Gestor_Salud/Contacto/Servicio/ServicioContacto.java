@@ -1,18 +1,14 @@
 package com.GrupoProga3.Gestor_Salud.Contacto.Servicio;
 
-import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoDTO;
 import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoNuevo;
 import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.DTO.ContactoRespuesta;
 import com.GrupoProga3.Gestor_Salud.Contacto.Dominio.Mappers.ContactoMapper;
 import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Contacto.Repositorio.RepositorioContacto;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.ReglaNegocioException;
-import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
-import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,14 +29,14 @@ public class ServicioContacto implements IServicioContacto {
     public ContactoRespuesta guardar(ContactoNuevo contactoNuevo) {
 
         if (repositorioContacto.existsByTelefono(contactoNuevo.telefono())) {
-            throw new RecursoExistenteException(
+            throw new RecursoOcupadoException(
                     "Ya existe un contacto con el número: "
                             + contactoNuevo.telefono()
             );
         }
 
         if (repositorioContacto.existsByEmail(contactoNuevo.email())) {
-            throw new RecursoExistenteException(
+            throw new RecursoOcupadoException(
                     "Ya existe un contacto con el email: "
                     +contactoNuevo.email()
             );
@@ -79,10 +75,11 @@ public class ServicioContacto implements IServicioContacto {
         EntidadContacto contacto =
                 repositorioContacto.findById(id)
                         .orElseThrow(() ->
-                                new RecursoNoEncontradoException(
-                                        "El contacto con id "
-                                                + id
-                                                + " no existe."
+                                new EntidadNoEncontradaException(
+                                        "Contacto",
+                                        "No encontrado",
+                                        id,
+                                        "No se ha encontrado ninguna contacto con aquel ID."
                                 ));
 
 /*        if (contactoNuevo.nombre() != null
@@ -144,10 +141,11 @@ public class ServicioContacto implements IServicioContacto {
         EntidadContacto contacto =
                 repositorioContacto.findById(id)
                         .orElseThrow(() ->
-                                new RecursoNoEncontradoException(
-                                        "El contacto con id "
-                                                + id
-                                                + " no existe."
+                                new EntidadNoEncontradaException(
+                                        "Contacto",
+                                        "No encontrado",
+                                        id,
+                                        "No se ha encontrado ningún contacto con aquel ID."
                                 ));
 
         repositorioContacto.delete(contacto);
@@ -198,10 +196,11 @@ public class ServicioContacto implements IServicioContacto {
         EntidadContacto contacto =
                 repositorioContacto.findById(id)
                         .orElseThrow(() ->
-                                new RecursoNoEncontradoException(
-                                        "El contacto con id "
-                                                + id
-                                                + " no existe."
+                                new EntidadNoEncontradaException(
+                                        "Contacto",
+                                        "No encontrado",
+                                        id,
+                                        "No se ha encontrado ningún contacto con aquel ID."
                                 ));
 
         return contactoMapper.toDTO(contacto);

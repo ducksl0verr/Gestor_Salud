@@ -2,7 +2,7 @@ package com.GrupoProga3.Gestor_Salud.Pacientes.Model;
 
 import com.GrupoProga3.Gestor_Salud.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.EntidadDomicilio;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.Dominio.EntidadPrescripcionTratamiento;
 import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.EntidadSalaInternacion;
 import jakarta.persistence.*;

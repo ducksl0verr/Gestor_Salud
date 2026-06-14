@@ -6,9 +6,11 @@ import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.DTOs.MedicamentoRespues
 import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.EntidadMedicamento;
 import com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio.MAPPER.MedicamentoMapper;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,6 +21,7 @@ public class ServicioMedicamento implements IServicioMedicamento {
     private final MedicamentoMapper  medicamentoMapper;
 
     @Override
+    @Transactional
     public MedicamentoRespuesta crear(MedicamentoNuevo medicamentoNuevo) {
         System.out.println(medicamentoNuevo);
 
@@ -82,6 +85,7 @@ public class ServicioMedicamento implements IServicioMedicamento {
     }
 
     @Override
+    @Transactional
     public MedicamentoRespuesta actualizar(Long id, MedicamentoActualizar medicamentoActualizar) {
         EntidadMedicamento buscado = repositorioMedicamento
                 .findById(id)
@@ -102,6 +106,12 @@ public class ServicioMedicamento implements IServicioMedicamento {
         EntidadMedicamento actualizado = repositorioMedicamento.save(buscado);
 
         return medicamentoMapper.toDTO(actualizado);
+    }
+
+    @Transactional
+    public void eliminarVencidos (){
+        repositorioMedicamento.deleteVencidos(LocalDate.now());
+        System.out.println("Medicamentos vencidos eliminados.");
     }
 
 }

@@ -21,7 +21,6 @@ public record MedicamentoNuevo(@NotBlank
                                @NotNull
                                Double precio,
                                @NotNull
-                               @DateTimeFormat (pattern = "dd/MM/yyyy")
                                @Future
                                LocalDate fechaVencimiento) {
 }

@@ -4,17 +4,16 @@ import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialDTO;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialNueva;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.MAPPER.ObraSocialMapper;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.ReglaNegocioException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -32,8 +31,8 @@ public class ServicioObraSocial implements IServicioObraSocial {
     public ObraSocialRespuesta guardar(ObraSocialNueva obraSocialNueva) {
 
         if (repositorioObraSocial.existsByNombre(obraSocialNueva.nombre())) {
-            throw new RecursoExistenteException(
-                    "Ya existe una obra social con nombre: "
+            throw new RecursoOcupadoException(
+                    "Ya existe una obra social con el nombre: "
                             + obraSocialNueva.nombre()
             );
         }
@@ -62,10 +61,11 @@ public class ServicioObraSocial implements IServicioObraSocial {
         EntidadObraSocial obraSocial =
                 repositorioObraSocial.findById(id)
                         .orElseThrow(() ->
-                                new RecursoNoEncontradoException(
-                                        "La obra social con id: "
-                                                + id
-                                                + " no existe."
+                                new EntidadNoEncontradaException(
+                                        "Obra Social",
+                                                "No encontrada",
+                                                id,
+                                                "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
 
         if (obraSocialDTO.getNombre() != null
@@ -102,10 +102,11 @@ public class ServicioObraSocial implements IServicioObraSocial {
         EntidadObraSocial obraSocial =
                 repositorioObraSocial.findById(id)
                         .orElseThrow(() ->
-                                new RecursoNoEncontradoException(
-                                        "La obra social con id: "
-                                                + id
-                                                + " no existe."
+                                new EntidadNoEncontradaException(
+                                        "Obra Social",
+                                        "No encontrada",
+                                        id,
+                                        "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
 
         if (obraSocial.getDomicilios() != null
@@ -162,10 +163,11 @@ public class ServicioObraSocial implements IServicioObraSocial {
         EntidadObraSocial obraSocial =
                 repositorioObraSocial.findById(idObraSocial)
                         .orElseThrow(() ->
-                                new RecursoNoEncontradoException(
-                                        "La obra social con id: "
-                                                + idObraSocial
-                                                + " no existe."
+                                new EntidadNoEncontradaException(
+                                        "Obra Social",
+                                        "No encontrada",
+                                        idObraSocial,
+                                        "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
 
         return obraSocial.getDomicilios()

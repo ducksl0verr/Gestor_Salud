@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
@@ -17,4 +18,5 @@ public interface IServicioUsuario {
     ProfesionalRespuestaDTO actualizarProfesional(Long id, ProfesionalDTO profesionalDTO);
     List<UsuarioRespuestaDTO> buscarTodos();
     List<ProfesionalRespuestaDTO> buscarTodosProfesionales();
+    void enviarMensajeProveedor (Long idProveedor, MensajeDTO dto);
 }

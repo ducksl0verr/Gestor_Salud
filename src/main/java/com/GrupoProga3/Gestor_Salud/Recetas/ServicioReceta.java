@@ -15,7 +15,7 @@ import com.GrupoProga3.Gestor_Salud.Recetas.Dominio.MAPPER.RecetaMapper;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.Medicamentos.MedicamentoSinStockException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.FaltaDeRecursoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -77,7 +77,7 @@ public class ServicioReceta implements IServicioReceta {
                             ));
 
             if (medicamento.getStock()<detallesdto.cantidad()){
-                throw new MedicamentoSinStockException("Stock insuficiente para "+ medicamento.getNombre());
+                throw new FaltaDeRecursoException("Stock insuficiente para "+ medicamento.getNombre());
             }
 
             medicamento.descontarStock(detallesdto.cantidad());

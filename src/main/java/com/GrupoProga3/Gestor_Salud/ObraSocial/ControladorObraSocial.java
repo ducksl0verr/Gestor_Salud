@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
 
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialDTO;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialNueva;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
 import jakarta.validation.Valid;
@@ -30,17 +31,22 @@ public class ControladorObraSocial {
 
     @GetMapping
     public ResponseEntity<List<ObraSocialRespuesta>> buscarObraSocial(
-            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String nom,
             @RequestParam(required = false) String codigo) {
 
         return ResponseEntity.ok(
-                servicioObraSocial.buscarObraSocial(nombre, codigo)
+                servicioObraSocial.buscarObraSocial(nom, codigo)
         );
     }
 
     @GetMapping("/{id}")
     ResponseEntity<ObraSocialRespuesta> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(servicioObraSocial.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<ObraSocialRespuesta> actualizar(@PathVariable Long id, @RequestBody @Valid ObraSocialDTO dto) {
+        return ResponseEntity.ok(servicioObraSocial.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")

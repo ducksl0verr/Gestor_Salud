@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Controlador;
 
+import com.GrupoProga3.Gestor_Salud.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
@@ -73,6 +74,13 @@ public class ControladorUsuario {
     public ResponseEntity<ProfesionalRespuestaDTO> actualizarProfesional(@PathVariable Long id, @RequestBody @Valid ProfesionalDTO profesionalDTO)
     {
         return ResponseEntity.ok(servicioUsuario.actualizarProfesional(id,profesionalDTO));
+    }
+
+    @PostMapping("/{id}/mensaje")
+    ResponseEntity<String> enviarMensaje (@PathVariable Long id, @Valid @RequestBody MensajeDTO mensajeDTO)
+    {
+        servicioUsuario.enviarMensajeProveedor(id,mensajeDTO);
+        return ResponseEntity.ok("Mensaje enviado correctamente.");
     }
 
 }

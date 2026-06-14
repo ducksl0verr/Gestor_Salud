@@ -1,10 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.Pago;
 
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoNoEncontradoException;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.ReglaNegocioException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteRespuesta;
-import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoDTO;
 import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoNuevo;
 import com.GrupoProga3.Gestor_Salud.Pago.DTO.PagoRespuesta;
@@ -35,7 +33,7 @@ public class ServicioPago implements IServicioPago {
                 pagoNuevo.monto(),
                 pagoNuevo.fecha())) {
 
-            throw new RecursoExistenteException(
+            throw new RecursoOcupadoException(
                     "Ya existe un pago con monto "
                             + pagoNuevo.monto()
                             + " y fecha "

@@ -1,5 +1,9 @@
 package com.GrupoProga3.Gestor_Salud.Usuarios.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.Notificaciones.MensajeDTO;
+import com.GrupoProga3.Gestor_Salud.Notificaciones.ServicioEmail;
+import com.GrupoProga3.Gestor_Salud.Proveedores.Dominio.EntidadProveedor;
+import com.GrupoProga3.Gestor_Salud.Proveedores.RepositorioProveedor;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.Usuarios.Dominio.DTO.UsuarioDTO;
@@ -19,7 +23,9 @@ import java.util.List;
   public class ServicioUsuario implements IServicioUsuario {
 
     private final RepositorioUsuario repositorioUsuario;
+    private final RepositorioProveedor repositorioProveedor;
     private final UsuarioMapper usuarioMapper;
+    private final ServicioEmail email;
 
     @Override
     @Transactional
@@ -119,5 +125,18 @@ import java.util.List;
                 && !p.getMatricula().isBlank())
                 .map(usuarioMapper::toRespuestaProfesionalDTO)
                 .toList();
+    }
+
+    @Override
+    public void enviarMensajeProveedor(Long id, MensajeDTO dto) {
+        EntidadProveedor p = repositorioProveedor
+                .findById(id)
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Proveedor",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún proveedor con aquel ID."
+                ));
+        email.enviarMail(p.getContacto().getEmail(), dto.asunto(), dto.mensaje());
     }
 }

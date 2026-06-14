@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.Medicamentos.Dominio;
 
+import com.GrupoProga3.Gestor_Salud.common.excepciones.FaltaDeRecursoException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class EntidadMedicamento {
 
     public void descontarStock(Integer cantidad){
         if (stock<cantidad){
-            throw new IllegalArgumentException("El stock es insuficiente");
+            throw new FaltaDeRecursoException("El stock es insuficiente");
         }
         stock-=cantidad;
     }

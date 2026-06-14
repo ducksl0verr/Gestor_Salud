@@ -1,8 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.Contacto.Repositorio.RepositorioContacto;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.RepositorioObraSocial;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteActualizar;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO.PacienteNuevo;
@@ -11,6 +10,7 @@ import com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.Mapper.PacienteMapper;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +43,12 @@ public class ServicioPaciente implements IServicioPaciente{
 
         if(repositorioContacto.existsByTelefono(pacienteNuevo.contacto().telefono()))
         {
-            throw new RecursoExistenteException("Ya existe un contacto con este telefono: "
+            throw new RecursoOcupadoException("Ya existe un contacto con este telefono: "
             + pacienteNuevo.contacto().telefono());
         }
 
         if (repositorioContacto.existsByEmail(pacienteNuevo.contacto().email())){
-            throw new RecursoExistenteException("Ya existe un contacto con este email: "+ pacienteNuevo.contacto().email());
+            throw new RecursoOcupadoException("Ya existe un contacto con este email: "+ pacienteNuevo.contacto().email());
         }
 
         EntidadPaciente guardado = repositorioPaciente.save(buscado);

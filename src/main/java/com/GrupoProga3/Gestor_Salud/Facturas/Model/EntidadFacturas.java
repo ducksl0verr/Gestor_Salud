@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Facturas.Model;
 import com.GrupoProga3.Gestor_Salud.DetalleFacturas.Model.EntidadDetalleFacturas;
 import com.GrupoProga3.Gestor_Salud.Facturas.Dominio.ENUMS.EstadoFactura;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.EntidadObraSocial;
 import com.GrupoProga3.Gestor_Salud.Pacientes.Model.EntidadPaciente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
