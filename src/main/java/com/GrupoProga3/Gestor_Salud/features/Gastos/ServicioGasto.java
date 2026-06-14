@@ -1,0 +1,119 @@
+package com.GrupoProga3.Gestor_Salud.features.Gastos;
+
+import com.GrupoProga3.Gestor_Salud.features.Gastos.Dominio.DTOs.GastoActualizar;
+import com.GrupoProga3.Gestor_Salud.features.Gastos.Dominio.DTOs.GastoNuevo;
+import com.GrupoProga3.Gestor_Salud.features.Gastos.Dominio.DTOs.GastoRespuesta;
+import com.GrupoProga3.Gestor_Salud.features.Gastos.Dominio.EntidadGasto;
+import com.GrupoProga3.Gestor_Salud.features.Gastos.Dominio.MAPPER.GastoMapper;
+import com.GrupoProga3.Gestor_Salud.features.Proveedores.Dominio.EntidadProveedor;
+import com.GrupoProga3.Gestor_Salud.features.Proveedores.RepositorioProveedor;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ServicioGasto implements IServicioGasto {
+
+    private final RepositorioGasto repositorioGasto;
+    private final RepositorioProveedor  repositorioProveedor;
+    private final GastoMapper gastoMapper;
+
+    @Override
+    @Transactional
+    public GastoRespuesta crear(GastoNuevo gastoNuevo) {
+        System.out.println(gastoNuevo);
+
+        EntidadGasto gasto = gastoMapper.toEntity(gastoNuevo);
+
+        EntidadProveedor proveedor = repositorioProveedor.findAll()
+                .stream()
+                .filter(p-> p.getNombre().equalsIgnoreCase(gastoNuevo.nombreProveedor()))
+                .findFirst()
+                .orElseThrow(()-> new EntidadNoEncontradaException("Proveedor",
+                        "No se ha encontrado.",
+                        1l,
+                        "No se ha encontrado ningún proveedor con aquel nombre."));
+        gasto.setProveedor(proveedor);
+
+        EntidadGasto creado = repositorioGasto.save(gasto);
+        System.out.println(creado);
+
+        return gastoMapper.toDTO(creado);
+    }
+
+    @Override
+    public GastoRespuesta buscarPorId(Long id) {
+        EntidadGasto gasto = repositorioGasto
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Gasto",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún gasto con aquel id."
+                ));
+        return gastoMapper.toDTO(gasto);
+    }
+
+    @Override
+    public List<GastoRespuesta> buscarTodos() {
+        return repositorioGasto
+                .findAll()
+                .stream()
+                .map(gastoMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public List<GastoRespuesta> buscarPorProveedor(String nombre) {
+        return repositorioGasto
+                .findAll()
+                .stream()
+                .filter(g->g.getProveedor().getNombre().equalsIgnoreCase(nombre))
+                .map(gastoMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public GastoRespuesta actualizar(Long id, GastoActualizar gastoActualizar) {
+        EntidadGasto gasto = repositorioGasto
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Gasto",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún gasto con aquel id."
+                ));
+
+        gasto.setDescripcion(gastoActualizar.descripcion());
+        gasto.setTipoGasto(gastoActualizar.tipoGasto());
+        gasto.setMonto(gastoActualizar.monto());
+        gasto.setFecha(gastoActualizar.fecha());
+        gasto.setObservaciones(gastoActualizar.observaciones());
+        gasto.setMetodoPago(gastoActualizar.metodoPago());
+
+        EntidadGasto actualizado = repositorioGasto.save(gasto);
+
+        return gastoMapper.toDTO(actualizado);
+    }
+
+    @Override
+    @Transactional
+    public void borrar(Long id) {
+        EntidadGasto gasto = repositorioGasto
+                .findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Gasto",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ningún gasto con aquel id."
+                ));
+
+        repositorioGasto.delete(gasto);
+    }
+
+}

@@ -1,0 +1,156 @@
+package com.GrupoProga3.Gestor_Salud.features.Cirugias;
+
+import com.GrupoProga3.Gestor_Salud.features.Cirugias.Dominio.DTOs.CirugiaActualizar;
+import com.GrupoProga3.Gestor_Salud.features.Cirugias.Dominio.DTOs.CirugiaNueva;
+import com.GrupoProga3.Gestor_Salud.features.Cirugias.Dominio.DTOs.CirugiaRespuesta;
+import com.GrupoProga3.Gestor_Salud.features.Cirugias.Dominio.EntidadCirugia;
+import com.GrupoProga3.Gestor_Salud.features.Cirugias.Dominio.Enums.EstadoCirugia;
+import com.GrupoProga3.Gestor_Salud.features.Cirugias.Dominio.MAPPER.CirugiaMapper;
+import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.features.Pacientes.Repositorio.RepositorioPaciente;
+import com.GrupoProga3.Gestor_Salud.features.Quirofanos.Dominio.EntidadQuirofano;
+import com.GrupoProga3.Gestor_Salud.features.Quirofanos.RepositorioQuirofano;
+import com.GrupoProga3.Gestor_Salud.features.Usuarios.Model.EntidadUsuarios;
+import com.GrupoProga3.Gestor_Salud.features.Usuarios.Repositorio.RepositorioUsuario;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ServicioCirugia implements IServicioCirugia {
+    private final RepositorioCirugia repositorioCirugia;
+    private final RepositorioPaciente  repositorioPaciente;
+    private final RepositorioQuirofano  repositorioQuirofano;;
+    private final RepositorioUsuario repositorioUsuario;
+    private final CirugiaMapper  cirugiaMapper;
+
+    @Override
+    @Transactional
+    public CirugiaRespuesta crear(CirugiaNueva cirugiaNueva) {
+        System.out.println(cirugiaNueva);
+        EntidadCirugia cirugia = cirugiaMapper.toEntity(cirugiaNueva);
+
+        EntidadUsuarios cirujano = repositorioUsuario.findById(cirugiaNueva.idCirujano())
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        cirugiaNueva.idCirujano(),
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
+
+        cirugia.setCirujano(cirujano);
+
+        EntidadPaciente paciente = repositorioPaciente.findById(cirugiaNueva.idPaciente())
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Paciente",
+                        "No se ha encontrado.",
+                        cirugiaNueva.idPaciente(),
+                        "No se ha encontrado a ningún paciente con aquel ID."
+                ));
+
+        cirugia.setPaciente(paciente);
+
+        EntidadQuirofano quirofano = repositorioQuirofano.findById(cirugiaNueva.idQuirofano())
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Quirofano",
+                        "No se ha encontrado.",
+                        cirugiaNueva.idQuirofano(),
+                        "No se ha encontrado a ningún quirofano con aquel ID."
+                ));
+
+        cirugia.setQuirofano(quirofano);
+
+        cirugia.setEstado(EstadoCirugia.PROGRAMADA);
+
+        EntidadCirugia guardado =  repositorioCirugia.save(cirugia);
+
+        System.out.println(guardado);
+
+        return cirugiaMapper.toDTO(guardado);
+    }
+
+    @Override
+    public CirugiaRespuesta buscarPorID(Long id) {
+        EntidadCirugia buscada = repositorioCirugia.findById(id)
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Cirugia",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ninguna cirugia con aquel ID."
+                ));
+        return cirugiaMapper.toDTO(buscada);
+    }
+
+    @Override
+    public List<CirugiaRespuesta> buscarTodos() {
+        return repositorioCirugia
+                .findAll()
+                .stream()
+                .map(cirugiaMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public CirugiaRespuesta actualizar(Long id, CirugiaActualizar cirugiaActualizar) {
+        EntidadCirugia buscada = repositorioCirugia.findById(id)
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Cirugia",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ninguna cirugia con aquel ID."
+                ));
+
+        buscada.setEstado(cirugiaActualizar.estado());
+        buscada.setFecha(cirugiaActualizar.fecha());
+
+        EntidadUsuarios cirujanoNuevo = repositorioUsuario
+                .findById(cirugiaActualizar.idCirujano())
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Profesional",
+                        "No se ha encontrado.",
+                        cirugiaActualizar.idCirujano(),
+                        "No se ha encontrado a ningún profesional con aquel ID."
+                ));
+        buscada.setCirujano(cirujanoNuevo);
+
+        EntidadQuirofano quirofanoNuevo = repositorioQuirofano
+                .findById(cirugiaActualizar.idQuirofano())
+                .orElseThrow(()-> new EntidadNoEncontradaException("Quirofano",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ninguna quirofano con aquel ID."));
+
+        buscada.setQuirofano(quirofanoNuevo);
+
+        System.out.println(buscada);
+
+        EntidadCirugia guardado = repositorioCirugia.save(buscada);
+
+        return cirugiaMapper.toDTO(guardado);
+    }
+
+    @Override
+    @Transactional
+    public void borrar(Long id) {
+        EntidadCirugia buscada = repositorioCirugia.findById(id)
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Cirugia",
+                        "No encontrado",
+                        id,
+                        "No se ha encontrado ninguna cirugia con aquel ID."
+                ));
+
+        if(buscada.getEstado().equals(EstadoCirugia.CANCELADA) ||  buscada.getEstado().equals(EstadoCirugia.FINALIZADA)) {
+            repositorioCirugia.delete(buscada);
+        } else {
+            throw new RecursoOcupadoException("La cirugía está en curso, no se peude eliminar");
+        }
+    }
+
+}
