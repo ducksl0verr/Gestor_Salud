@@ -38,6 +38,11 @@ public class ControladorObraSocial {
         );
     }
 
+    @GetMapping("/{id}")
+    ResponseEntity<ObraSocialRespuesta> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(servicioObraSocial.buscarPorId(id));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> borrar(@PathVariable Long id) {
         servicioObraSocial.borrar(id);

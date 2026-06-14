@@ -11,4 +11,5 @@ public interface IServicioObraSocial {
     void borrar (Long id);// delete
     ObraSocialRespuesta actualizar (Long id, ObraSocialDTO obrasocialDTO);//update
     List<ObraSocialRespuesta> buscarTodos();//findAll
+    ObraSocialRespuesta buscarPorId(Long id);
 }

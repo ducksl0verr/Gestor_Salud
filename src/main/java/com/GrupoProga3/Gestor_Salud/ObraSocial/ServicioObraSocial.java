@@ -1,7 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.ObraSocial;
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioNuevo;
-import com.GrupoProga3.Gestor_Salud.Domicilio.RepositorioDomicilio;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialDTO;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialNueva;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
@@ -9,6 +8,7 @@ import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.MAPPER.ObraSocialMapper;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoExistenteException;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.RecursoNoEncontradoException;
 import com.GrupoProga3.Gestor_Salud.ObraSocial.Excepciones.ReglaNegocioException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,5 +180,19 @@ public class ServicioObraSocial implements IServicioObraSocial {
                 .stream()
                 .map(obraSocialMapper::toDTO)
                 .toList();
+    }
+
+    @Override
+    public ObraSocialRespuesta buscarPorId(Long id) {
+        EntidadObraSocial obra = repositorioObraSocial
+                .findById(id)
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Obra Social",
+                        "No se ha encontrado",
+                        id,
+                        "No se ha encontrado ninguna obra social con aquel ID."
+                ));
+
+        return obraSocialMapper.toDTO(obra);
     }
 }
