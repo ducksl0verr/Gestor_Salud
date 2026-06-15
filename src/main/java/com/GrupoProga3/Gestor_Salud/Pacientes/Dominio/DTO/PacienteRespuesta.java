@@ -1,7 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.Pacientes.Dominio.DTO;
 
 import com.GrupoProga3.Gestor_Salud.Domicilio.Dominio.DTO.DomicilioRespuesta;
-import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.ObraSocialRespuesta;
+import com.GrupoProga3.Gestor_Salud.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
 import com.GrupoProga3.Gestor_Salud.Prescripcion_Tratamiento.EntidadPrescripcionTratamiento;
 import com.GrupoProga3.Gestor_Salud.Salas_Internaciones.Dominio.DTOs.SalaInternacionRespuesta;
 import jakarta.validation.constraints.NotBlank;

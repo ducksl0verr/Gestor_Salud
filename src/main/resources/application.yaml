@@ -3,9 +3,9 @@ spring:
     name: Gestor_Salud
 
   datasource:
-    url: jdbc:mysql://localhost:3306/Gestor_Salud
-    username: root
-    password:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -13,5 +13,5 @@ spring:
       ddl-auto: update
     show-sql: true
     properties:
-     hibernate:
-      format_sql: true
+      hibernate:
+        format_sql: true
