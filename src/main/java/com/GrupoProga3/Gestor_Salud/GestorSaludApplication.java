@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class GestorSaludApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GestorSaludApplication.class, args);
-
+        System.out.println("Hola =)");
     }
 
 }
