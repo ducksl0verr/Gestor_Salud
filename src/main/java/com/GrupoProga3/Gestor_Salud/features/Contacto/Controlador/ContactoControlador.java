@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ContactoControlador {
     private final IServicioContacto servicioContacto;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREAR_CONTACTO')")
     public ResponseEntity<ContactoRespuesta> guardar(
             @Valid @RequestBody ContactoNuevo contactoNuevo) {
 
@@ -30,6 +32,7 @@ public class ContactoControlador {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_CONTACTO')")
     public ResponseEntity<ContactoRespuesta> actualizar(
             @PathVariable Long id,
             @Valid @RequestBody ContactoNuevo contactoNuevo) {
@@ -41,6 +44,7 @@ public class ContactoControlador {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ELIMINAR_CONTACTO')")
     public ResponseEntity<Void> borrar(@PathVariable Long id) {
 
         servicioContacto.borrar(id);
@@ -49,6 +53,7 @@ public class ContactoControlador {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('VER_CONTACTO')")
     public ResponseEntity<ContactoRespuesta> buscarPorId(
             @PathVariable Long id) {
 
@@ -58,6 +63,7 @@ public class ContactoControlador {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('VER_CONTACTO')")
     public ResponseEntity<List<ContactoRespuesta>> buscarTodos() {
 
         return ResponseEntity.ok(

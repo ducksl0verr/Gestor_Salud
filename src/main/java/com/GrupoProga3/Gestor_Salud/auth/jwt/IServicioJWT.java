@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.auth.jwt;
 
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +13,7 @@ import java.util.function.Function;
 public interface IServicioJWT {
     String extractUsername(String token);
 
-    String generateToken(UserDetails userDetails);
+    String generateToken(EntidadCredencial credencial);
 
     List<GrantedAuthority> extractAuthorities(String token);
 

@@ -4,9 +4,12 @@ import com.GrupoProga3.Gestor_Salud.auth.DTOs.AuthPedido;
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.AuthRespuesta;
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.RefreshTokenPedido;
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.jwt.ServicioJWT;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.UsuarioRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Servicio.ServicioUsuario;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,37 +24,19 @@ public class ControladorAuth {
 
     private final ServicioAuth servicioAuth;
     private final ServicioUsuario servicioUsuario;
-    private final ServicioJWT servicioJWT;
 
     @PostMapping("/iniciar")
-    public ResponseEntity<AuthRespuesta> authnticateUser(@RequestBody AuthPedido authPedido) {
+    public ResponseEntity<AuthRespuesta> authenticateUser(@RequestBody @Valid AuthPedido authPedido) {
         return ResponseEntity.ok(servicioAuth.authenticate(authPedido));
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@RequestBody CuentaNueva nueva) {
+    public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@RequestBody @Valid CuentaNueva nueva) {
         return new ResponseEntity<>(servicioUsuario.guardar(nueva), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<UsuarioRespuestaDTO>> obtenerUsuarios() {
-        return ResponseEntity.ok(servicioUsuario.buscarTodos());
-    }
-
-  /*  @PostMapping()
-    public ResponseEntity<AuthRespuesta> authenticateUser(@RequestBody
-                                                         AuthPedido authRequest){
-        EntidadCredencial user = servicioAuth.authenticate(authRequest);
-        System.out.println(user);
-        String token = servicioJWT.generateToken(user);
-        System.out.println(token);
-        return ResponseEntity.ok(new AuthRespuesta(token,
-                user.getRefreshToken()));
-    }
-
-   */
     @PostMapping("/refresh")
-    public ResponseEntity<AuthRespuesta> refreshToken(@RequestBody
+    public ResponseEntity<AuthRespuesta> refreshToken(@RequestBody @Valid
                                                       RefreshTokenPedido request){
         AuthRespuesta response =
                 servicioAuth.refreshAccessToken(request.refreshToken());

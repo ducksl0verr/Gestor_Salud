@@ -1,4 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.auth.DTOs;
 
-public record RefreshTokenPedido(String refreshToken) {
+import jakarta.validation.constraints.NotBlank;
+
+public record RefreshTokenPedido(@NotBlank String refreshToken) {
 }

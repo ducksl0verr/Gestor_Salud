@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.auth.DTOs;
 
-public record AuthPedido(String username,
-                         String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthPedido(@NotBlank String username,
+                         @NotBlank String password) {
 }

@@ -12,6 +12,4 @@ public record UsuarioRespuestaDTO(Long idUsuario,
                                   String apellido,
                                   String dni,
                                   ContactoRespuesta contacto,
-                                  String username,
-                                  String password,
                                   ROLES role) {}

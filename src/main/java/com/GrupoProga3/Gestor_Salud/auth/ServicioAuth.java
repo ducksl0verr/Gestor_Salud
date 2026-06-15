@@ -6,6 +6,7 @@ import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.jwt.ServicioJWT;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.TokenRenovadoInvalidoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -42,13 +43,13 @@ public class ServicioAuth {
         EntidadCredencial user = repositorioCredencial.findByUsername(username)
                 .orElseThrow(()-> new EntidadNoEncontradaException("Usuario",
                         "No encontrado",
-                        1l,
+                        null,
                         "No se ha encontrado el usuario"));
         if (!user.getRefreshToken().equals(refreshToken)) {
-            throw new IllegalArgumentException("Refresh token no valido");
+            throw new TokenRenovadoInvalidoException("El token nuevo no coincide con la base de datos.");
         }
         if (!servicioJWT.validateRefreshToken(refreshToken, user)){
-            throw new IllegalArgumentException("Refresh token no valido");
+            throw new TokenRenovadoInvalidoException("El tokén es invalido o está expirado");
         }
         String newAccessToken = servicioJWT.generateToken(user);
         String newRefreshToken = servicioJWT.generateRefreshToken(user);

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -18,18 +19,21 @@ public class ControladorFactura {
     private final IServicioFactura servicioFactura;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('VER_FACTURA')")
     public ResponseEntity<List<FacturaRespuesta>> buscarTodos()
     {
         return ResponseEntity.ok(servicioFactura.buscarTodos());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('VER_FACTURA')")
     public ResponseEntity<FacturaRespuesta> buscarPorId(@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioFactura.buscarPorId(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREAR_FACTURA')")
     public ResponseEntity<?> crearFactura(@RequestBody @Valid FacturaNueva facturaNueva){
 
         return ResponseEntity.status(HttpStatus.CREATED).body(servicioFactura.crearFactura(facturaNueva));

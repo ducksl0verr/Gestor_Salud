@@ -24,43 +24,49 @@ public class ControladorUsuario {
     private final IServicioUsuario servicioUsuario;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('VER_USUARIO')")
     public ResponseEntity<List<UsuarioRespuestaDTO>> buscarTodos ()
     {
         return ResponseEntity.ok(servicioUsuario.buscarTodos());
     }
 
     @GetMapping("/profesionales")
+    @PreAuthorize("hasAuthority('VER_PROFESIONAL')")
     public ResponseEntity<List<ProfesionalRespuestaDTO>> buscarTodosProfesionales()
     {
         return ResponseEntity.ok(servicioUsuario.buscarTodosProfesionales());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('VER_USUARIO')")
     public ResponseEntity<UsuarioRespuestaDTO> buscarPorId (@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioUsuario.buscarPorId(id));
     }
 
     @GetMapping("/profesionales/{id}")
+    @PreAuthorize("hasAuthority('VER_PROFESIONAL')")
     public ResponseEntity<ProfesionalRespuestaDTO> buscarPorIdProfesionales(@PathVariable Long id)
     {
         return ResponseEntity.ok(servicioUsuario.buscarPorIdProfesional(id));
     }
 
     @PostMapping
-    //@PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
+    @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<UsuarioRespuestaDTO> guardar (@RequestBody @Valid CuentaNueva cuentaNueva)
     {
         return new ResponseEntity<>(servicioUsuario.guardar(cuentaNueva), HttpStatus.CREATED);
     }
 
     @PostMapping("/profesionales")
+    @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<ProfesionalRespuestaDTO> guardarProfesional(@RequestBody @Valid CuentaNueva nueva)
     {
         return new ResponseEntity<>(servicioUsuario.guardarProfesional(nueva),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<Void> borrar (@PathVariable Long id)
     {
         servicioUsuario.borrar(id);
@@ -68,18 +74,21 @@ public class ControladorUsuario {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<UsuarioRespuestaDTO> actualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTO usuarioDTO)
     {
        return  ResponseEntity.ok(servicioUsuario.actualizar(id, usuarioDTO));
     }
 
     @PutMapping("/profesionales/{id}")
+    @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<ProfesionalRespuestaDTO> actualizarProfesional(@PathVariable Long id, @RequestBody @Valid ProfesionalDTO profesionalDTO)
     {
         return ResponseEntity.ok(servicioUsuario.actualizarProfesional(id,profesionalDTO));
     }
 
     @PostMapping("/{id}/mensaje")
+    @PreAuthorize("hasAuthority('COMUNICAR_PROVEEDOR')")
     ResponseEntity<String> enviarMensaje (@PathVariable Long id, @Valid @RequestBody MensajeDTO mensajeDTO)
     {
         servicioUsuario.enviarMensajeProveedor(id,mensajeDTO);

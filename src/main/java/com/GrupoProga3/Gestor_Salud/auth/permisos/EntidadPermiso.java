@@ -15,6 +15,6 @@ public class EntidadPermiso {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="permiso", nullable=false, unique=true)
+    @Column(name="permiso", nullable=false, unique=true, length=500)
     private PERMISOS permiso;
 }

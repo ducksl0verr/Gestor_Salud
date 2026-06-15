@@ -1,8 +1,10 @@
 package com.GrupoProga3.Gestor_Salud.auth.jwt;
 
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,25 +33,47 @@ public class ServicioJWT implements  IServicioJWT {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(EntidadCredencial user) {
         Map<String, Object> claims = new HashMap<>();
-        List<String> roles = userDetails.getAuthorities().stream()
+        claims.put("role", user.getRole().getRole().name());
+        claims.put("permisos", user.getRole().getPermisos()
+                .stream()
+                .map(p->p.getPermiso().name())
+                .toList());
+        /*List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("roles", roles);
-        return buildToken(claims, userDetails, jwtExpiration);
+
+         */
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+ jwtExpiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public List<GrantedAuthority> extractAuthorities(String token) {
         Claims claims = extractAllClaims(token);
-        List<?> rawRoles = claims.get("roles", List.class);
-        if (rawRoles == null) {
-            return java.util.Collections.emptyList();
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        String role = claims.get("role", String.class);
+        if (role != null) {
+            authorities.add(new SimpleGrantedAuthority(role));
         }
-        return rawRoles.stream()
-                .map(Object::toString)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+
+        List<?> rawPermisos = claims.get("permisos", List.class);
+        if (rawPermisos != null) {
+            rawPermisos.stream()
+                    .map(Object::toString)
+                    .map(SimpleGrantedAuthority::new)
+                    .forEach(authorities::add);
+        }
+
+        return authorities;
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -112,11 +133,18 @@ public class ServicioJWT implements  IServicioJWT {
     public boolean validateRefreshToken(String refreshToken, UserDetails
             userDetails) {
         try {
-            Jwts.parser()
-                    .setSigningKey(getSignInKey())
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSignInKey())
                     .build()
-                    .parseClaimsJws(refreshToken);
-            final String username = extractUsername(refreshToken);
+                    .parseSignedClaims(refreshToken)
+                    .getPayload();
+            String type = claims.get("type", String.class);
+
+            if(!"refresh".equals(type)) {
+                return false;
+            }
+
+            final String username = claims.getSubject();
             return (username.equals(userDetails.getUsername())) &&
                     !isTokenExpired(refreshToken);
         } catch (JwtException e) {

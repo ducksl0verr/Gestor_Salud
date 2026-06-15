@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.auth.credenciales;
 
 import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Model.EntidadUsuarios;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
 import lombok.*;
@@ -33,6 +34,7 @@ public class EntidadCredencial implements UserDetails {
     private Boolean enabled;
 
     @Column(name="refresh_token", length = 2048, unique = true)
+    @JsonIgnore
     private String refreshToken;
 
     @OneToOne

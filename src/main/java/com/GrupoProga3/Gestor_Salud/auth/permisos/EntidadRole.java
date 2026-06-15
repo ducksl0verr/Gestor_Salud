@@ -19,7 +19,7 @@ public class EntidadRole {
     private ROLES role;
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.MERGE,  fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE,  fetch = FetchType.LAZY)
     @JoinTable(
             name="permisos_role",
             joinColumns = @JoinColumn(name="id_role"),

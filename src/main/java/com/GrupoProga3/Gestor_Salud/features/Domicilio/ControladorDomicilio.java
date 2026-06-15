@@ -5,6 +5,7 @@ import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.DTO.DomicilioResp
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 public class ControladorDomicilio {
     private final IServicioDomicilio servicioDomicilio;
     @GetMapping
+    @PreAuthorize("hasAuthority('VER_DOMICILIO')")
     public ResponseEntity<List<DomicilioRespuesta>> buscarTodos (){
         return ResponseEntity.ok(servicioDomicilio.buscarTodos());
     }
     @GetMapping("/{idDomicilio}")
+    @PreAuthorize("hasAuthority('VER_DOMICILIO')")
     public ResponseEntity<DomicilioRespuesta> buscarPorId (@PathVariable Long idDomicilio) {
         return  ResponseEntity.ok(servicioDomicilio.buscarPorId(idDomicilio));
     }
@@ -29,11 +32,13 @@ public class ControladorDomicilio {
     }
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_DOMICILIO')")
     public ResponseEntity<DomicilioRespuesta> actualizarDomicilio (@PathVariable Long id, @RequestBody @Valid DomicilioNuevo domicilioNuevo) {
         return ResponseEntity.ok(servicioDomicilio.actualizar(id, domicilioNuevo));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ELIMINAR_DOMICILIO')")
     ResponseEntity<Void> eliminarDomicilio (@PathVariable Long idDomicilio) {
         servicioDomicilio.borrar(idDomicilio);
         return ResponseEntity.ok().build();

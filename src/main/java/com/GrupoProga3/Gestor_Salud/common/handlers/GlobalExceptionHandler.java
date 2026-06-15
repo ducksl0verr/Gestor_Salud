@@ -15,6 +15,19 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(TokenRenovadoInvalidoException.class)
+    public ResponseEntity<ErrorRespuesta> manejoTokenRenovadoInvalido(TokenRenovadoInvalidoException ex,
+                                                                      HttpServletRequest request){
+        ErrorRespuesta error= new ErrorRespuesta(
+                LocalDateTime.now(),
+                HttpStatus.I_AM_A_TEAPOT.value(),
+                HttpStatus.I_AM_A_TEAPOT.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(error);
+    }
+
     @ExceptionHandler(EntidadNoEncontradaException.class)
     public ResponseEntity<ErrorRespuesta> manejoEntidadNoEncontrada(EntidadNoEncontradaException ex,
                                                                     HttpServletRequest request) {

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ControladorPago {
     private final IServicioPago servicioPago;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREAR_PAGO')")
     public ResponseEntity<PagoRespuesta> guardar(
             @Valid @RequestBody PagoNuevo pagoNuevo) {
 
@@ -27,6 +29,7 @@ public class ControladorPago {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('VER_PAGO')")
     public ResponseEntity<PagoRespuesta> buscarPorId(
             @PathVariable Long id) {
 
@@ -36,6 +39,7 @@ public class ControladorPago {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('VER_PAGO')")
     public ResponseEntity<List<PagoRespuesta>> buscarTodos() {
 
         return ResponseEntity.ok(
@@ -44,6 +48,7 @@ public class ControladorPago {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_PAGO')")
     public ResponseEntity<PagoRespuesta> actualizar(
             @PathVariable Long id,
             @Valid @RequestBody PagoDTO pagoDTO) {
@@ -54,6 +59,7 @@ public class ControladorPago {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ELIMINAR_PAGO')")
     public ResponseEntity<Void> borrar(
             @PathVariable Long id) {
 

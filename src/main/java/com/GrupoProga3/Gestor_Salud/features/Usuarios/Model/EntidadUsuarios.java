@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Model;
 
 
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import jakarta.persistence.*;
@@ -34,15 +35,12 @@ public class EntidadUsuarios {
 
     private String dni;
 
-    private String username;
-
-    private String password;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id_role")
     private EntidadRole role;
 
-    private Boolean enabled;
+    @OneToOne(mappedBy = "usuario")
+    private EntidadCredencial credencial;
 
 }
 

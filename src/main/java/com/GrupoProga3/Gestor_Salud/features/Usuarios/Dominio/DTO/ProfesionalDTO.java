@@ -19,5 +19,4 @@ public record ProfesionalDTO(@NotBlank String nombre,
                               */
                              @NotBlank String matricula,// posible cambio debido a que puede ser null si no es profesional. VER
                              @NotNull ContactoNuevo contacto,
-                             @NotBlank String username, @NotBlank String password,
                              @NotNull ROLES role) {}

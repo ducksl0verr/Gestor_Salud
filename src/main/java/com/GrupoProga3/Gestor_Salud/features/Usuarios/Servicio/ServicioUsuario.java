@@ -71,22 +71,32 @@ import java.util.Set;
 
     @Override
     @Transactional
-    public ProfesionalRespuestaDTO guardarProfesional(CuentaNueva dto) {
-        EntidadUsuarios prof = usuarioMapper.ProfToEntity(dto);
+    public ProfesionalRespuestaDTO guardarProfesional(CuentaNueva nueva) {
+
+        EntidadUsuarios user = usuarioMapper.ToEntity(nueva);
+
         EntidadRole role = repositorioRole
-                .findByRole(dto.role())
+                .findByRole(nueva.role())
                 .orElseThrow(()-> new EntidadNoEncontradaException(
                         "Role",
                         "No encontrado",
                         null,
-                        "No se ha encontrado ningún rol llamado: "+ dto.role()
+                        "No se ha encontrado ningún rol llamado: "+ nueva.role()
                 ));
 
-        prof.setPassword(passwordEncoder.encode(
-                dto.password()
-        ));
+        user.setRole(role);
 
-        EntidadUsuarios guardado = repositorioUsuario.save(prof);
+        EntidadUsuarios guardado = repositorioUsuario.save(user);
+
+        EntidadCredencial credencial = EntidadCredencial.builder()
+                .username(nueva.username())
+                .password(passwordEncoder.encode(nueva.password()))
+                .enabled(true)
+                .usuario(guardado)
+                .role(role)
+                .build();
+
+        repositorioCredencial.save(credencial);
 
         return usuarioMapper.toRespuestaProfesionalDTO(guardado);
     }

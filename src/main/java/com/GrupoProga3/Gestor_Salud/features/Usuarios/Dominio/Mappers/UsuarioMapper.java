@@ -16,15 +16,17 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
-    //UsuarioDTO ToDto(EntidadUsuarios entidadUsuarios);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", ignore = true)
+    @Mapping(target="credencial", ignore = true)
     EntidadUsuarios ToEntity(CuentaNueva dto);
-    //ProfesionalDTO ProfToDTO (EntidadUsuarios entidadUsuarios);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", ignore = true)
     EntidadUsuarios ProfToEntity (CuentaNueva dto);
+
     EntidadContacto toEntity (ContactoNuevo contacto);
+
     @Mapping(source = "id", target = "idUsuarioProfesional")
     @Mapping(target = "role", source = "role.role")
     ProfesionalRespuestaDTO toRespuestaProfesionalDTO (EntidadUsuarios entidadUsuarios);
