@@ -1,6 +1,10 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
+import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
+import com.GrupoProga3.Gestor_Salud.auth.permisos.RepositorioRole;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.ServicioEmail;
@@ -16,34 +20,74 @@ import com.GrupoProga3.Gestor_Salud.features.Usuarios.Repositorio.RepositorioUsu
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor // solo genera constructor a aquellos atributos final
   public class ServicioUsuario implements IServicioUsuario {
 
     private final RepositorioUsuario repositorioUsuario;
+    private final RepositorioRole repositorioRole;
     private final RepositorioProveedor repositorioProveedor;
     private final UsuarioMapper usuarioMapper;
     private final ServicioEmail email;
+    private final PasswordEncoder passwordEncoder;
+    private final RepositorioCredencial repositorioCredencial;
 
     @Override
     @Transactional
     public UsuarioRespuestaDTO guardar(CuentaNueva nueva) {
+        EntidadUsuarios user = usuarioMapper.ToEntity(nueva);
 
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nueva.nombre(),
-                nueva.apellido(), nueva.dni(), nueva.contacto());
+        EntidadRole role = repositorioRole
+                .findByRole(nueva.role())
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Role",
+                        "No encontrado",
+                        null,
+                        "No se ha encontrado ningún rol llamado: "+ nueva.role()
+                ));
 
-        EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ToEntity(usuarioDTO));
+        user.setRole(role);
+
+        EntidadUsuarios guardado = repositorioUsuario.save(user);
+
+        EntidadCredencial credencial = EntidadCredencial.builder()
+                .username(nueva.username())
+                .password(passwordEncoder.encode(nueva.password()))
+                .enabled(true)
+                .usuario(guardado)
+                .role(role)
+                .build();
+
+        repositorioCredencial.save(credencial);
+
         return usuarioMapper.toRespuestaUsuarioDTO(guardado);
     }
 
     @Override
     @Transactional
-    public ProfesionalRespuestaDTO guardarProfesional(ProfesionalDTO profesionalDTO) {
-        EntidadUsuarios guardado = repositorioUsuario.save(usuarioMapper.ProfToEntity(profesionalDTO));
+    public ProfesionalRespuestaDTO guardarProfesional(CuentaNueva dto) {
+        EntidadUsuarios prof = usuarioMapper.ProfToEntity(dto);
+        EntidadRole role = repositorioRole
+                .findByRole(dto.role())
+                .orElseThrow(()-> new EntidadNoEncontradaException(
+                        "Role",
+                        "No encontrado",
+                        null,
+                        "No se ha encontrado ningún rol llamado: "+ dto.role()
+                ));
+
+        prof.setPassword(passwordEncoder.encode(
+                dto.password()
+        ));
+
+        EntidadUsuarios guardado = repositorioUsuario.save(prof);
+
         return usuarioMapper.toRespuestaProfesionalDTO(guardado);
     }
 

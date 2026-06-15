@@ -10,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -49,9 +46,19 @@ public class EntidadCredencial implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(
-                new SimpleGrantedAuthority(role.getRole().name())
-        );
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(usuario
+                .getRole().getRole().name()));
+
+        usuario.getRole()
+                .getPermisos()
+                .forEach(p-> authorities
+                        .add(new SimpleGrantedAuthority(
+                                p.getPermiso().name()
+                        )));
+
+        return authorities;
     }
 
     @Override

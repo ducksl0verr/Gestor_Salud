@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,15 +48,16 @@ public class ControladorUsuario {
     }
 
     @PostMapping
+    //@PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<UsuarioRespuestaDTO> guardar (@RequestBody @Valid CuentaNueva cuentaNueva)
     {
         return new ResponseEntity<>(servicioUsuario.guardar(cuentaNueva), HttpStatus.CREATED);
     }
 
     @PostMapping("/profesionales")
-    public ResponseEntity<ProfesionalRespuestaDTO> guardarProfesional(@RequestBody @Valid ProfesionalDTO profesionalDTO)
+    public ResponseEntity<ProfesionalRespuestaDTO> guardarProfesional(@RequestBody @Valid CuentaNueva nueva)
     {
-        return new ResponseEntity<>(servicioUsuario.guardarProfesional(profesionalDTO),HttpStatus.CREATED);
+        return new ResponseEntity<>(servicioUsuario.guardarProfesional(nueva),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

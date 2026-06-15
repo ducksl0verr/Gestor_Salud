@@ -10,10 +10,9 @@ import com.GrupoProga3.Gestor_Salud.features.Usuarios.Servicio.ServicioUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,7 +23,7 @@ public class ControladorAuth {
     private final ServicioUsuario servicioUsuario;
     private final ServicioJWT servicioJWT;
 
-    @PostMapping("/inicio")
+    @PostMapping("/iniciar")
     public ResponseEntity<AuthRespuesta> authnticateUser(@RequestBody AuthPedido authPedido) {
         return ResponseEntity.ok(servicioAuth.authenticate(authPedido));
     }
@@ -32,6 +31,11 @@ public class ControladorAuth {
     @PostMapping("/registrar")
     public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@RequestBody CuentaNueva nueva) {
         return new ResponseEntity<>(servicioUsuario.guardar(nueva), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioRespuestaDTO>> obtenerUsuarios() {
+        return ResponseEntity.ok(servicioUsuario.buscarTodos());
     }
 
   /*  @PostMapping()

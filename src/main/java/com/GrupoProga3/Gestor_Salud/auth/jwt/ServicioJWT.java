@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Service
 public class ServicioJWT implements  IServicioJWT {
 
-    @Value("{jwt.secret")
+    @Value("${jwt.secret}")
     private String jwtSecretKey;
     @Value("${jwt.expiration}")
     private Long jwtExpiration;

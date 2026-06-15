@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IServicioUsuario {
     UsuarioRespuestaDTO guardar (CuentaNueva nueva);
-    ProfesionalRespuestaDTO guardarProfesional (ProfesionalDTO profesionalDTO);
+    ProfesionalRespuestaDTO guardarProfesional (CuentaNueva nueva);
     void borrar (Long id);
     UsuarioRespuestaDTO buscarPorId(Long id);
     ProfesionalRespuestaDTO buscarPorIdProfesional(Long id);

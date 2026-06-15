@@ -1,5 +1,6 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO;
 
+import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoNuevo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,13 @@ public record UsuarioDTO(@NotBlank String nombre,
                          @NotBlank @Email String email
                          ){ // elimine el atributo de id_domicilioo FK, ver en usuarioMapperImpl.java si hay que cambiar, se encuentra en la carpeta target.
                           */@NotNull
-                         ContactoNuevo contacto)
+                         ContactoNuevo contacto,
+                         @NotBlank
+                         String username,
+                         @NotBlank
+                         String password,
+                         @NotNull
+                         EntidadRole role)
 {}
 
 

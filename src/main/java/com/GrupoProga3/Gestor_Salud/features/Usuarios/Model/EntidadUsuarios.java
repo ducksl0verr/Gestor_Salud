@@ -35,10 +35,13 @@ public class EntidadUsuarios {
     private String dni;
 
     private String username;
+
     private String password;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id_role")
-    private EntidadRole rol;
+    private EntidadRole role;
+
     private Boolean enabled;
 
 }

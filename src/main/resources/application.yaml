@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
      hibernate:
@@ -26,6 +26,6 @@ spring:
         allow-trailing-comma: true
 
 jwt:
- secret: ${JWT_SECRET}
  expiration: ${JWT_EXPIRATION}
  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+ secret: ${JWT_SECRET}
