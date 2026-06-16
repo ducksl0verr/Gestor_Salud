@@ -90,7 +90,8 @@ public class ServicioFactura implements IServicioFactura{
         // Validar que no estén facturados
         for (EntidadTurno turno : turnos) {
 
-            if (turno.getEstadoFacturacionDeTurno().equals(EstadoFacturacionDeTurno.FACTURADO)) {
+            if (EstadoFacturacionDeTurno.FACTURADO
+                    .equals(turno.getEstadoFacturacionDeTurno())) {
 
                 throw new RecursoOcupadoException(
                         "El turno " + turno.getId() + " ya fue facturado"
