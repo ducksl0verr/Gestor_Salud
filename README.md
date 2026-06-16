@@ -251,81 +251,157 @@ Ver los códigos de respuesta y posibles errores.
 Validar el funcionamiento de los endpoints protegidos mediante JWT.
 
 🔗 Endpoints Principales
+
 🔐 Autenticación
+
 POST /api/auth/iniciar → Autenticar usuario y generar tokens JWT.
+
 POST /api/auth/refresh → Renovar el token de acceso utilizando un refresh token válido.
+
 POST /api/auth/registrar → Registrar un nuevo usuario en el sistema.
+
 👤 Pacientes
+
 GET /api/pacientes → Obtener el listado de pacientes registrados.
+
 GET /api/pacientes/{id} → Obtener los datos de un paciente específico.
+
 POST /api/pacientes → Registrar un nuevo paciente.
+
 PUT /api/pacientes/{id} → Actualizar la información de un paciente.
+
 DELETE /api/pacientes/{id} → Eliminar un paciente del sistema.
+
 🏥 Obras Sociales
+
 GET /api/obras-sociales → Obtener todas las obras sociales registradas.
+
 GET /api/obras-sociales/{id} → Obtener una obra social por ID.
+
 POST /api/obras-sociales → Registrar una nueva obra social.
+
 PUT /api/obras-sociales/{id} → Actualizar información de una obra social.
+
 DELETE /api/obras-sociales/{id} → Eliminar una obra social.
+
 📅 Turnos
+
 GET /api/turnos → Obtener todos los turnos registrados.
+
 GET /api/turnos/{id} → Obtener un turno específico.
+
 POST /api/turnos → Programar un nuevo turno médico.
+
 PUT /api/turnos/{id} → Modificar fecha o estado de un turno.
+
 DELETE /api/turnos/{id} → Cancelar un turno.
+
 GET /api/turnos/pacientes/{id}/turnos-facturables → Obtener los turnos pendientes de facturación de un paciente.
+
 📋 Historias Clínicas
+
 GET /api/historiasClinicas → Obtener todas las historias clínicas.
+
 GET /api/historiasClinicas/{id} → Consultar una historia clínica específica.
+
 POST /api/historiasClinicas → Crear una nueva historia clínica.
+
 PUT /api/historiasClinicas/{id} → Actualizar observaciones o evolución clínica.
+
 🩺 Diagnósticos
+
 GET /api/diagnosticos → Obtener todos los diagnósticos registrados.
+
 GET /api/diagnosticos/{id} → Consultar un diagnóstico específico.
+
 POST /api/diagnosticos → Registrar un nuevo diagnóstico.
+
 💊 Medicamentos
+
 GET /api/medicamentos → Obtener el catálogo de medicamentos.
+
 GET /api/medicamentos/{id} → Consultar un medicamento específico.
+
 POST /api/medicamentos → Registrar un nuevo medicamento.
+
 PUT /api/medicamentos/{id} → Actualizar información o stock de un medicamento.
+
 GET /api/medicamentos/principioActivo/{principio} → Buscar medicamentos por principio activo.
+
 📝 Tratamientos y Prescripciones
+
 GET /api/tratamientos → Obtener todos los tratamientos disponibles.
+
 POST /api/tratamientos → Registrar un nuevo tratamiento.
+
 GET /api/prescripciones → Consultar las prescripciones registradas.
+
 POST /api/prescripciones → Asignar un tratamiento a un paciente.
+
 PUT /api/prescripciones/{id}/baja → Finalizar o desactivar una prescripción.
+
 💉 Recetas
+
 GET /api/recetas → Obtener todas las recetas emitidas.
+
 GET /api/recetas/{id} → Consultar una receta específica.
+
 GET /api/recetas/pacientes/{id} → Obtener las recetas asociadas a un paciente.
+
 POST /api/recetas → Emitir una nueva receta médica.
+
 🔪 Cirugías y Quirófanos
+
 GET /api/cirugias → Obtener todas las cirugías programadas.
+
 POST /api/cirugias → Programar una nueva cirugía.
+
 PUT /api/cirugias/{id} → Actualizar datos o estado de una cirugía.
+
 DELETE /api/cirugias/{id} → Cancelar una cirugía programada.
+
 GET /api/quirofanos → Obtener los quirófanos disponibles.
+
 POST /api/quirofanos → Registrar un nuevo quirófano.
+
 🛏️ Internaciones
+
 GET /api/salasInternaciones → Obtener las salas de internación disponibles.
+
 POST /api/salasInternaciones → Registrar una nueva sala de internación.
+
 PUT /api/salasInternaciones/{idSala}/internar/{idPaciente} → Asignar un paciente a una sala de internación.
+
 💰 Facturación y Pagos
+
 GET /api/facturas → Obtener todas las facturas emitidas.
+
 GET /api/facturas/{id} → Consultar una factura específica.
+
 POST /api/facturas → Generar una nueva factura.
+
 GET /api/pagos → Obtener todos los pagos registrados.
+
 POST /api/pagos → Registrar un nuevo pago.
+
 👥 Usuarios y Roles
+
 GET /api/usuarios → Obtener todos los usuarios del sistema.
+
 GET /api/usuarios/{id} → Consultar un usuario específico.
+
 POST /api/usuarios → Registrar un nuevo usuario.
+
 PUT /api/usuarios/{id} → Actualizar información de un usuario.
+
 DELETE /api/usuarios/{id} → Eliminar un usuario.
+
 GET /api/usuarios/profesionales → Obtener el listado de profesionales médicos.
+
 POST /api/usuarios/profesionales → Registrar un nuevo profesional médico.
+
 📢 Notificaciones
+
 POST /api/usuarios/{id}/mensaje → Enviar una notificación o mensaje a un usuario.
 
 La documentación completa e interactiva de la API se encuentra disponible en Swagger UI, donde pueden consultarse todos los endpoints, parámetros, respuestas, ejemplos y modelos de datos.
