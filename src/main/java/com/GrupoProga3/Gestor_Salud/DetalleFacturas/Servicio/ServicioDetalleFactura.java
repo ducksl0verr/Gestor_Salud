@@ -7,6 +7,8 @@ import com.GrupoProga3.Gestor_Salud.DetalleFacturas.Model.EntidadDetalleFacturas
 import com.GrupoProga3.Gestor_Salud.DetalleFacturas.Repositorio.RepositorioDetalleFactura;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -18,7 +20,18 @@ public class ServicioDetalleFactura implements IServicioDetalleFactura{
 
     @Override
     public DetalleFacturaDTO guardar(DetalleFacturaDTO detalleFacturaDTO) {
-        EntidadDetalleFacturas guardado = repositorioDetalleFactura.save(detalleFacturaMapper.toEntity(detalleFacturaDTO));
+
+        EntidadDetalleFacturas entidad =
+                detalleFacturaMapper.toEntity(detalleFacturaDTO);
+
+        entidad.setSubtotal(
+                entidad.getImporte()
+                        .multiply(BigDecimal.valueOf(entidad.getCantidad()))
+        );
+
+        EntidadDetalleFacturas guardado =
+                repositorioDetalleFactura.save(entidad);
+
         return detalleFacturaMapper.toDTO(guardado);
     }
 

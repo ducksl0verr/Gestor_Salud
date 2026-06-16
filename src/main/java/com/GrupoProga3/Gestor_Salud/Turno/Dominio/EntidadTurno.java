@@ -33,10 +33,10 @@ public class EntidadTurno {
     private LocalTime hora;
 
     @Enumerated(EnumType.STRING)
-    private EstadoFacturacionDeTurno estadoFacturacionDeTurno;
+    private EstadoFacturacionDeTurno estadoFacturacionDeTurno = EstadoFacturacionDeTurno.NO_FACTURADO;
 
     @Enumerated(EnumType.STRING)
-    private EstadoTurno estadoTurno;
+    private EstadoTurno estadoTurno = EstadoTurno.NO_REALIZADO;
     /// Los siguientes id's deben ser cambiados por instancias de las clases respectivas una vez las tengamos creadas.
     /// La relación es que recibe muchos
     @ManyToOne
