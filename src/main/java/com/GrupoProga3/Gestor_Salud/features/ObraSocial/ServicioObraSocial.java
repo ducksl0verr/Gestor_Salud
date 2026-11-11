@@ -1,6 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.features.ObraSocial;
 
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.DTO.DomicilioNuevo;
+import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.features.ObraSocial.Dominio.DTO.ObraSocialDTO;
 import com.GrupoProga3.Gestor_Salud.features.ObraSocial.Dominio.DTO.ObraSocialNueva;
 import com.GrupoProga3.Gestor_Salud.features.ObraSocial.Dominio.DTO.ObraSocialRespuesta;
@@ -55,7 +56,7 @@ public class ServicioObraSocial implements IServicioObraSocial {
     @Override
     @Transactional
     public ObraSocialRespuesta actualizar(Long id,
-                                          ObraSocialDTO obraSocialDTO) {
+                                          ObraSocialNueva obraSocialDTO) {
 
         EntidadObraSocial obraSocial =
                 repositorioObraSocial.findById(id)
@@ -67,26 +68,34 @@ public class ServicioObraSocial implements IServicioObraSocial {
                                                 "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
 
-        if (obraSocialDTO.getNombre() != null
-                && !obraSocialDTO.getNombre().isBlank()) {
+        if (obraSocialDTO.nombre() != null
+                && !obraSocialDTO.nombre().isBlank()) {
 
-            if (!obraSocial.getNombre().equalsIgnoreCase(obraSocialDTO.getNombre())
-                    && repositorioObraSocial.existsByNombre(obraSocialDTO.getNombre())) {
+            if (!obraSocial.getNombre().equalsIgnoreCase(obraSocialDTO.nombre())
+                    && repositorioObraSocial.existsByNombre(obraSocialDTO.nombre())) {
 
                 throw new ReglaNegocioException(
                         "Ya existe una obra social con nombre: "
-                                + obraSocialDTO.getNombre()
+                                + obraSocialDTO.nombre()
                 );
             }
 
-            obraSocial.setNombre(obraSocialDTO.getNombre());
+            obraSocial.setNombre(obraSocialDTO.nombre());
         }
 
-        if (obraSocialDTO.getCobertura() != null
-                && !obraSocialDTO.getCobertura().isBlank()) {
+        if (obraSocialDTO.cobertura() != null
+                && !obraSocialDTO.cobertura().isBlank()) {
 
-            obraSocial.setCobertura(obraSocialDTO.getCobertura());
+            obraSocial.setCobertura(obraSocialDTO.cobertura());
         }
+
+        List<EntidadDomicilio> doms = obraSocialDTO.domicilios()
+                .stream()
+                .map(obraSocialMapper::toEntity)
+                .toList();
+
+        obraSocial.getDomicilios().clear();
+        obraSocial.getDomicilios().addAll(doms);
 
         EntidadObraSocial actualizada =
                 repositorioObraSocial.save(obraSocial);

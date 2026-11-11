@@ -49,7 +49,7 @@ public class ControladorObraSocial {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('EDITAR_OBRA_SOCIAL')")
-    ResponseEntity<ObraSocialRespuesta> actualizar(@PathVariable Long id, @RequestBody @Valid ObraSocialDTO dto) {
+    ResponseEntity<ObraSocialRespuesta> actualizar(@PathVariable Long id, @RequestBody @Valid ObraSocialNueva dto) {
         return ResponseEntity.ok(servicioObraSocial.actualizar(id, dto));
     }
 
