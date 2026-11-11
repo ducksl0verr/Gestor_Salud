@@ -117,13 +117,14 @@ public class ServicioObraSocial implements IServicioObraSocial {
                                         "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
 
-        if (obraSocial.getDomicilios() != null
+        /*if (obraSocial.getDomicilios() != null
                 && !obraSocial.getDomicilios().isEmpty()) {
 
             throw new ReglaNegocioException(
                     "No se puede eliminar una obra social que posee domicilios asociados."
             );
         }
+         */
 
         repositorioObraSocial.delete(obraSocial);
     }
