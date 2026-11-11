@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.CredentialException;
 import java.util.List;
 import java.util.Set;
 
@@ -104,7 +105,20 @@ import java.util.Set;
     @Override
     @Transactional
     public void borrar(Long id) {
-        this.repositorioUsuario.findById(id).ifPresent(repositorioUsuario::delete);
+        EntidadUsuarios user = repositorioUsuario.findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Usuario",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado ningún usuario con aquel id."));
+
+        EntidadCredencial crede =repositorioCredencial.findById(id)
+                .orElseThrow(()-> new EntidadNoEncontradaException("Credencial",
+                        "No se ha encontrado.",
+                        id,
+                        "No se ha encontrado una credencial con aquel id."));
+
+        this.repositorioCredencial.delete(crede);
+        this.repositorioUsuario.delete(user);
     }
 
     @Override

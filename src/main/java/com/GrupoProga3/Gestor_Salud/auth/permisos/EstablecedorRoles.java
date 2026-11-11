@@ -60,6 +60,7 @@ public class EstablecedorRoles implements CommandLineRunner {
         administrativo.getPermisos().addAll(
                 obtenerPermisos(
                         PERMISOS.VER_PROFESIONAL,
+
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.ELIMINAR_PACIENTE,

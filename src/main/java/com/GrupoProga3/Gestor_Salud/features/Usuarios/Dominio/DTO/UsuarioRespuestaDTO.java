@@ -7,7 +7,7 @@ import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoRespue
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UsuarioRespuestaDTO(Long idUsuario,
+public record UsuarioRespuestaDTO(Long id,
                                   String nombre,
                                   String apellido,
                                   String dni,

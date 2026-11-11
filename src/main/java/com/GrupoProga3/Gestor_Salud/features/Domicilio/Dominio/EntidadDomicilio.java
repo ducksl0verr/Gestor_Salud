@@ -30,7 +30,7 @@ public class EntidadDomicilio {
     private String provincia;
     @Column(length=50, nullable=false)
     private String codigo_postal;
-    @Column(length=50, nullable=false)
+    /*@Column(length=50, nullable=false)
     private String pais;
-
+     */
 }

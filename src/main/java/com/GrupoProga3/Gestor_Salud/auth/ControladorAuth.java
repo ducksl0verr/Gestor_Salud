@@ -32,6 +32,7 @@ public class ControladorAuth {
 
     @PostMapping("/registrar")
     public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@RequestBody @Valid CuentaNueva nueva) {
+        System.out.println("Llega acá lol");
         return new ResponseEntity<>(servicioUsuario.guardar(nueva), HttpStatus.CREATED);
     }
 

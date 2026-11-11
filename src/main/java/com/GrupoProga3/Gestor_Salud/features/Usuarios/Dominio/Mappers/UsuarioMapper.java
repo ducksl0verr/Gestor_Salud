@@ -27,10 +27,10 @@ public interface UsuarioMapper {
 
     EntidadContacto toEntity (ContactoNuevo contacto);
 
-    @Mapping(source = "id", target = "idUsuarioProfesional")
+    @Mapping(source = "id", target = "id")
     @Mapping(target = "role", source = "role.role")
     ProfesionalRespuestaDTO toRespuestaProfesionalDTO (EntidadUsuarios entidadUsuarios);
-    @Mapping(source = "id", target = "idUsuario")
+    @Mapping(source = "id", target = "id")
     @Mapping(target = "role", source = "role.role")
     UsuarioRespuestaDTO toRespuestaUsuarioDTO(EntidadUsuarios entidadUsuarios);
 

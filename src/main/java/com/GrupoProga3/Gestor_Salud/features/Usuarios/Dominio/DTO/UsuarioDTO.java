@@ -13,10 +13,11 @@ public record UsuarioDTO(@NotBlank String nombre,
                          String dni,
                          @NotNull
                          ContactoNuevo contacto,
-                         @NotBlank
+                         /*@NotBlank
                          String username,
                          @NotBlank
                          String password,
+                          */
                          @NotNull
                          ROLES role)
 {}

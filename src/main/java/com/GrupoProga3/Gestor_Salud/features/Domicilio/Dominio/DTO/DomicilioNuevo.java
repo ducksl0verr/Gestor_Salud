@@ -8,6 +8,5 @@ public record DomicilioNuevo(@NotBlank String calle,
                              @NotBlank String depto,
                              @NotBlank String localidad,
                              @NotBlank String provincia,
-                             @NotBlank String codigo_postal,
-                             @NotBlank String pais){
+                             @NotBlank String codigo_postal ){
 }
