@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO;
 
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoRespuesta;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.DTO.DomicilioRespuesta;
+import com.GrupoProga3.Gestor_Salud.features.Prescripcion_Tratamiento.Dominio.DTOs.PrescripcionTratamientoRespuesta;
 import com.GrupoProga3.Gestor_Salud.features.Prescripcion_Tratamiento.Dominio.EntidadPrescripcionTratamiento;
 
 import java.time.LocalDate;
@@ -18,5 +19,5 @@ public record PacienteRespuesta(Long id,
                                 Long id_obraSocial,
                                 String nombreObraSocial,
                                 String coberturaObraSocial,
-                                List<EntidadPrescripcionTratamiento> tratamientos) {
+                                List<PrescripcionTratamientoRespuesta> tratamientos) {
 }
