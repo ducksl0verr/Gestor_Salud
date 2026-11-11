@@ -18,4 +18,5 @@ public interface ObraSocialMapper {
     EntidadDomicilio toEntity(DomicilioNuevo dto);
 
     DomicilioNuevo toDTO(EntidadDomicilio entity);
+
 }
