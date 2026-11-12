@@ -29,14 +29,17 @@ public class ServicioPrescripcionTratamiento implements IServicioPrescripcionTra
     private final PrescripcionTratamientoMapper prescripcionTratamientoMapper;
 
 
-    public void validarTratamiento (EntidadPrescripcionTratamiento pre){
-        boolean esiste = repositorioPrescripcionTratamiento
-                .existsByPacienteAndTratamientosAndActivoTrue(pre.getPaciente().getId(),
-                        pre.getTratamientos().getId());
-        if(esiste){
-           throw new RecursoOcupadoException(
-                   "El pacienta ya tiene este tratamiento activo."
-           );
+    public void validarTratamiento(EntidadPrescripcionTratamiento pre) {
+        boolean existe = repositorioPrescripcionTratamiento
+                .existsByPaciente_IdAndTratamientos_IdAndActivoTrue(
+                        pre.getPaciente().getId(),
+                        pre.getTratamientos().getId()
+                );
+
+        if (existe) {
+            throw new RecursoOcupadoException(
+                    "El paciente ya tiene este tratamiento activo."
+            );
         }
     }
 

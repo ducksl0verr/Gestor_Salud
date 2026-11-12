@@ -6,10 +6,14 @@ import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO.PacienteNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.features.Prescripcion_Tratamiento.Dominio.MAPPER.PrescripcionTratamientoMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+        componentModel = "spring",
+        uses = {PrescripcionTratamientoMapper.class}
+)
 public interface PacienteMapper {
     @Mapping(source = "obraSocial.id", target = "id_obraSocial")
     @Mapping(source = "obraSocial.nombre", target = "nombreObraSocial")
