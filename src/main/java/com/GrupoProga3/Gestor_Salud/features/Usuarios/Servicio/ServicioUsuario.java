@@ -5,6 +5,7 @@ import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.auth.permisos.RepositorioRole;
+import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.RepositorioTokenRecuperacion;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.ServicioEmail;
@@ -18,6 +19,7 @@ import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.Mappers.UsuarioMap
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.CredentialException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -38,11 +41,13 @@ import java.util.Set;
     private final ServicioEmail email;
     private final PasswordEncoder passwordEncoder;
     private final RepositorioCredencial repositorioCredencial;
+    private final RepositorioTokenRecuperacion repositorioTokenRecuperacion;
 
     @Override
     @Transactional
     public UsuarioRespuestaDTO guardar(CuentaNueva nueva) {
         EntidadUsuarios user = usuarioMapper.ToEntity(nueva);
+        normalizarYValidarEmail(user);
 
         EntidadRole role = repositorioRole
                 .findByRole(nueva.role())
@@ -75,6 +80,7 @@ import java.util.Set;
     public ProfesionalRespuestaDTO guardarProfesional(CuentaNueva nueva) {
 
         EntidadUsuarios user = usuarioMapper.ToEntity(nueva);
+        normalizarYValidarEmail(user);
 
         EntidadRole role = repositorioRole
                 .findByRole(nueva.role())
@@ -117,6 +123,7 @@ import java.util.Set;
                         id,
                         "No se ha encontrado una credencial con aquel id."));
 
+        this.repositorioTokenRecuperacion.borrarPorUsuario(user);
         this.repositorioCredencial.delete(crede);
         this.repositorioUsuario.delete(user);
     }
@@ -154,6 +161,7 @@ import java.util.Set;
         usu.setNombre(usuarioDTO.nombre());
         usu.setApellido(usuarioDTO.apellido());
         usu.setContacto(usuarioMapper.toEntity(usuarioDTO.contacto()));
+        normalizarYValidarEmail(usu, usu.getId());
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
@@ -173,6 +181,7 @@ import java.util.Set;
         usu.setNombre(profesionalDTO.nombre());
         usu.setApellido(profesionalDTO.apellido());
         usu.setContacto(usuarioMapper.toEntity(profesionalDTO.contacto()));
+        normalizarYValidarEmail(usu, usu.getId());
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
@@ -210,5 +219,31 @@ import java.util.Set;
                         "No se ha encontrado ningún proveedor con aquel ID."
                 ));
         email.enviarMail(p.getContacto().getEmail(), dto.asunto(), dto.mensaje());
+    }
+
+    /**
+     * Normaliza el email y evita que se registren dos cuentas con el mismo
+     * (necesario para que la recuperación de contraseña identifique una única cuenta).
+     */
+    private void normalizarYValidarEmail(EntidadUsuarios user) {
+        normalizarYValidarEmail(user, null);
+    }
+
+    private void normalizarYValidarEmail(EntidadUsuarios user, Long idExcluido) {
+        if (user.getContacto() == null || user.getContacto().getEmail() == null) {
+            return;
+        }
+
+        String email = user.getContacto().getEmail().trim().toLowerCase(Locale.ROOT);
+        user.getContacto().setEmail(email);
+
+        boolean ocupado = repositorioUsuario.findAllByContactoEmail(email)
+                .stream()
+                .anyMatch(otro -> idExcluido == null || !idExcluido.equals(otro.getId()));
+
+        if (ocupado) {
+            throw new RecursoOcupadoException(
+                    "Ya existe una cuenta registrada con el email " + email + ".");
+        }
     }
 }

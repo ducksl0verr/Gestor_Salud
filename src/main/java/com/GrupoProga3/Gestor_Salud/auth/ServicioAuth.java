@@ -7,6 +7,7 @@ import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.jwt.ServicioJWT;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.TokenRenovadoInvalidoException;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -39,13 +40,20 @@ public class ServicioAuth {
     }
 
     public AuthRespuesta refreshAccessToken (String refreshToken) {
-        String username = servicioJWT.extractUsername(refreshToken);
+        final String username;
+        try {
+            username = servicioJWT.extractUsername(refreshToken);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new TokenRenovadoInvalidoException("El token es inválido o está expirado");
+        }
+
         EntidadCredencial user = repositorioCredencial.findByUsername(username)
                 .orElseThrow(()-> new EntidadNoEncontradaException("Usuario",
                         "No encontrado",
                         null,
                         "No se ha encontrado el usuario"));
-        if (!user.getRefreshToken().equals(refreshToken)) {
+        if (user.getRefreshToken() == null
+                || !user.getRefreshToken().equals(refreshToken)) {
             throw new TokenRenovadoInvalidoException("El token nuevo no coincide con la base de datos.");
         }
         if (!servicioJWT.validateRefreshToken(refreshToken, user)){

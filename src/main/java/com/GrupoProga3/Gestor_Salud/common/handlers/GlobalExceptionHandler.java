@@ -20,12 +20,25 @@ public class GlobalExceptionHandler {
                                                                       HttpServletRequest request){
         ErrorRespuesta error= new ErrorRespuesta(
                 LocalDateTime.now(),
-                HttpStatus.I_AM_A_TEAPOT.value(),
-                HttpStatus.I_AM_A_TEAPOT.getReasonPhrase(),
+                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
                 ex.getMessage(),
                 request.getRequestURI()
         );
-        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(error);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
+    @ExceptionHandler(TokenRecuperacionInvalidoException.class)
+    public ResponseEntity<ErrorRespuesta> manejoTokenRecuperacionInvalido(TokenRecuperacionInvalidoException ex,
+                                                                         HttpServletRequest request){
+        ErrorRespuesta error = new ErrorRespuesta(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(EntidadNoEncontradaException.class)
