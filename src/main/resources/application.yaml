@@ -32,7 +32,7 @@ jwt:
 
 app:
   frontend:
-   url: http://localhost:4200
+    url: ${FRONTEND_URL:http://localhost:4200}
   recuperacion:
-    minutos-validez: 30
-    max-solicitudes-por-hora: 3
+    minutos-validez: ${RECUPERACION_MINUTOS_VALIDEZ:30}
+    max-solicitudes-por-hora: ${RECUPERACION_MAX_SOLICITUDES_POR_HORA:3}

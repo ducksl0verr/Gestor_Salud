@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record RestablecerContrasenaPedido(@NotBlank String token,
-                                          @NotBlank @Size(min=8, max=20, message = "La contraseña debe tener en 8 a 20 caracteres.")
+                                          @NotBlank @Size(min=8, max=64, message = "La contraseña debe tener entre 8 y 64 caracteres.")
                                           String nuevaContrasena) {
 }

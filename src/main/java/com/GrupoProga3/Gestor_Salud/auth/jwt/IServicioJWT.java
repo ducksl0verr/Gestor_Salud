@@ -17,6 +17,8 @@ public interface IServicioJWT {
 
     List<GrantedAuthority> extractAuthorities(String token);
 
+    long extractTokenVersion(String token);
+
     <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
 
     Claims extractAllClaims(String token);

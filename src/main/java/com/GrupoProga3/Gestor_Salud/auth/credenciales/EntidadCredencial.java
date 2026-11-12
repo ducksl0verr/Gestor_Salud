@@ -4,7 +4,6 @@ import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Model.EntidadUsuarios;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +35,14 @@ public class EntidadCredencial implements UserDetails {
     @Column(name="refresh_token", length = 2048, unique = true)
     @JsonIgnore
     private String refreshToken;
+
+    /**
+     * Se incrementa al cambiar la contraseña. Viaja como claim "ver" en el
+     * access token y el filtro JWT lo compara contra la base para invalidar
+     * los tokens emitidos antes del cambio.
+     */
+    @Column(name = "token_version", nullable = false, columnDefinition = "bigint default 0")
+    private long tokenVersion;
 
     @OneToOne
     @JoinColumn(name="id_usuario", referencedColumnName = "id", unique = true)

@@ -7,9 +7,6 @@ import com.GrupoProga3.Gestor_Salud.auth.DTOs.RefreshTokenPedido;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.DTOS.OlvideContrasenaPedido;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.DTOS.RestablecerContrasenaPedido;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.ServicioRecuperacion;
-import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
-import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
-import com.GrupoProga3.Gestor_Salud.auth.jwt.ServicioJWT;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.UsuarioRespuestaDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Servicio.ServicioUsuario;
 import jakarta.validation.Valid;
@@ -17,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,7 +31,6 @@ public class ControladorAuth {
 
     @PostMapping("/registrar")
     public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@RequestBody @Valid CuentaNueva nueva) {
-        System.out.println("Llega acá lol");
         return new ResponseEntity<>(servicioUsuario.guardar(nueva), HttpStatus.CREATED);
     }
 
@@ -51,7 +45,7 @@ public class ControladorAuth {
     @PostMapping("/olvide-contrasena")
     public ResponseEntity<String> olvideContrasena (@RequestBody @Valid OlvideContrasenaPedido pedido){
         servicioRecuperacion.solicitar(pedido.email());
-        return ResponseEntity.ok("Si el email está registrado, te enviamos un elance para restablecer la contraseña");
+        return ResponseEntity.ok("Si el email está registrado, te enviamos un enlace para restablecer la contraseña");
     }
 
     @PostMapping("/restablecer-contrasena")

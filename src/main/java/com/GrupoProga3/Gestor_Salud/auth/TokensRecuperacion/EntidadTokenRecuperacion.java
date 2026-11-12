@@ -9,7 +9,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 @Entity
-@Table(name="tokens_recuperacion")
+@Table(name = "tokens_recuperacion",
+        indexes = @Index(name = "idx_tokens_recuperacion_usuario_creado",
+                columnList = "id_usuario, creado_en"))
 @Getter @Setter
 public class EntidadTokenRecuperacion {
     @Id

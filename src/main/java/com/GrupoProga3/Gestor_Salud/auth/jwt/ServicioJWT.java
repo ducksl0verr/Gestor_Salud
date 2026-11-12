@@ -40,6 +40,7 @@ public class ServicioJWT implements  IServicioJWT {
                 .stream()
                 .map(p->p.getPermiso().name())
                 .toList());
+        claims.put("ver", user.getTokenVersion());
         /*List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -74,6 +75,12 @@ public class ServicioJWT implements  IServicioJWT {
         }
 
         return authorities;
+    }
+
+    @Override
+    public long extractTokenVersion(String token) {
+        Object version = extractAllClaims(token).get("ver");
+        return version instanceof Number number ? number.longValue() : 0L;
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
