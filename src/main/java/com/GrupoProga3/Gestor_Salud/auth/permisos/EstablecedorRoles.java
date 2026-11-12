@@ -64,6 +64,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.ELIMINAR_PACIENTE,
+                        PERMISOS.INTERNAR_PACIENTE,
 
                         PERMISOS.VER_OBRA_SOCIAL,
                         PERMISOS.EDITAR_OBRA_SOCIAL,
@@ -196,6 +197,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.ELIMINAR_PACIENTE,
+                        PERMISOS.INTERNAR_PACIENTE,
 
                         PERMISOS.VER_OBRA_SOCIAL,
                         PERMISOS.EDITAR_OBRA_SOCIAL,
