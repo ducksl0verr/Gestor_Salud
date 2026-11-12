@@ -72,12 +72,12 @@ public class ServicioPrescripcionTratamiento implements IServicioPrescripcionTra
                         prescripcionTratamiento.id_profesional(),
                         "No se ha encontrado ningún profesional con aquel ID."
                 ));
-        validarTratamiento(pres);
+
 
         pres.setPaciente(pac);
         pres.setTratamientos(tra);
         pres.setProfesional(prof);
-
+        validarTratamiento(pres);
         pres.setActivo(true);
 
         EntidadPrescripcionTratamiento guardado=repositorioPrescripcionTratamiento.save(pres);
