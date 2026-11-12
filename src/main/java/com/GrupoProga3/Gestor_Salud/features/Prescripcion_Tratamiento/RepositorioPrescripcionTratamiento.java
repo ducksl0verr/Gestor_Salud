@@ -6,5 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepositorioPrescripcionTratamiento extends JpaRepository<EntidadPrescripcionTratamiento, Long> {
-    boolean existsByPacienteAndTratamientosAndActivoTrue(Long pacienteId, Long tratamientoId);
+
+    boolean existsByPaciente_IdAndTratamientos_IdAndActivoTrue(
+            Long pacienteId,
+            Long tratamientoId
+    );
 }
