@@ -62,6 +62,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_PROFESIONAL,
 
                         PERMISOS.CREAR_PACIENTE,
+                        PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.ELIMINAR_PACIENTE,
                         PERMISOS.INTERNAR_PACIENTE,
@@ -194,6 +195,8 @@ public class EstablecedorRoles implements CommandLineRunner {
         administrativo.getPermisos().addAll(
                 obtenerPermisos(
                         PERMISOS.VER_PROFESIONAL,
+
+                        PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.ELIMINAR_PACIENTE,
