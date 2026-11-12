@@ -29,3 +29,10 @@ jwt:
  expiration: ${JWT_EXPIRATION}
  refresh-expiration: ${JWT_REFRESH_EXPIRATION}
  secret: ${JWT_SECRET}
+
+app:
+  frontend:
+   url: http://localhost:4200
+  recuperacion:
+    minutos-validez: 30
+    max-solicitudes-por-hora: 3
