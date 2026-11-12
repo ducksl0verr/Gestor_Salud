@@ -231,6 +231,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_PROVEEDOR,
                         PERMISOS.COMUNICAR_PROVEEDOR,
 
+                        PERMISOS.CREAR_SALA,
                         PERMISOS.VER_SALA,
                         PERMISOS.EDITAR_SALA,
 
