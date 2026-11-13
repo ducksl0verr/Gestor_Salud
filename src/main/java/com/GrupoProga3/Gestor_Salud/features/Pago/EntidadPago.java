@@ -33,7 +33,7 @@ public class EntidadPago {
     private LocalDateTime fecha;
 
 
-    @ManyToOne
+    @ManyToMany
     @JoinTable(name = "id_paciente",
     joinColumns =  @JoinColumn(name = "id_pago"),
     inverseJoinColumns = @JoinColumn(name = "id_paciente"))

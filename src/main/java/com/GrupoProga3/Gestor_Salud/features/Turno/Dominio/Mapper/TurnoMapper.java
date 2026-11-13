@@ -24,6 +24,7 @@ public interface TurnoMapper {
     @Mapping(source="profesional.id", target="id_profesional")
     TurnoRespuesta toRespuestaDto (EntidadTurno entidadTurno);
 
+    @Mapping(target = "id_turno", source = "id")
     @Mapping(target = "tratamiento", source = "tratamiento.nombre")
     TurnoFacturable toFacturableDTO(EntidadTurno turno);
 

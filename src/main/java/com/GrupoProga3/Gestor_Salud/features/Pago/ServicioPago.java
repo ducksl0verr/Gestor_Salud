@@ -3,6 +3,8 @@ package com.GrupoProga3.Gestor_Salud.features.Pago;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO.PacienteRespuesta;
+import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.features.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.features.Pago.DTO.PagoDTO;
 import com.GrupoProga3.Gestor_Salud.features.Pago.DTO.PagoNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Pago.DTO.PagoRespuesta;
@@ -22,6 +24,7 @@ import java.util.List;
 public class ServicioPago implements IServicioPago {
 
     private final RepositorioPago repositorioPago;
+    private final RepositorioPaciente repositorioPaciente;
     private final PagoMapper pagoMapper;
 
 
@@ -49,17 +52,19 @@ public class ServicioPago implements IServicioPago {
 
         EntidadPago pago = pagoMapper.toEntity(pagoNuevo);
 
-        List<EntidadPago> pacientes =
-                repositorioPago.findAllById(pagoNuevo.idsPacientes());
+        List<EntidadPaciente> pacientes =
+                repositorioPaciente.findAllById(pagoNuevo.idsPacientes());
 
         if (pacientes.size() != pagoNuevo.idsPacientes().size()) {
             throw new EntidadNoEncontradaException(
-                    "Pago",
+                    "Paciente",
                     "No encontrado",
                     1l,
-                    "No se ha encontrado a ningún pago con ID."
+                    "No se ha encontrado a ningún paciente con ID."
             );
         }
+
+        pago.setPacientes(pacientes);
 
         if (pago.getFecha() == null) {
             pago.setFecha(LocalDateTime.now());

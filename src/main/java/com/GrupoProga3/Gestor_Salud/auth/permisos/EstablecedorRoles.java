@@ -97,6 +97,8 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.CREAR_PAGO,
                         PERMISOS.VER_PAGO,
+                        PERMISOS.EDITAR_PAGO,
+                        PERMISOS.ELIMINAR_PAGO,
 
                         PERMISOS.VER_GASTO,
                         PERMISOS.CREAR_GASTO,
@@ -240,6 +242,8 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.CREAR_PAGO,
                         PERMISOS.VER_PAGO,
+                        PERMISOS.EDITAR_PAGO,
+                        PERMISOS.ELIMINAR_PAGO,
 
                         PERMISOS.VER_GASTO,
                         PERMISOS.CREAR_GASTO,
