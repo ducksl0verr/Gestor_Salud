@@ -17,7 +17,7 @@ import lombok.*;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @Column(nullable = false, length = 100)
+        @Column(unique = true, nullable = false, length = 100)
         private String email;
 
         @Column(name = "telefono", nullable = false, length = 20)

@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.auth.filtros;
 
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.jwt.ServicioJWT;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -23,6 +25,7 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final ServicioJWT servicioJWT;
+    private final RepositorioCredencial repositorioCredencial;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,6 +44,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
             if (username != null && authentication == null) {
+                EntidadCredencial credencial = repositorioCredencial
+                        .findByUsername(username)
+                        .orElse(null);
+
+                // Si la contraseña cambió, tokenVersion se incrementó y todos
+                // los access tokens emitidos antes dejan de ser válidos.
+                if (credencial == null
+                        || !credencial.isEnabled()
+                        || credencial.getTokenVersion() != servicioJWT.extractTokenVersion(jwt)) {
+                    escribirNoAutorizado(response, request);
+                    return;
+                }
+
                 List<GrantedAuthority> authorities =
                         servicioJWT.extractAuthorities(jwt);
 
@@ -51,16 +67,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(auhtToken);
             }
-        } catch (JwtException e){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write(String.format("{\"error\":\"Token JWT invalido o expirado\", \"status\": %d, \"path\": \"%s\"}",
-                    HttpServletResponse.SC_UNAUTHORIZED,
-                    request.getRequestURI()));
-            response.getWriter().flush();
+        } catch (JwtException | IllegalArgumentException e){
+            escribirNoAutorizado(response, request);
             return;
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void escribirNoAutorizado(HttpServletResponse response,
+                                      HttpServletRequest request) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write(String.format(
+                "{\"error\":\"Token JWT invalido o expirado\", \"status\": %d, \"path\": \"%s\"}",
+                HttpServletResponse.SC_UNAUTHORIZED,
+                request.getRequestURI()));
+        response.getWriter().flush();
     }
 
     @Override
