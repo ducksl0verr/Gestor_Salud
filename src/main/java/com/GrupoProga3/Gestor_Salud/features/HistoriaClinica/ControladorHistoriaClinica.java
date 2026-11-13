@@ -37,4 +37,10 @@ public class ControladorHistoriaClinica {
     ResponseEntity<HistoriaClinicaRespuesta> actualizar  (@PathVariable Long id, @Valid @RequestBody HistoriaClinicaActualizar actualizacion){
         return ResponseEntity.ok(servicioHistoriaClinica.actualizar(id, actualizacion));
     }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ELIMINAR_HISTORIA_CLINICA')")
+    ResponseEntity<Void> borrar (@PathVariable Long id){
+        servicioHistoriaClinica.borrar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

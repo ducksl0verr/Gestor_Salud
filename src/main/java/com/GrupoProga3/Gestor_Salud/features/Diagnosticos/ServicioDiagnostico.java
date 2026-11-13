@@ -78,6 +78,18 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
                 ));
         buscado.setNombre(diagnosticoNuevo.nombre());
         buscado.setDescripcion(diagnosticoNuevo.descripcion());
+        buscado.setFechaDiagnostico(diagnosticoNuevo.fechaDiagnostico());
+
+        EntidadHistoriaClinica historiaClinica = repositorioHistoriaClinica
+                .findById(diagnosticoNuevo.idHistoriaClinica())
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Historia Clinica",
+                        "No encontrada",
+                        diagnosticoNuevo.idHistoriaClinica(),
+                        "No se ha encontrado ninguna historia clinica con aquel ID."
+                ));
+        buscado.setHistoriaClinica(historiaClinica);
+
         EntidadDiagnostico actualizado=repositorioDiagnostico.save(buscado);
         return diagnosticoMapper.toDTO(actualizado);
     }

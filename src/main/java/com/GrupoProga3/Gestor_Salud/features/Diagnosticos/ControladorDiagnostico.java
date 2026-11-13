@@ -32,5 +32,17 @@ public class ControladorDiagnostico {
     ResponseEntity<DiagnosticoRespuesta> buscarPorId(@PathVariable Long id){
         return ResponseEntity.ok(servicioDiagnostico.buscarPorId(id));
     }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('EDITAR_DIAGNOSTICO')")
+    ResponseEntity<DiagnosticoRespuesta> actualizar(@PathVariable Long id,
+                                                    @Valid @RequestBody DiagnosticoNuevo diagnosticoNuevo){
+        return ResponseEntity.ok(servicioDiagnostico.actualizar(id, diagnosticoNuevo));
+    }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ELIMINAR_DIAGNOSTICO')")
+    ResponseEntity<Void> borrar(@PathVariable Long id){
+        servicioDiagnostico.borrar(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

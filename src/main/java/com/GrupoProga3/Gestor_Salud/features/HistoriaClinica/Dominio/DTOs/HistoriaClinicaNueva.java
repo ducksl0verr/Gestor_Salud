@@ -8,5 +8,6 @@ public record HistoriaClinicaNueva(LocalDate fecha,
                                    String evolucion,
                                    Long id_paciente,
                                    Long id_profesional,
-                                   List<Long> ids_diagnosticos) {
+                                   List<Long> ids_diagnosticos,
+                                   List<DiagnosticoDeHistoriaNueva> diagnosticos) {
 }

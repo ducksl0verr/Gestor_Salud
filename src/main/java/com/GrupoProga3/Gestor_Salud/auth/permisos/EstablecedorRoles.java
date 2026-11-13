@@ -137,9 +137,11 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_HISTORIA_CLINICA,
                         PERMISOS.CREAR_HISTORIA_CLINICA,
                         PERMISOS.EDITAR_HISTORIA_CLINICA,
+                        PERMISOS.ELIMINAR_HISTORIA_CLINICA,
 
                         PERMISOS.CREAR_DIAGNOSTICO,
                         PERMISOS.EDITAR_DIAGNOSTICO,
+                        PERMISOS.ELIMINAR_DIAGNOSTICO,
                         PERMISOS.VER_DIAGNOSTICO,
 
                         PERMISOS.CREAR_TRATAMIENTO,
@@ -151,6 +153,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_RECETA,
 
                         PERMISOS.VER_MEDICAMENTO,
+                        PERMISOS.CREAR_MEDICAMENTO,
 
                         PERMISOS.VER_TURNO,
                         PERMISOS.EDITAR_TURNO,
@@ -280,9 +283,11 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_HISTORIA_CLINICA,
                         PERMISOS.CREAR_HISTORIA_CLINICA,
                         PERMISOS.EDITAR_HISTORIA_CLINICA,
+                        PERMISOS.ELIMINAR_HISTORIA_CLINICA,
 
                         PERMISOS.CREAR_DIAGNOSTICO,
                         PERMISOS.EDITAR_DIAGNOSTICO,
+                        PERMISOS.ELIMINAR_DIAGNOSTICO,
                         PERMISOS.VER_DIAGNOSTICO,
 
                         PERMISOS.CREAR_TRATAMIENTO,
@@ -294,6 +299,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_RECETA,
 
                         PERMISOS.VER_MEDICAMENTO,
+                        PERMISOS.CREAR_MEDICAMENTO,
 
                         PERMISOS.VER_TURNO,
                         PERMISOS.EDITAR_TURNO,

@@ -36,6 +36,6 @@ public class EntidadHistoriaClinica {
     @JoinColumn(name = "id_profesional")
     private EntidadUsuarios profesional;
 
-    @OneToMany(mappedBy = "historiaClinica")
+    @OneToMany(mappedBy = "historiaClinica", cascade = CascadeType.REMOVE)
     private List<EntidadDiagnostico> diagnosticos;
 }

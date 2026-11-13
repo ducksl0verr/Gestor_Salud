@@ -50,6 +50,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        // Permite que los errores (por ejemplo un 404 por URL inexistente)
+                        // lleguen al manejador de errores en lugar de responder 401.
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
 
