@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +32,13 @@ public class ControladorTurno {
         return ResponseEntity.ok(servicioTurno.buscarTodos());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/mis-turnos")
+    @PreAuthorize("hasAuthority('VER_TURNO')")
+    ResponseEntity<List<TurnoRespuesta>> buscarMisTurnos (Authentication authentication) {
+        return ResponseEntity.ok(servicioTurno.buscarPorProfesional(authentication.getName()));
+    }
+
+    @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAuthority('VER_TURNO')")
     ResponseEntity<TurnoRespuesta> buscarPorId (@PathVariable Long id) {
         return ResponseEntity.ok(servicioTurno.buscarPorId(id));

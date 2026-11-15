@@ -16,4 +16,5 @@ public interface RepositorioTurno extends JpaRepository<EntidadTurno, Long> {
     boolean existsByProfesionalIdAndFechaHora(Long idProfesional, LocalDateTime fechaHora);
     boolean existsByConsultorioIdAndFechaHora(Long idConsultorio, LocalDateTime fechaHora);
     List<EntidadTurno> findByFechaHoraBefore(LocalDateTime fechaHora);
+    List<EntidadTurno> findByProfesionalId(Long idProfesional);
 }

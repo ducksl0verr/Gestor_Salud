@@ -11,6 +11,7 @@ public interface IServicioTurno {
     TurnoRespuesta crear (TurnoNuevo nuevo);
     TurnoRespuesta buscarPorId(Long id);
     List<TurnoRespuesta> buscarTodos();
+    List<TurnoRespuesta> buscarPorProfesional(String username);
     TurnoRespuesta actualizar (Long id, TurnoActualizar turno);
     void borrar (Long id);
     List<TurnoFacturable> obtenerTurnosFacturables(Long idPaciente);

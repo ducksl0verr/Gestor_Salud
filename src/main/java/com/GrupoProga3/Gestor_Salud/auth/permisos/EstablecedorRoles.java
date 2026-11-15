@@ -82,6 +82,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_RECETA,
 
                         PERMISOS.VER_MEDICAMENTO,
+                        PERMISOS.CREAR_MEDICAMENTO,
                         PERMISOS.EDITAR_MEDICAMENTO,
                         PERMISOS.ELIMINAR_MEDICAMENTO,
 
@@ -133,6 +134,7 @@ public class EstablecedorRoles implements CommandLineRunner {
         profesional.getPermisos().addAll(
                 obtenerPermisos(
                         PERMISOS.VER_PACIENTE,
+                        PERMISOS.CREAR_PACIENTE,
                         PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.INTERNAR_PACIENTE,
 
@@ -162,6 +164,8 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.CANCELAR_TURNO,
 
                         PERMISOS.VER_SALA,
+
+                        PERMISOS.VER_OBRA_SOCIAL,
 
                         PERMISOS.CREAR_CIRUGIA,
                         PERMISOS.EDITAR_CIRUGIA,
@@ -228,6 +232,7 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.VER_MEDICAMENTO,
                         PERMISOS.EDITAR_MEDICAMENTO,
+                        PERMISOS.CREAR_MEDICAMENTO,
                         PERMISOS.ELIMINAR_MEDICAMENTO,
 
                         PERMISOS.VER_TRATAMIENTO,
@@ -281,6 +286,7 @@ public class EstablecedorRoles implements CommandLineRunner {
         profesional.getPermisos().addAll(
                 obtenerPermisos(
                         PERMISOS.VER_PACIENTE,
+                        PERMISOS.CREAR_PACIENTE,
                         PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.INTERNAR_PACIENTE,
 
@@ -310,6 +316,8 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.CANCELAR_TURNO,
 
                         PERMISOS.VER_SALA,
+
+                        PERMISOS.VER_OBRA_SOCIAL,
 
                         PERMISOS.CREAR_CIRUGIA,
                         PERMISOS.EDITAR_CIRUGIA,

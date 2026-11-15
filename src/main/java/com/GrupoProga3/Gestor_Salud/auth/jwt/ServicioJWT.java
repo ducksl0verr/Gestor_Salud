@@ -41,6 +41,16 @@ public class ServicioJWT implements  IServicioJWT {
                 .map(p->p.getPermiso().name())
                 .toList());
         claims.put("ver", user.getTokenVersion());
+
+        /// DATOS DEL USUARIO LOGUEADO (para identificar al profesional en el frontend)
+        if (user.getUsuario() != null) {
+            claims.put("idUsuario", user.getUsuario().getId());
+
+            if (user.getUsuario().getMatricula() != null
+                    && !user.getUsuario().getMatricula().isBlank()) {
+                claims.put("matricula", user.getUsuario().getMatricula());
+            }
+        }
         /*List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());

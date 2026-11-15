@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.features.Turno;
 
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.EntidadCredencial;
+import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.features.Consultorios.RepositorioConsultorio;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.ServicioEmail;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
@@ -38,6 +40,7 @@ public class ServicioTurno implements IServicioTurno {
     private final RepositorioTratamiento repositorioTratamiento;
     private final TurnoMapper turnoMapper;
     private final ServicioEmail servicioEmail;
+    private final RepositorioCredencial repositorioCredencial;
 
     @Override
     @Transactional
@@ -125,6 +128,33 @@ public class ServicioTurno implements IServicioTurno {
     public List<TurnoRespuesta> buscarTodos() {
         return repositorioTurno
                 .findAll()
+                .stream()
+                .map(turnoMapper::toRespuestaDto)
+                .toList();
+    }
+
+    @Override
+    public List<TurnoRespuesta> buscarPorProfesional(String username) {
+        EntidadCredencial credencial = repositorioCredencial
+                .findByUsername(username)
+                .orElseThrow(() -> new EntidadNoEncontradaException(
+                        "Credencial",
+                        "No se ha encontrado.",
+                        null,
+                        "No se ha encontrado el usuario autenticado."
+                ));
+
+        if (credencial.getUsuario() == null) {
+            throw new EntidadNoEncontradaException(
+                    "Usuario",
+                    "No se ha encontrado.",
+                    null,
+                    "El usuario autenticado no tiene un usuario asociado."
+            );
+        }
+
+        return repositorioTurno
+                .findByProfesionalId(credencial.getUsuario().getId())
                 .stream()
                 .map(turnoMapper::toRespuestaDto)
                 .toList();
