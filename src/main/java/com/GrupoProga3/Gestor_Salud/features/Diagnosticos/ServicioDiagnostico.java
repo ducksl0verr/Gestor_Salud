@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
     public DiagnosticoRespuesta crear(DiagnosticoNuevo diagnosticoNuevo) {
         System.out.println(diagnosticoNuevo);
         EntidadDiagnostico diagnostico=diagnosticoMapper.toEntity(diagnosticoNuevo);
+        // La fecha del diagnóstico se registra automáticamente con el día de creación.
+        diagnostico.setFechaDiagnostico(LocalDate.now());
         EntidadHistoriaClinica hc= repositorioHistoriaClinica
                 .findById(diagnosticoNuevo.idHistoriaClinica())
                         .orElseThrow(()-> new EntidadNoEncontradaException(
@@ -78,7 +81,7 @@ public class ServicioDiagnostico implements IServicioDiagnostico {
                 ));
         buscado.setNombre(diagnosticoNuevo.nombre());
         buscado.setDescripcion(diagnosticoNuevo.descripcion());
-        buscado.setFechaDiagnostico(diagnosticoNuevo.fechaDiagnostico());
+        // La fecha de creación del diagnóstico no se modifica al editarlo.
 
         EntidadHistoriaClinica historiaClinica = repositorioHistoriaClinica
                 .findById(diagnosticoNuevo.idHistoriaClinica())

@@ -10,6 +10,10 @@ public record HistoriaClinicaRespuesta(Long id,
                                        String observaciones,
                                        String evolucion,
                                        Long id_paciente,
+                                       String nombre_paciente,
+                                       String apellido_paciente,
                                        Long id_profesional,
+                                       String nombre_profesional,
+                                       String apellido_profesional,
                                        List <DiagnosticoRespuesta> diagnosticos) {
 }

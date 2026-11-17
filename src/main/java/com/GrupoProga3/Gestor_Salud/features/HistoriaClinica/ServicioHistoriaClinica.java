@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +84,8 @@ public class ServicioHistoriaClinica implements IServicioHistoriaClinica {
                 EntidadDiagnostico diagnostico = new EntidadDiagnostico();
                 diagnostico.setNombre(nuevoDiagnostico.nombre());
                 diagnostico.setDescripcion(nuevoDiagnostico.descripcion());
-                diagnostico.setFechaDiagnostico(nuevoDiagnostico.fechaDiagnostico());
+                // La fecha del diagnóstico se registra automáticamente con el día de creación.
+                diagnostico.setFechaDiagnostico(LocalDate.now());
                 diagnostico.setHistoriaClinica(guardado);
 
                 EntidadDiagnostico diagnosticoGuardado = repositorioDiagnostico.save(diagnostico);

@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public record DiagnosticoNuevo(@NotBlank(message = "El diagnostico debe tener un nombre") String nombre,
                                @NotBlank String descripcion,
-                               @NotNull
                                LocalDate fechaDiagnostico,
                                @NotNull
                                Long idHistoriaClinica) {
