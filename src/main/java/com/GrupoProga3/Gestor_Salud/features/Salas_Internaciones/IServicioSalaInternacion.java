@@ -12,4 +12,5 @@ public interface IServicioSalaInternacion {
     SalaInternacionRespuesta buscarPorId(Long id);
     List<SalaInternacionRespuesta> buscarTodos();
     SalaInternacionRespuesta internarPaciente(Long idSala, Long idPaciente);
+    SalaInternacionRespuesta egresarPaciente(Long idSala, Long idPaciente);
 }

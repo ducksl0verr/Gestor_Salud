@@ -47,4 +47,10 @@ public class ControladorSalaInternacion {
     ResponseEntity<SalaInternacionRespuesta> internar (@PathVariable Long idSala, @PathVariable Long idPaciente) {
         return ResponseEntity.ok(servicioSalaInternacion.internarPaciente(idSala,idPaciente));
     }
+
+    @PutMapping("/{idSala}/egresar/{idPaciente}")
+    @PreAuthorize("hasAuthority('INTERNAR_PACIENTE')")
+    ResponseEntity<SalaInternacionRespuesta> egresar (@PathVariable Long idSala, @PathVariable Long idPaciente) {
+        return ResponseEntity.ok(servicioSalaInternacion.egresarPaciente(idSala, idPaciente));
+    }
 }

@@ -2,22 +2,37 @@ package com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO;
 
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.DTO.DomicilioNuevo;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
-public record PacienteActualizar(@NotBlank
+import java.time.LocalDate;
+
+public record PacienteActualizar(@NotBlank(message = "El nombre es obligatorio")
+                                 @Size(max = 50, message = "El nombre no puede superar los 50 caracteres")
                                  String nombre,
-                                 @NotBlank
+                                 @NotBlank(message = "El apellido es obligatorio")
+                                 @Size(max = 50, message = "El apellido no puede superar los 50 caracteres")
                                  String apellido,
-                                 //LocalDate fecha_nacimiento,
-                                 @NotBlank
+                                 @NotNull(message = "La fecha de nacimiento es obligatoria")
+                                 @Past(message = "La fecha de nacimiento debe ser anterior a hoy")
+                                 LocalDate fecha_nacimiento,
+                                 @NotBlank(message = "El DNI es obligatorio")
+                                 @Size(max = 20, message = "El DNI no puede superar los 20 caracteres")
                                  String dni,
-                                 @NotNull
+                                 @NotNull(message = "El número de afiliado es obligatorio")
+                                 @Positive(message = "El número de afiliado debe ser mayor a 0")
                                  Long numeroAfiliado,
-                                 @NotNull
+                                 @NotNull(message = "El domicilio es obligatorio")
+                                 @Valid
                                  DomicilioNuevo domicilio,
-                                 @NotNull
+                                 @NotNull(message = "La obra social es obligatoria")
+                                 @Positive(message = "El ID de la obra social debe ser mayor a 0")
                                  Long id_obraSocial,
-                                 @NotNull
+                                 @NotNull(message = "El contacto es obligatorio")
+                                 @Valid
                                  ContactoNuevo contacto) {
 }

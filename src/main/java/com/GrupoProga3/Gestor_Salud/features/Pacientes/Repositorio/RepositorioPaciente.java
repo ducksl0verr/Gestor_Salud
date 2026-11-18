@@ -5,5 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepositorioPaciente extends JpaRepository<EntidadPaciente,Long> {
+public interface RepositorioPaciente extends JpaRepository<EntidadPaciente, Long> {
+
+    boolean existsByDni(String dni);
+
+    boolean existsByNumeroAfiliado(Long numeroAfiliado);
+
+    boolean existsByDniAndIdNot(String dni, Long id);
+
+    boolean existsByNumeroAfiliadoAndIdNot(Long numeroAfiliado, Long id);
 }

@@ -10,17 +10,7 @@ public interface RepositorioContacto
 
     boolean existsByEmail(String email);
 
-    /*List<EntidadContacto> findByNombreContainingAndApellidoContaining(
-            String nombre,
-            String apellido
-    );
+    boolean existsByTelefonoAndIdNot(String telefono, Long id);
 
-    List<EntidadContacto> findByNombreContaining(String nombre);
-
-    List<EntidadContacto> findByApellidoContaining(String apellido);
-
-     */
-
+    boolean existsByEmailAndIdNot(String email, Long id);
 }
-
-
