@@ -49,4 +49,11 @@ public class ControladorMedicamento {
         return ResponseEntity.ok(servicioMedicamento.actualizar(id, medicamentoActualizar));
     }
 
+    // Baja lógica: no elimina el registro, solo deja el stock en 0.
+    @PatchMapping("/{id}/baja")
+    @PreAuthorize("hasAuthority('ELIMINAR_MEDICAMENTO')")
+    ResponseEntity<MedicamentoRespuesta> darDeBaja (@PathVariable Long id){
+        return ResponseEntity.ok(servicioMedicamento.darDeBaja(id));
+    }
+
 }

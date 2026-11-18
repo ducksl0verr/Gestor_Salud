@@ -18,11 +18,12 @@ public record MedicamentoNuevo(@NotBlank
                                @NotBlank
                                String descripcion,
                                @NotNull
+                               @Positive
                                Integer stock,
                                @NotNull
                                @Positive
                                Double precio,
                                @NotNull
-                               @Future
+                               @Future(message = "La fecha de vencimiento debe ser posterior al día de hoy.")
                                LocalDate fechaVencimiento) {
 }

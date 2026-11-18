@@ -161,6 +161,8 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.VER_MEDICAMENTO,
                         PERMISOS.CREAR_MEDICAMENTO,
+                        PERMISOS.ELIMINAR_MEDICAMENTO,
+                        PERMISOS.EDITAR_MEDICAMENTO,
 
                         PERMISOS.VER_TURNO,
                         PERMISOS.EDITAR_TURNO,
@@ -316,6 +318,8 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.VER_MEDICAMENTO,
                         PERMISOS.CREAR_MEDICAMENTO,
+                        PERMISOS.ELIMINAR_MEDICAMENTO,
+                        PERMISOS.EDITAR_MEDICAMENTO,
 
                         PERMISOS.VER_TURNO,
                         PERMISOS.EDITAR_TURNO,

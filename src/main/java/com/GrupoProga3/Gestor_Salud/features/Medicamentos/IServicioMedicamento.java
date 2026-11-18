@@ -14,4 +14,5 @@ public interface IServicioMedicamento {
     List<MedicamentoRespuesta> buscarTodos();
     List<MedicamentoRespuesta> buscarPorPrincipioActivo(String principioActivo);
     MedicamentoRespuesta actualizar (Long id, MedicamentoActualizar medicamentoActualizar);
+    MedicamentoRespuesta darDeBaja (Long id);
 }
