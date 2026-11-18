@@ -60,6 +60,7 @@ public class EstablecedorRoles implements CommandLineRunner {
         administrativo.getPermisos().addAll(
                 obtenerPermisos(
                         PERMISOS.VER_PROFESIONAL,
+                        PERMISOS.VER_USUARIO,
 
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.EDITAR_PACIENTE,
@@ -133,6 +134,8 @@ public class EstablecedorRoles implements CommandLineRunner {
                 new EntidadRole(ROLES.ROLE_PROFESIONAL);
         profesional.getPermisos().addAll(
                 obtenerPermisos(
+                        PERMISOS.VER_PROFESIONAL,
+
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.EDITAR_PACIENTE,
@@ -209,6 +212,7 @@ public class EstablecedorRoles implements CommandLineRunner {
         administrativo.getPermisos().addAll(
                 obtenerPermisos(
                         PERMISOS.VER_PROFESIONAL,
+                        PERMISOS.VER_USUARIO,
 
                         PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.CREAR_PACIENTE,
@@ -285,6 +289,8 @@ public class EstablecedorRoles implements CommandLineRunner {
                         "No se ha encontrado el rol"));
         profesional.getPermisos().addAll(
                 obtenerPermisos(
+                        PERMISOS.VER_PROFESIONAL,
+
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.CREAR_PACIENTE,
                         PERMISOS.EDITAR_PACIENTE,

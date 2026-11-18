@@ -15,7 +15,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ServicioQuirofano implements IServicioQuirofano {
-
     private final RepositorioQuirofano repositorioQuirofano;
     private final QuirofanoMapper  quirofanoMapper;
 

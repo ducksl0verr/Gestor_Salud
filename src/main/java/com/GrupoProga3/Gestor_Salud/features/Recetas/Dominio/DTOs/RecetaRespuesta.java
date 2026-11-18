@@ -8,6 +8,10 @@ import java.util.List;
 public record RecetaRespuesta(Long id,
                               LocalDate fecha,
                               Long id_paciente,
+                              String nombre_paciente,
+                              String apellido_paciente,
                               Long id_profesional,
+                              String nombre_profesional,
+                              String apellido_profesional,
                               List<DetalleRecetaRespuesta> detalles) {
 }

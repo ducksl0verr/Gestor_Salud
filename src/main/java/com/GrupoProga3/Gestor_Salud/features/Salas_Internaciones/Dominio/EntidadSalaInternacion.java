@@ -13,15 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntidadSalaInternacion {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_salaInternacion")
     private Long id;
-
     private Integer capacidad_maxima;
-
     @OneToMany(mappedBy = "salaInternacion")
     private List<EntidadPaciente> pacientes;
-
 }

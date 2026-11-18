@@ -17,8 +17,16 @@ public interface RecetaMapper {
 
     @Mapping(source = "paciente.id",
     target = "id_paciente")
+    @Mapping(source = "paciente.nombre",
+    target = "nombre_paciente")
+    @Mapping(source = "paciente.apellido",
+    target = "apellido_paciente")
     @Mapping(source = "profesional.id",
     target = "id_profesional")
+    @Mapping(source = "profesional.nombre",
+    target = "nombre_profesional")
+    @Mapping(source = "profesional.apellido",
+    target = "apellido_profesional")
     RecetaRespuesta toDTO (EntidadReceta entidadReceta);
 
 
