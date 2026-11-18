@@ -9,8 +9,8 @@ public record TurnoRespuesta(Long id,
                              LocalDateTime fechaHora,
                              EstadoFacturacionDeTurno estadoFacturacionDeTurno,
                              EstadoTurno estadoTurno,
-                             Long id_paciente,
-                             Long id_tratamiento,
-                             Long id_consultorio,
-                             Long id_profesional) {
+                             String nombrePaciente,
+                             String nombreTratamiento,
+                             String nombreConsultorio,
+                             String nombreProfesional) {
 }

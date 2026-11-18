@@ -1,5 +1,7 @@
 package com.GrupoProga3.Gestor_Salud.features.Turno;
 
+import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.CambioEstadoTurno;
+import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.DisponibilidadTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.TurnoActualizar;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.TurnoFacturable;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.TurnoNuevo;
@@ -12,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -38,6 +41,19 @@ public class ControladorTurno {
         return ResponseEntity.ok(servicioTurno.buscarPorProfesional(authentication.getName()));
     }
 
+    // Consulta usada por el formulario para advertir solapes antes de registrar.
+    @GetMapping("/disponibilidad")
+    @PreAuthorize("hasAuthority('VER_TURNO')")
+    ResponseEntity<DisponibilidadTurno> verificarDisponibilidad(
+            @RequestParam LocalDateTime fechaHora,
+            @RequestParam Long idProfesional,
+            @RequestParam Long idConsultorio,
+            @RequestParam(required = false) Long idExcluido) {
+        return ResponseEntity.ok(
+                servicioTurno.verificarDisponibilidad(fechaHora, idProfesional, idConsultorio, idExcluido)
+        );
+    }
+
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAuthority('VER_TURNO')")
     ResponseEntity<TurnoRespuesta> buscarPorId (@PathVariable Long id) {
@@ -55,6 +71,14 @@ public class ControladorTurno {
     @PreAuthorize("hasAuthority('EDITAR_TURNO')")
     ResponseEntity<TurnoRespuesta> actualizar (@Valid @RequestBody TurnoActualizar actualizacion, @PathVariable Long id) {
         return ResponseEntity.ok(servicioTurno.actualizar(id, actualizacion));
+    }
+
+    // El perfil profesional solo cambia el estado; no edita fecha ni datos del turno.
+    @PatchMapping("/{id}/estado")
+    @PreAuthorize("hasAuthority('CANCELAR_TURNO')")
+    ResponseEntity<TurnoRespuesta> cambiarEstado (@PathVariable Long id,
+                                                  @Valid @RequestBody CambioEstadoTurno cambio) {
+        return ResponseEntity.ok(servicioTurno.cambiarEstado(id, cambio.estado()));
     }
 
     @DeleteMapping("/{id}")

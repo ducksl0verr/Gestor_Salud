@@ -7,6 +7,7 @@ import java.util.List;
 
 public record RecetaRespuesta(Long id,
                               LocalDate fecha,
+                              String descripcion,
                               Long id_paciente,
                               String nombre_paciente,
                               String apellido_paciente,

@@ -25,6 +25,10 @@ public class EntidadReceta {
 
     private LocalDate fecha;
 
+    // Texto libre opcional que completa el profesional al emitir la receta.
+    @Column(length = 200)
+    private String descripcion;
+
     @ManyToOne
     @JoinColumn(name="id_paciente")
     private EntidadPaciente paciente;

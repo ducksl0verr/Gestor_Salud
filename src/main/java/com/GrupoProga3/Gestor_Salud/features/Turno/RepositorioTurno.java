@@ -13,8 +13,7 @@ import java.util.List;
 public interface RepositorioTurno extends JpaRepository<EntidadTurno, Long> {
     List<EntidadTurno> findByPacienteIdAndEstadoFacturacionDeTurnoAndEstadoTurno(Long idPaciente, EstadoFacturacionDeTurno estadoFacturacion, EstadoTurno estadoTurno);
     List<EntidadTurno> findByFechaHoraBetweenAndEstadoTurno(LocalDateTime inicio, LocalDateTime fin, EstadoTurno estado);
-    boolean existsByProfesionalIdAndFechaHora(Long idProfesional, LocalDateTime fechaHora);
-    boolean existsByConsultorioIdAndFechaHora(Long idConsultorio, LocalDateTime fechaHora);
     List<EntidadTurno> findByFechaHoraBefore(LocalDateTime fechaHora);
     List<EntidadTurno> findByProfesionalId(Long idProfesional);
+    List<EntidadTurno> findByConsultorioId(Long idConsultorio);
 }

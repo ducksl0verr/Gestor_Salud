@@ -27,6 +27,10 @@ public class EntidadTurno {
 
     private LocalDateTime fechaHora;
 
+    // Baja lógica: el turno no se elimina físicamente para conservar las facturas asociadas.
+    @Column(name = "eliminado")
+    private Boolean eliminado = false;
+
     @Enumerated(EnumType.STRING)
     private EstadoFacturacionDeTurno estadoFacturacionDeTurno;
 

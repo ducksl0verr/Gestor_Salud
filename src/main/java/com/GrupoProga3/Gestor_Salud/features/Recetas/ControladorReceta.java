@@ -2,6 +2,7 @@ package com.GrupoProga3.Gestor_Salud.features.Recetas;
 
 import com.GrupoProga3.Gestor_Salud.features.Recetas.Dominio.DTOs.RecetaNueva;
 import com.GrupoProga3.Gestor_Salud.features.Recetas.Dominio.DTOs.RecetaRespuesta;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ControladorReceta {
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREAR_RECETA')")
-    ResponseEntity<RecetaRespuesta> guardar (@RequestBody RecetaNueva receta) {
+    ResponseEntity<RecetaRespuesta> guardar (@RequestBody @Valid RecetaNueva receta) {
         return new ResponseEntity<>(servicioReceta.crear(receta), HttpStatus.CREATED);
     }
 
