@@ -6,6 +6,8 @@ import com.GrupoProga3.Gestor_Salud.auth.credenciales.RepositorioCredencial;
 import com.GrupoProga3.Gestor_Salud.auth.permisos.EntidadRole;
 import com.GrupoProga3.Gestor_Salud.auth.permisos.RepositorioRole;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.RepositorioTokenRecuperacion;
+import com.GrupoProga3.Gestor_Salud.common.validacion.ServicioValidacionUnicidad;
+import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.ServicioEmail;
@@ -19,7 +21,6 @@ import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.Mappers.UsuarioMap
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Model.EntidadUsuarios;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Repositorio.RepositorioUsuario;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.CredentialException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -42,12 +42,14 @@ import java.util.Set;
     private final PasswordEncoder passwordEncoder;
     private final RepositorioCredencial repositorioCredencial;
     private final RepositorioTokenRecuperacion repositorioTokenRecuperacion;
+    private final ServicioValidacionUnicidad validacionUnicidad;
 
     @Override
     @Transactional
     public UsuarioRespuestaDTO guardar(CuentaNueva nueva) {
         EntidadUsuarios user = usuarioMapper.ToEntity(nueva);
-        normalizarYValidarEmail(user);
+        user.setDni(validacionUnicidad.normalizarYValidarDni(user.getDni(), null, null));
+        validacionUnicidad.normalizarYValidarContacto(user.getContacto(), null);
 
         EntidadRole role = repositorioRole
                 .findByRole(nueva.role())
@@ -80,7 +82,8 @@ import java.util.Set;
     public ProfesionalRespuestaDTO guardarProfesional(CuentaNueva nueva) {
 
         EntidadUsuarios user = usuarioMapper.ToEntity(nueva);
-        normalizarYValidarEmail(user);
+        user.setDni(validacionUnicidad.normalizarYValidarDni(user.getDni(), null, null));
+        validacionUnicidad.normalizarYValidarContacto(user.getContacto(), null);
 
         EntidadRole role = repositorioRole
                 .findByRole(nueva.role())
@@ -160,8 +163,16 @@ import java.util.Set;
 
         usu.setNombre(usuarioDTO.nombre());
         usu.setApellido(usuarioDTO.apellido());
-        usu.setContacto(usuarioMapper.toEntity(usuarioDTO.contacto()));
-        normalizarYValidarEmail(usu, usu.getId());
+        usu.setDni(validacionUnicidad.normalizarYValidarDni(usuarioDTO.dni(), usu.getId(), null));
+
+        EntidadContacto contactoActual = usu.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, usuarioDTO.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
+        usu.setContacto(contacto);
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
@@ -180,8 +191,16 @@ import java.util.Set;
                 ));
         usu.setNombre(profesionalDTO.nombre());
         usu.setApellido(profesionalDTO.apellido());
-        usu.setContacto(usuarioMapper.toEntity(profesionalDTO.contacto()));
-        normalizarYValidarEmail(usu, usu.getId());
+        usu.setDni(validacionUnicidad.normalizarYValidarDni(profesionalDTO.dni(), usu.getId(), null));
+
+        EntidadContacto contactoActual = usu.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, profesionalDTO.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
+        usu.setContacto(contacto);
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
 
@@ -221,29 +240,15 @@ import java.util.Set;
         email.enviarMail(p.getContacto().getEmail(), dto.asunto(), dto.mensaje());
     }
 
-    /**
-     * Normaliza el email y evita que se registren dos cuentas con el mismo
-     * (necesario para que la recuperación de contraseña identifique una única cuenta).
-     */
-    private void normalizarYValidarEmail(EntidadUsuarios user) {
-        normalizarYValidarEmail(user, null);
-    }
-
-    private void normalizarYValidarEmail(EntidadUsuarios user, Long idExcluido) {
-        if (user.getContacto() == null || user.getContacto().getEmail() == null) {
-            return;
+    /** Actualiza el contacto existente en lugar de crear uno nuevo en cada edición. */
+    private EntidadContacto actualizarContacto(EntidadContacto existente, ContactoNuevo datos) {
+        if (datos == null) {
+            return existente;
         }
 
-        String email = user.getContacto().getEmail().trim().toLowerCase(Locale.ROOT);
-        user.getContacto().setEmail(email);
-
-        boolean ocupado = repositorioUsuario.findAllByContactoEmail(email)
-                .stream()
-                .anyMatch(otro -> idExcluido == null || !idExcluido.equals(otro.getId()));
-
-        if (ocupado) {
-            throw new RecursoOcupadoException(
-                    "Ya existe una cuenta registrada con el email " + email + ".");
-        }
+        EntidadContacto contacto = existente == null ? new EntidadContacto() : existente;
+        contacto.setEmail(datos.email());
+        contacto.setTelefono(datos.telefono());
+        return contacto;
     }
 }

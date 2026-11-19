@@ -6,8 +6,7 @@ import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.Mappers.ContactoMa
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Repositorio.RepositorioContacto;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
+import com.GrupoProga3.Gestor_Salud.common.validacion.ServicioValidacionUnicidad;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,46 +20,15 @@ import java.util.List;
 public class ServicioContacto implements IServicioContacto {
 
     private final RepositorioContacto repositorioContacto;
-    //private final RepositorioPaciente repositorioPaciente;
     private final ContactoMapper contactoMapper;
+    private final ServicioValidacionUnicidad validacionUnicidad;
 
     @Override
     @Transactional
     public ContactoRespuesta guardar(ContactoNuevo contactoNuevo) {
 
-        if (repositorioContacto.existsByTelefono(contactoNuevo.telefono())) {
-            throw new RecursoOcupadoException(
-                    "Ya existe un contacto con el número: "
-                            + contactoNuevo.telefono()
-            );
-        }
-
-        if (repositorioContacto.existsByEmail(contactoNuevo.email())) {
-            throw new RecursoOcupadoException(
-                    "Ya existe un contacto con el email: "
-                    +contactoNuevo.email()
-            );
-        }
-
-        /*if (repositorioContacto.existsByPacienteId(contactoNuevo.idPaciente())) {
-            throw new ReglaNegocioException(
-                    "El paciente ya posee un contacto asociado."
-            );
-        }
-
-        EntidadPaciente paciente = repositorioPaciente
-                .findById(contactoNuevo.idPaciente())
-                .orElseThrow(() ->
-                        new RecursoNoEncontradoException(
-                                "El paciente con id "
-                                        + contactoNuevo.idPaciente()
-                                        + " no existe."
-                        ));
-
-      */
         EntidadContacto contacto = contactoMapper.toEntity(contactoNuevo);
-
-      //  contacto.setPaciente(paciente);
+        validacionUnicidad.normalizarYValidarContacto(contacto, null);
 
         EntidadContacto guardado = repositorioContacto.save(contacto);
 
@@ -82,51 +50,19 @@ public class ServicioContacto implements IServicioContacto {
                                         "No se ha encontrado ninguna contacto con aquel ID."
                                 ));
 
-/*        if (contactoNuevo.nombre() != null
-                && !contactoNuevo.nombre().isBlank()) {
+        String emailAnterior = contacto.getEmail();
+        String telefonoAnterior = contacto.getTelefono();
 
-            contacto.setNombre(contactoNuevo.nombre());
-        }
-
-        if (contactoNuevo.apellido() != null
-                && !contactoNuevo.apellido().isBlank()) {
-
-            contacto.setApellido(contactoNuevo.apellido());
-        }
-
- */
-
-        if (contactoNuevo.telefono() != null
-                && !contactoNuevo.telefono().isBlank()) {
-
-            if (!contacto.getTelefono().equals(contactoNuevo.telefono())
-                    && repositorioContacto.existsByTelefono(
-                    contactoNuevo.telefono())) {
-
-                throw new ReglaNegocioException(
-                        "Ya existe un contacto con teléfono: "
-                                + contactoNuevo.telefono()
-                );
-            }
-
+        if (contactoNuevo.telefono() != null && !contactoNuevo.telefono().isBlank()) {
             contacto.setTelefono(contactoNuevo.telefono());
         }
 
-        if (contactoNuevo.email() != null
-                && !contactoNuevo.email().isBlank()) {
-
-            if (!contacto.getEmail().equals(contactoNuevo.email())
-                    && repositorioContacto.existsByEmail(
-                    contactoNuevo.email())) {
-
-                throw new ReglaNegocioException(
-                        "Ya existe un contacto con el email: "
-                                + contactoNuevo.email()
-                );
-            }
-
+        if (contactoNuevo.email() != null && !contactoNuevo.email().isBlank()) {
             contacto.setEmail(contactoNuevo.email());
         }
+
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto.getId(), emailAnterior, telefonoAnterior);
 
         EntidadContacto actualizado =
                 repositorioContacto.save(contacto);

@@ -1,6 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.features.Usuarios.Controlador;
 
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
+import com.GrupoProga3.Gestor_Salud.auth.permisos.ROLES;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import com.GrupoProga3.Gestor_Salud.features.Notificaciones.MensajeDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.ProfesionalDTO;
 import com.GrupoProga3.Gestor_Salud.features.Usuarios.Dominio.DTO.ProfesionalRespuestaDTO;
@@ -55,6 +57,9 @@ public class ControladorUsuario {
     @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<UsuarioRespuestaDTO> guardar (@RequestBody @Valid CuentaNueva cuentaNueva)
     {
+        if (cuentaNueva.role() == ROLES.ROLE_ADMINISTRADOR) {
+            throw new ReglaNegocioException("Los administradores solo se crean desde el formulario de registrar.");
+        }
         return new ResponseEntity<>(servicioUsuario.guardar(cuentaNueva), HttpStatus.CREATED);
     }
 
@@ -62,6 +67,9 @@ public class ControladorUsuario {
     @PreAuthorize("hasAuthority('GESTIONAR_USUARIO')")
     public ResponseEntity<ProfesionalRespuestaDTO> guardarProfesional(@RequestBody @Valid CuentaNueva nueva)
     {
+        if (nueva.role() != ROLES.ROLE_PROFESIONAL) {
+            throw new ReglaNegocioException("El formulario de profesionales solo permite crear profesionales.");
+        }
         return new ResponseEntity<>(servicioUsuario.guardarProfesional(nueva),HttpStatus.CREATED);
     }
 

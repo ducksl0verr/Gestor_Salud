@@ -1,5 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.features.Proveedores;
 
+import com.GrupoProga3.Gestor_Salud.common.validacion.ServicioValidacionUnicidad;
+import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoNuevo;
+import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.features.Proveedores.Dominio.DTOs.ProveedorActualizar;
 import com.GrupoProga3.Gestor_Salud.features.Proveedores.Dominio.DTOs.ProveedorNuevo;
@@ -17,13 +20,16 @@ import java.util.List;
 public class ServicioProveedor implements IServicioProveedor{
     private final RepositorioProveedor repositorioProveedor;
     private final ProveedorMapper  proveedorMapper;
+    private final ServicioValidacionUnicidad validacionUnicidad;
 
     @Override
     public ProveedorRespuesta crear(ProveedorNuevo nuevo) {
-        System.out.println(nuevo);
-        EntidadProveedor proveedor = repositorioProveedor.save(proveedorMapper.toEntity(nuevo));
-        System.out.println(proveedor);
-        return proveedorMapper.toDTO(proveedor);
+        EntidadProveedor proveedor = proveedorMapper.toEntity(nuevo);
+        proveedor.setCuil(validacionUnicidad.normalizarYValidarCuil(proveedor.getCuil(), null));
+        validacionUnicidad.normalizarYValidarContacto(proveedor.getContacto(), null);
+
+        EntidadProveedor guardado = repositorioProveedor.save(proveedor);
+        return proveedorMapper.toDTO(guardado);
     }
 
     @Override
@@ -69,7 +75,14 @@ public class ServicioProveedor implements IServicioProveedor{
                     id,
                     "No se ha encontrado ningún proveedor con aquel ID."));
 
-        buscado.setContacto(proveedorMapper.toEntity(nuevo.contacto()));
+        EntidadContacto contactoActual = buscado.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, nuevo.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
+        buscado.setContacto(contacto);
         buscado.setNombre(nuevo.nombre());
 
         List<EntidadDomicilio> domicilios = nuevo.direccion()
@@ -82,9 +95,19 @@ public class ServicioProveedor implements IServicioProveedor{
 
         EntidadProveedor actualizado = repositorioProveedor.save(buscado);
 
-        System.out.println(actualizado);
-
         return proveedorMapper.toDTO(actualizado);
+    }
+
+    /** Actualiza el contacto existente en lugar de crear uno nuevo en cada edición. */
+    private EntidadContacto actualizarContacto(EntidadContacto existente, ContactoNuevo datos) {
+        if (datos == null) {
+            return existente;
+        }
+
+        EntidadContacto contacto = existente == null ? new EntidadContacto() : existente;
+        contacto.setEmail(datos.email());
+        contacto.setTelefono(datos.telefono());
+        return contacto;
     }
 
     @Override

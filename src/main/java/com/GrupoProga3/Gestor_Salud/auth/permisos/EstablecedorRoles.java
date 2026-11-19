@@ -107,6 +107,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.EDITAR_GASTO,
 
                         PERMISOS.CREAR_PROVEEDOR,
+                        PERMISOS.EDITAR_PROVEEDOR,
                         PERMISOS.VER_PROVEEDOR,
                         PERMISOS.COMUNICAR_PROVEEDOR,
 
@@ -261,6 +262,7 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.EDITAR_GASTO,
 
                         PERMISOS.CREAR_PROVEEDOR,
+                        PERMISOS.EDITAR_PROVEEDOR,
                         PERMISOS.VER_PROVEEDOR,
                         PERMISOS.COMUNICAR_PROVEEDOR,
 

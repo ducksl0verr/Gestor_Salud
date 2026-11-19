@@ -4,6 +4,7 @@ import com.GrupoProga3.Gestor_Salud.auth.DTOs.AuthPedido;
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.AuthRespuesta;
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.CuentaNueva;
 import com.GrupoProga3.Gestor_Salud.auth.DTOs.RefreshTokenPedido;
+import com.GrupoProga3.Gestor_Salud.auth.permisos.ROLES;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.DTOS.OlvideContrasenaPedido;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.DTOS.RestablecerContrasenaPedido;
 import com.GrupoProga3.Gestor_Salud.auth.TokensRecuperacion.ServicioRecuperacion;
@@ -31,7 +32,18 @@ public class ControladorAuth {
 
     @PostMapping("/registrar")
     public ResponseEntity<UsuarioRespuestaDTO> registrarUsuario(@RequestBody @Valid CuentaNueva nueva) {
-        return new ResponseEntity<>(servicioUsuario.guardar(nueva), HttpStatus.CREATED);
+        // Este endpoint solo crea administradores, sin importar el rol que venga en el pedido.
+        CuentaNueva administrador = new CuentaNueva(
+                nueva.nombre(),
+                nueva.apellido(),
+                null,
+                nueva.dni(),
+                nueva.contacto(),
+                nueva.username(),
+                nueva.password(),
+                ROLES.ROLE_ADMINISTRADOR
+        );
+        return new ResponseEntity<>(servicioUsuario.guardar(administrador), HttpStatus.CREATED);
     }
 
     @PostMapping("/refresh")
