@@ -11,6 +11,8 @@ import com.GrupoProga3.Gestor_Salud.features.Usuarios.Model.EntidadUsuarios;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.math.BigDecimal;
+
 @Mapper(componentModel = "spring")
 public interface TurnoMapper {
 
@@ -44,10 +46,16 @@ public interface TurnoMapper {
             return null;
         }
 
+        BigDecimal monto = turno.getTratamiento() == null
+                || turno.getTratamiento().getPrecio() == null
+                ? BigDecimal.ZERO
+                : turno.getTratamiento().getPrecio();
+
         return new TurnoFacturable(
                 turno.getId(),
                 turno.getFechaHora(),
-                nombreTratamiento(turno.getTratamiento())
+                nombreTratamiento(turno.getTratamiento()),
+                monto
         );
     }
 

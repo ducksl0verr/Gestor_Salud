@@ -9,4 +9,5 @@ public interface IServicioFactura {
     FacturaRespuesta buscarPorId(Long id);
     List<FacturaRespuesta> buscarTodos();
     FacturaRespuesta crearFactura(FacturaNueva facturaNueva);
+    FacturaRespuesta crearFacturaDesdePago(FacturaNueva facturaNueva);
 }

@@ -10,5 +10,6 @@ public record FacturaRespuesta(Long id,
                                LocalDate fechaEmision,
                                LocalDate fechaVencimiento,
                                BigDecimal total,
-                               EstadoFactura estadoFactura)
+                               EstadoFactura estadoFactura,
+                               Long idPaciente)
 {}

@@ -277,12 +277,9 @@ public class ServicioTurno implements IServicioTurno {
             buscado.setFechaHora(turno.fechaHora());
         }
 
+        // Confirmar el turno NO implica facturarlo. El estado de facturación
+        // cambia recién cuando se genera el pago y su factura asociada.
         buscado.setEstadoTurno(turno.estadoTurno());
-
-        // Al confirmar un turno, queda marcado automáticamente como facturado.
-        if (turno.estadoTurno() == EstadoTurno.CONFIRMADO) {
-            buscado.setEstadoFacturacionDeTurno(EstadoFacturacionDeTurno.FACTURADO);
-        }
 
         EntidadTurno actualizado = repositorioTurno.save(buscado);
         return turnoMapper.toRespuestaDto(actualizado);
@@ -331,11 +328,11 @@ public class ServicioTurno implements IServicioTurno {
     @Override
     @Transactional(readOnly = true)
     public List<TurnoFacturable> obtenerTurnosFacturables(Long idPaciente) {
-        return repositorioTurno.findByPacienteIdAndEstadoFacturacionDeTurnoAndEstadoTurno(idPaciente,
-                        EstadoFacturacionDeTurno.NO_FACTURADO,
-                        EstadoTurno.FINALIZADO)
+        return repositorioTurno.findByPacienteIdAndEstadoFacturacionDeTurno(idPaciente,
+                        EstadoFacturacionDeTurno.NO_FACTURADO)
                 .stream()
                 .filter(t -> !estaEliminado(t))
+                .filter(t -> t.getEstadoTurno() != EstadoTurno.CANCELADO)
                 .map(turnoMapper::toFacturableDTO)
                 .toList();
     }

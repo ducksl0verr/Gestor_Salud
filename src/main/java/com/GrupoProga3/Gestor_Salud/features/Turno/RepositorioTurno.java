@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface RepositorioTurno extends JpaRepository<EntidadTurno, Long> {
     List<EntidadTurno> findByPacienteIdAndEstadoFacturacionDeTurnoAndEstadoTurno(Long idPaciente, EstadoFacturacionDeTurno estadoFacturacion, EstadoTurno estadoTurno);
+    List<EntidadTurno> findByPacienteIdAndEstadoFacturacionDeTurno(Long idPaciente, EstadoFacturacionDeTurno estadoFacturacion);
     List<EntidadTurno> findByFechaHoraBetweenAndEstadoTurno(LocalDateTime inicio, LocalDateTime fin, EstadoTurno estado);
     List<EntidadTurno> findByFechaHoraBefore(LocalDateTime fechaHora);
     List<EntidadTurno> findByProfesionalId(Long idProfesional);
