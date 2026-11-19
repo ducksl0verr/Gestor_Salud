@@ -94,8 +94,13 @@ public class ServicioPaciente implements IServicioPaciente {
                             + paciente.numeroAfiliado());
         }
 
-        EntidadContacto contacto = actualizarContacto(pac.getContacto(), paciente.contacto());
-        validacionUnicidad.normalizarYValidarContacto(contacto, contacto.getId());
+        EntidadContacto contactoActual = pac.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, paciente.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
 
         pac.setNombre(paciente.nombre());
         pac.setApellido(paciente.apellido());

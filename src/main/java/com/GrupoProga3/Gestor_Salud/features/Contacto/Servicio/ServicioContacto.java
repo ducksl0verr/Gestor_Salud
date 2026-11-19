@@ -50,6 +50,9 @@ public class ServicioContacto implements IServicioContacto {
                                         "No se ha encontrado ninguna contacto con aquel ID."
                                 ));
 
+        String emailAnterior = contacto.getEmail();
+        String telefonoAnterior = contacto.getTelefono();
+
         if (contactoNuevo.telefono() != null && !contactoNuevo.telefono().isBlank()) {
             contacto.setTelefono(contactoNuevo.telefono());
         }
@@ -58,7 +61,8 @@ public class ServicioContacto implements IServicioContacto {
             contacto.setEmail(contactoNuevo.email());
         }
 
-        validacionUnicidad.normalizarYValidarContacto(contacto, contacto.getId());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto.getId(), emailAnterior, telefonoAnterior);
 
         EntidadContacto actualizado =
                 repositorioContacto.save(contacto);

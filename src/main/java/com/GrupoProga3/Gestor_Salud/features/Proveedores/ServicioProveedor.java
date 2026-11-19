@@ -75,8 +75,13 @@ public class ServicioProveedor implements IServicioProveedor{
                     id,
                     "No se ha encontrado ningún proveedor con aquel ID."));
 
-        EntidadContacto contacto = actualizarContacto(buscado.getContacto(), nuevo.contacto());
-        validacionUnicidad.normalizarYValidarContacto(contacto, contacto.getId());
+        EntidadContacto contactoActual = buscado.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, nuevo.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
         buscado.setContacto(contacto);
         buscado.setNombre(nuevo.nombre());
 

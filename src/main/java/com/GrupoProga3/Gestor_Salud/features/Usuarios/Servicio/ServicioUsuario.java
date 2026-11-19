@@ -165,8 +165,13 @@ import java.util.Set;
         usu.setApellido(usuarioDTO.apellido());
         usu.setDni(validacionUnicidad.normalizarYValidarDni(usuarioDTO.dni(), usu.getId(), null));
 
-        EntidadContacto contacto = actualizarContacto(usu.getContacto(), usuarioDTO.contacto());
-        validacionUnicidad.normalizarYValidarContacto(contacto, contacto.getId());
+        EntidadContacto contactoActual = usu.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, usuarioDTO.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
         usu.setContacto(contacto);
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);
@@ -188,8 +193,13 @@ import java.util.Set;
         usu.setApellido(profesionalDTO.apellido());
         usu.setDni(validacionUnicidad.normalizarYValidarDni(profesionalDTO.dni(), usu.getId(), null));
 
-        EntidadContacto contacto = actualizarContacto(usu.getContacto(), profesionalDTO.contacto());
-        validacionUnicidad.normalizarYValidarContacto(contacto, contacto.getId());
+        EntidadContacto contactoActual = usu.getContacto();
+        String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
+        String telefonoAnterior = contactoActual == null ? null : contactoActual.getTelefono();
+
+        EntidadContacto contacto = actualizarContacto(contactoActual, profesionalDTO.contacto());
+        validacionUnicidad.normalizarYValidarContacto(
+                contacto, contacto == null ? null : contacto.getId(), emailAnterior, telefonoAnterior);
         usu.setContacto(contacto);
 
         EntidadUsuarios actualizado = repositorioUsuario.save(usu);

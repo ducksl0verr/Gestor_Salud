@@ -29,9 +29,22 @@ public class ServicioValidacionUnicidad {
 
     /**
      * Normaliza el contacto (en el mismo objeto) y verifica que no exista otro
-     * con el mismo email o teléfono. idContactoExcluido se usa al editar.
+     * con el mismo email o teléfono. Para altas se usa sin valores anteriores.
      */
     public void normalizarYValidarContacto(EntidadContacto contacto, Long idContactoExcluido) {
+        normalizarYValidarContacto(contacto, idContactoExcluido, null, null);
+    }
+
+    /**
+     * Igual que el método anterior, pero en ediciones recibe los valores que
+     * tenía el contacto antes del cambio. Si el email o el teléfono no se
+     * modificaron, no se los vuelve a validar: así editar otro campo no falla
+     * por contactos duplicados que ya existieran en la base.
+     */
+    public void normalizarYValidarContacto(EntidadContacto contacto,
+                                           Long idContactoExcluido,
+                                           String emailAnterior,
+                                           String telefonoAnterior) {
         if (contacto == null) {
             return;
         }
@@ -41,7 +54,10 @@ public class ServicioValidacionUnicidad {
         contacto.setEmail(email);
         contacto.setTelefono(telefono);
 
-        if (email != null && !email.isBlank()) {
+        String emailPrevio = normalizarEmail(emailAnterior);
+        String telefonoPrevio = normalizarTelefono(telefonoAnterior);
+
+        if (email != null && !email.isBlank() && !email.equals(emailPrevio)) {
             boolean repetido = repositorioContacto.findAll().stream()
                     .anyMatch(otro -> !Objects.equals(idContactoExcluido, otro.getId())
                             && email.equals(normalizarEmail(otro.getEmail())));
@@ -52,7 +68,7 @@ public class ServicioValidacionUnicidad {
             }
         }
 
-        if (telefono != null && !telefono.isBlank()) {
+        if (telefono != null && !telefono.isBlank() && !telefono.equals(telefonoPrevio)) {
             boolean repetido = repositorioContacto.findAll().stream()
                     .anyMatch(otro -> !Objects.equals(idContactoExcluido, otro.getId())
                             && telefono.equals(normalizarTelefono(otro.getTelefono())));
