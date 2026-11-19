@@ -11,6 +11,7 @@ public interface GastoMapper {
     @Mapping(source = "proveedor.nombre",
     target = "nombreProveedor")
     GastoRespuesta toDTO (EntidadGasto entidadGasto);
+    @Mapping(target = "fecha", ignore = true)
     @Mapping(target = "proveedor", ignore = true)
     EntidadGasto toEntity (GastoNuevo dto);
 }

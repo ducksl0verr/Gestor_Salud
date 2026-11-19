@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 public interface PagoMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "fecha", ignore = true)
     @Mapping(target = "pacientes", ignore = true)
     EntidadPago toEntity(PagoNuevo dto);
 

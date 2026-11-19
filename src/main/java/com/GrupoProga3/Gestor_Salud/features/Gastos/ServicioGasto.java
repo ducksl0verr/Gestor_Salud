@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,6 +29,10 @@ public class ServicioGasto implements IServicioGasto {
         System.out.println(gastoNuevo);
 
         EntidadGasto gasto = gastoMapper.toEntity(gastoNuevo);
+
+        // La fecha del gasto siempre es la del momento en que se registra,
+        // sin importar lo que pueda enviar el cliente.
+        gasto.setFecha(LocalDate.now());
 
         EntidadProveedor proveedor = repositorioProveedor.findAll()
                 .stream()
