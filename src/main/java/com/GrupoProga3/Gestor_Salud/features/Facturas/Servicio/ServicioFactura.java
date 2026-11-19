@@ -1,5 +1,8 @@
 package com.GrupoProga3.Gestor_Salud.features.Facturas.Servicio;
 
+import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import com.GrupoProga3.Gestor_Salud.features.DetalleFacturas.Model.EntidadDetalleFacturas;
 import com.GrupoProga3.Gestor_Salud.features.Facturas.Dominio.DTO.FacturaNueva;
 import com.GrupoProga3.Gestor_Salud.features.Facturas.Dominio.DTO.FacturaRespuesta;
@@ -9,10 +12,9 @@ import com.GrupoProga3.Gestor_Salud.features.Facturas.Model.EntidadFacturas;
 import com.GrupoProga3.Gestor_Salud.features.Facturas.Repositorio.RepositorioFactura;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.ENUMS.EstadoFacturacionDeTurno;
+import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.ENUMS.EstadoTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.EntidadTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.RepositorioTurno;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
-import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,78 +50,89 @@ public class ServicioFactura implements IServicioFactura{
                 .toList();
     }
 
+    @Override
     @Transactional
-    public FacturaRespuesta crearFactura(FacturaNueva facturaNueva){
+    public FacturaRespuesta crearFactura(FacturaNueva facturaNueva) {
+        return crear(facturaNueva, EstadoFactura.PENDIENTE);
+    }
 
-        // Buscar  los turnos que ingreso el administrativo
+    @Override
+    @Transactional
+    public FacturaRespuesta crearFacturaDesdePago(FacturaNueva facturaNueva) {
+        // Existe un pago real que la respalda, por eso nace como REALIZADA.
+        return crear(facturaNueva, EstadoFactura.REALIZADA);
+    }
 
-        List<EntidadTurno> turnos = repositorioTurno.findAllById(facturaNueva.idsTurnos());
+    private FacturaRespuesta crear(FacturaNueva facturaNueva, EstadoFactura estadoFactura) {
+        if (facturaNueva == null || facturaNueva.idsTurnos() == null
+                || facturaNueva.idsTurnos().isEmpty()) {
+            throw new ReglaNegocioException("Debe seleccionar al menos un turno para facturar.");
+        }
 
-        // Validaado que existan los turnos que ingreso el administrativo
+        List<Long> idsTurnos = facturaNueva.idsTurnos().stream().distinct().toList();
+
+        List<EntidadTurno> turnos = repositorioTurno.findAllById(idsTurnos);
 
         if (turnos.isEmpty()) {
             throw new EntidadNoEncontradaException("Turnos",
                     "No encontrado",
-                    1l,
+                    1L,
                     "No se ha encontrado ningún turno.");
         }
 
-        if (turnos.size() != facturaNueva.idsTurnos().size()) { // esto es en el caso de que no se encuentre algun turno de la lista
+        if (turnos.size() != idsTurnos.size()) {
             throw new EntidadNoEncontradaException("Turnos",
                     "No encontrado",
-                    1l,
+                    1L,
                     "No se ha encontrado ningún turno.");
         }
 
-        // Obtener paciente del primer turno
         EntidadPaciente paciente = turnos.get(0).getPaciente();
 
-        // Validar que todos sean del mismo paciente
-        for (EntidadTurno turno : turnos) {
-
-            if (!turno.getPaciente()
-                    .getId()
-                    .equals(paciente.getId())) {
-
-                throw new RecursoOcupadoException(
-                        "Los turnos pertenecen a distintos pacientes"
-                );
-            }
+        if (paciente == null) {
+            throw new ReglaNegocioException("Los turnos seleccionados no tienen un paciente asociado.");
         }
 
-        // Validar que no estén facturados
         for (EntidadTurno turno : turnos) {
+            if (turno.getPaciente() == null
+                    || !turno.getPaciente().getId().equals(paciente.getId())) {
+                throw new RecursoOcupadoException("Los turnos pertenecen a distintos pacientes");
+            }
 
-            if (EstadoFacturacionDeTurno.FACTURADO
-                    .equals(turno.getEstadoFacturacionDeTurno())) {
+            if (Boolean.TRUE.equals(turno.getEliminado())
+                    || EstadoTurno.CANCELADO.equals(turno.getEstadoTurno())) {
+                throw new ReglaNegocioException(
+                        "No se puede facturar el turno " + turno.getId() + " porque está cancelado.");
+            }
 
+            if (EstadoFacturacionDeTurno.FACTURADO.equals(turno.getEstadoFacturacionDeTurno())) {
                 throw new RecursoOcupadoException(
-                        "El turno " + turno.getId() + " ya fue facturado"
-                );
+                        "El turno " + turno.getId() + " ya fue facturado");
+            }
+
+            if (turno.getTratamiento() == null
+                    || turno.getTratamiento().getPrecio() == null
+                    || turno.getTratamiento().getPrecio().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new ReglaNegocioException(
+                        "El turno " + turno.getId() + " no tiene un tratamiento con precio válido para facturar.");
             }
         }
-
-        // Crear la factura
 
         EntidadFacturas factura = new EntidadFacturas();
         factura.setPaciente(paciente);
+        factura.setObraSocial(paciente.getObraSocial());
         factura.setFechaEmision(LocalDate.now());
         factura.setFechaVencimiento(LocalDate.now().plusDays(30));
-        factura.setEstadoFactura(EstadoFactura.PENDIENTE);
+        factura.setEstadoFactura(estadoFactura);
         factura.setNumero_factura(generarNumeroFactura());
 
         BigDecimal total = BigDecimal.ZERO;
-
         List<EntidadDetalleFacturas> detalles = new ArrayList<>();
 
-        // Creacion de los detalles
-
-        for (EntidadTurno turno : turnos)
-        {
+        for (EntidadTurno turno : turnos) {
             BigDecimal precio = turno.getTratamiento().getPrecio();
 
             EntidadDetalleFacturas detalleFactura = new EntidadDetalleFacturas();
-
             detalleFactura.setFactura(factura);
             detalleFactura.setTurno(turno);
             detalleFactura.setConcepto(turno.getTratamiento().getNombre());
@@ -128,22 +141,17 @@ public class ServicioFactura implements IServicioFactura{
             detalleFactura.setSubtotal(precio);
 
             detalles.add(detalleFactura);
-
             total = total.add(precio);
 
-            // marcar como facturado
+            // El turno recién queda facturado cuando ya existe el pago que respalda esta factura.
             turno.setEstadoFacturacionDeTurno(EstadoFacturacionDeTurno.FACTURADO);
-
         }
 
         factura.setDetalles(detalles);
-
         factura.setTotal(total);
 
         EntidadFacturas facturaGuardada = repositorioFactura.save(factura);
-
         return facturaMapper.toRespuestaDTO(facturaGuardada);
-
     }
 
     private String generarNumeroFactura() {

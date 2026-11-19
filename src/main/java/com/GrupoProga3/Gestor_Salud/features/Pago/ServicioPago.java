@@ -2,6 +2,9 @@ package com.GrupoProga3.Gestor_Salud.features.Pago;
 
 import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
+import com.GrupoProga3.Gestor_Salud.features.Facturas.Dominio.DTO.FacturaNueva;
+import com.GrupoProga3.Gestor_Salud.features.Facturas.Dominio.DTO.FacturaRespuesta;
+import com.GrupoProga3.Gestor_Salud.features.Facturas.Servicio.IServicioFactura;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO.PacienteRespuesta;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Repositorio.RepositorioPaciente;
@@ -26,49 +29,73 @@ public class ServicioPago implements IServicioPago {
     private final RepositorioPago repositorioPago;
     private final RepositorioPaciente repositorioPaciente;
     private final PagoMapper pagoMapper;
+    private final IServicioFactura servicioFactura;
 
 
 
     @Override
     @Transactional
     public PagoRespuesta guardar(PagoNuevo pagoNuevo) {
-        if (repositorioPago.existsByMontoAndFecha(
-                pagoNuevo.monto(),
-                pagoNuevo.fecha())) {
+        List<Long> idsPacientes = pagoNuevo.idsPacientes() == null
+                ? List.of()
+                : pagoNuevo.idsPacientes().stream().distinct().toList();
 
-            throw new RecursoOcupadoException(
-                    "Ya existe un pago con monto "
-                            + pagoNuevo.monto()
-                            + " y fecha "
-                            + pagoNuevo.fecha()
-            );
+        if (idsPacientes.isEmpty()) {
+            throw new ReglaNegocioException("El pago debe tener al menos un paciente asociado.");
         }
 
-        if (pagoNuevo.idsPacientes() == null || pagoNuevo.idsPacientes().isEmpty()) {
-            throw new ReglaNegocioException(
-                    "El pago debe tener al menos un paciente asociado."
-            );
+        if (idsPacientes.size() > 1) {
+            throw new ReglaNegocioException("El pago debe asociarse a un solo paciente.");
         }
 
-        EntidadPago pago = pagoMapper.toEntity(pagoNuevo);
+        if (pagoNuevo.idsTurnos() == null || pagoNuevo.idsTurnos().isEmpty()) {
+            throw new ReglaNegocioException("Debe seleccionar al menos un turno para pagar.");
+        }
 
-        List<EntidadPaciente> pacientes =
-                repositorioPaciente.findAllById(pagoNuevo.idsPacientes());
+        List<EntidadPaciente> pacientes = repositorioPaciente.findAllById(idsPacientes);
 
-        if (pacientes.size() != pagoNuevo.idsPacientes().size()) {
+        if (pacientes.size() != idsPacientes.size()) {
             throw new EntidadNoEncontradaException(
                     "Paciente",
                     "No encontrado",
-                    1l,
+                    1L,
                     "No se ha encontrado a ningún paciente con ID."
             );
         }
 
-        pago.setPacientes(pacientes);
+        // La factura se genera antes de guardar el pago: si algo falla,
+        // la transacción revierte la factura y el estado de los turnos.
+        FacturaRespuesta factura = servicioFactura.crearFacturaDesdePago(
+                new FacturaNueva(pagoNuevo.idsTurnos()));
 
-        if (pago.getFecha() == null) {
-            pago.setFecha(LocalDateTime.now());
+        if (!idsPacientes.get(0).equals(factura.idPaciente())) {
+            throw new ReglaNegocioException(
+                    "Los turnos seleccionados no pertenecen al paciente elegido.");
         }
+
+        if (pagoNuevo.monto().compareTo(factura.total()) != 0) {
+            throw new ReglaNegocioException(
+                    "El monto del pago debe coincidir con el total de la factura generada ("
+                            + factura.total() + ").");
+        }
+
+        // La fecha del pago siempre es la del momento en que se registra,
+        // sin importar el valor que pueda enviar el cliente.
+        LocalDateTime fechaPago = LocalDateTime.now();
+
+        if (repositorioPago.existsByMontoAndFecha(factura.total(), fechaPago)) {
+            throw new RecursoOcupadoException(
+                    "Ya existe un pago con monto "
+                            + factura.total()
+                            + " y fecha "
+                            + fechaPago
+            );
+        }
+
+        EntidadPago pago = pagoMapper.toEntity(pagoNuevo);
+        pago.setMonto(factura.total());
+        pago.setFecha(fechaPago);
+        pago.setPacientes(pacientes);
 
         EntidadPago guardado = repositorioPago.save(pago);
 
