@@ -36,8 +36,9 @@ public class ServicioQuirofano implements IServicioQuirofano {
                         "No se ha encontrado.",
                         id,
                         "No se ha encontrado ninguna quirofano con aquel ID."));
+        // El nombre del quirófano es inmutable: se ignora el valor recibido
+        // para no permitir que se modifique desde la API.
         buscado.setDisponible(quirofanoActualizar.disponible());
-        buscado.setNombre(quirofanoActualizar.nombre());
         EntidadQuirofano guardado = repositorioQuirofano.save(buscado);
         return quirofanoMapper.toDTO(guardado);
     }
@@ -65,6 +66,16 @@ public class ServicioQuirofano implements IServicioQuirofano {
     @Override
     @Transactional
     public QuirofanoRespuesta ocuparQuirofano(Long id) {
+        return cambiarDisponibilidad(id, false);
+    }
+
+    @Override
+    @Transactional
+    public QuirofanoRespuesta desocuparQuirofano(Long id) {
+        return cambiarDisponibilidad(id, true);
+    }
+
+    private QuirofanoRespuesta cambiarDisponibilidad(Long id, boolean disponible) {
         EntidadQuirofano buscado = repositorioQuirofano
                 .findById(id)
                 .orElseThrow(()->new EntidadNoEncontradaException("Quirofano",
@@ -72,9 +83,9 @@ public class ServicioQuirofano implements IServicioQuirofano {
                         id,
                         "No se ha encontrado ninguna quirofano con aquel ID."));
 
-        buscado.setDisponible(false);
-        EntidadQuirofano ocupado=repositorioQuirofano.save(buscado);
-        return quirofanoMapper.toDTO(ocupado);
+        buscado.setDisponible(disponible);
+        EntidadQuirofano guardado = repositorioQuirofano.save(buscado);
+        return quirofanoMapper.toDTO(guardado);
     }
 
 }

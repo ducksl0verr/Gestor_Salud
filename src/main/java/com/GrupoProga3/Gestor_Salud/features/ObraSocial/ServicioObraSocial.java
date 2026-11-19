@@ -37,6 +37,12 @@ public class ServicioObraSocial implements IServicioObraSocial {
             );
         }
 
+        if (esNombreReservado(obraSocialNueva.nombre())) {
+            throw new ReglaNegocioException(
+                    "El nombre 'Sin obra social' está reservado para la obra social predeterminada."
+            );
+        }
+
         if (obraSocialNueva.domicilios() == null
                 || obraSocialNueva.domicilios().isEmpty()) {
             throw new ReglaNegocioException(
@@ -68,8 +74,20 @@ public class ServicioObraSocial implements IServicioObraSocial {
                                                 "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
 
+        if (esPredeterminada(obraSocial)) {
+            throw new ReglaNegocioException(
+                    "La obra social 'Sin obra social' es predeterminada y no se puede modificar."
+            );
+        }
+
         if (obraSocialDTO.nombre() != null
                 && !obraSocialDTO.nombre().isBlank()) {
+
+            if (esNombreReservado(obraSocialDTO.nombre())) {
+                throw new ReglaNegocioException(
+                        "El nombre 'Sin obra social' está reservado para la obra social predeterminada."
+                );
+            }
 
             if (!obraSocial.getNombre().equalsIgnoreCase(obraSocialDTO.nombre())
                     && repositorioObraSocial.existsByNombre(obraSocialDTO.nombre())) {
@@ -116,6 +134,12 @@ public class ServicioObraSocial implements IServicioObraSocial {
                                         id,
                                         "No se ha encontrado ninguna obra social con aquel ID."
                                 ));
+
+        if (esPredeterminada(obraSocial)) {
+            throw new ReglaNegocioException(
+                    "La obra social 'Sin obra social' es predeterminada y no se puede eliminar."
+            );
+        }
 
         /*if (obraSocial.getDomicilios() != null
                 && !obraSocial.getDomicilios().isEmpty()) {
@@ -205,5 +229,25 @@ public class ServicioObraSocial implements IServicioObraSocial {
                 ));
 
         return obraSocialMapper.toDTO(obra);
+    }
+
+    /**
+     * Indica si la obra social es la predeterminada "Sin obra social",
+     * que no puede modificarse ni eliminarse.
+     */
+    private boolean esPredeterminada(EntidadObraSocial obraSocial) {
+        return obraSocial.getNombre() != null
+                && obraSocial.getNombre().trim()
+                        .equalsIgnoreCase(ObraSocialConstantes.NOMBRE_SIN_OBRA_SOCIAL);
+    }
+
+    /**
+     * Indica si el nombre recibido es el reservado para la obra social
+     * predeterminada.
+     */
+    private boolean esNombreReservado(String nombre) {
+        return nombre != null
+                && nombre.trim()
+                        .equalsIgnoreCase(ObraSocialConstantes.NOMBRE_SIN_OBRA_SOCIAL);
     }
 }

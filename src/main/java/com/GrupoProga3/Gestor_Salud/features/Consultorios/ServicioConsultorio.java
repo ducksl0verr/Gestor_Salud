@@ -6,6 +6,7 @@ import com.GrupoProga3.Gestor_Salud.features.Consultorios.Dominio.DTOs.Consultor
 import com.GrupoProga3.Gestor_Salud.features.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.features.Consultorios.Dominio.MAPPER.ConsultorioMapper;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,11 +60,21 @@ public class ServicioConsultorio implements  IServicioConsultorio{
                         "No se ha encontrado ningún consultorio con aquel ID."
                 ));
 
-        buscado.setNombre(consultorioActualizar.nombre());
+        // El nombre del consultorio es inmutable: no se permite modificarlo.
+        String nombreActual = buscado.getNombre() == null
+                ? ""
+                : buscado.getNombre().trim();
+        String nombreNuevo = consultorioActualizar.nombre() == null
+                ? ""
+                : consultorioActualizar.nombre().trim();
 
-        EntidadConsultorio actualizado = repositorioConsultorio.save(buscado);
+        if (!nombreActual.equalsIgnoreCase(nombreNuevo)) {
+            throw new ReglaNegocioException(
+                    "El nombre del consultorio no se puede modificar."
+            );
+        }
 
-        return consultorioMapper.toDTO(actualizado);
+        return consultorioMapper.toDTO(buscado);
     }
 
     @Override

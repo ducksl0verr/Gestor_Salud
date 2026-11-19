@@ -47,4 +47,10 @@ public class ControladorQuirofano {
         return ResponseEntity.ok(servicioQuirofano.ocuparQuirofano(id));
     }
 
+    @PutMapping("/{id}/desocupar")
+    @PreAuthorize("hasAuthority('EDITAR_SALA')")
+    ResponseEntity<QuirofanoRespuesta> desocuparQuirofano (@PathVariable Long id){
+        return ResponseEntity.ok(servicioQuirofano.desocuparQuirofano(id));
+    }
+
 }
