@@ -5,6 +5,7 @@ import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.features.ObraSocial.Dominio.EntidadObraSocial;
+import com.GrupoProga3.Gestor_Salud.features.ObraSocial.ObraSocialConstantes;
 import com.GrupoProga3.Gestor_Salud.features.ObraSocial.RepositorioObraSocial;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO.PacienteActualizar;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Dominio.DTO.PacienteNuevo;
@@ -14,6 +15,7 @@ import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import com.GrupoProga3.Gestor_Salud.common.excepciones.ReglaNegocioException;
 import com.GrupoProga3.Gestor_Salud.common.validacion.ServicioValidacionUnicidad;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,14 +41,12 @@ public class ServicioPaciente implements IServicioPaciente {
         buscado.setDni(validacionUnicidad.normalizarYValidarDni(buscado.getDni(), null, null));
         validacionUnicidad.normalizarYValidarContacto(buscado.getContacto(), null);
 
-        if (repositorioPaciente.existsByNumeroAfiliado(pacienteNuevo.numeroAfiliado())) {
-            throw new RecursoOcupadoException(
-                    "Ya existe un paciente con este número de afiliado: "
-                            + pacienteNuevo.numeroAfiliado());
-        }
+        EntidadObraSocial obraSocial = buscarObraSocial(pacienteNuevo.id_obraSocial());
+        buscado.setObraSocial(obraSocial);
+        buscado.setNumeroAfiliado(
+                validarYNormalizarNumeroAfiliado(pacienteNuevo.numeroAfiliado(), obraSocial, null));
 
         buscado.setDomicilio(normalizarDomicilio(buscado.getDomicilio()));
-        buscado.setObraSocial(buscarObraSocial(pacienteNuevo.id_obraSocial()));
 
         EntidadPaciente guardado = repositorioPaciente.save(buscado);
 
@@ -88,11 +88,9 @@ public class ServicioPaciente implements IServicioPaciente {
 
         String dni = validacionUnicidad.normalizarYValidarDni(paciente.dni(), null, id);
 
-        if (repositorioPaciente.existsByNumeroAfiliadoAndIdNot(paciente.numeroAfiliado(), id)) {
-            throw new RecursoOcupadoException(
-                    "Ya existe otro paciente con este número de afiliado: "
-                            + paciente.numeroAfiliado());
-        }
+        EntidadObraSocial obraSocial = buscarObraSocial(paciente.id_obraSocial());
+        Long numeroAfiliado = validarYNormalizarNumeroAfiliado(
+                paciente.numeroAfiliado(), obraSocial, id);
 
         EntidadContacto contactoActual = pac.getContacto();
         String emailAnterior = contactoActual == null ? null : contactoActual.getEmail();
@@ -106,8 +104,8 @@ public class ServicioPaciente implements IServicioPaciente {
         pac.setApellido(paciente.apellido());
         pac.setFecha_nacimiento(paciente.fecha_nacimiento());
         pac.setDni(dni);
-        pac.setNumeroAfiliado(paciente.numeroAfiliado());
-        pac.setObraSocial(buscarObraSocial(paciente.id_obraSocial()));
+        pac.setNumeroAfiliado(numeroAfiliado);
+        pac.setObraSocial(obraSocial);
         pac.setContacto(contacto);
         pac.setDomicilio(actualizarDomicilio(pac.getDomicilio(), paciente.domicilio()));
 
@@ -138,6 +136,10 @@ public class ServicioPaciente implements IServicioPaciente {
     }
 
     private EntidadObraSocial buscarObraSocial(Long idObraSocial) {
+        if (idObraSocial == null) {
+            return null;
+        }
+
         return repositorioObraSocial.findById(idObraSocial)
                 .orElseThrow(() -> new EntidadNoEncontradaException(
                         "Obra Social",
@@ -145,6 +147,48 @@ public class ServicioPaciente implements IServicioPaciente {
                         idObraSocial,
                         "No se ha encontrado ninguna obra social con ese ID."
                 ));
+    }
+
+    /**
+     * Valida el número de afiliado según la obra social elegida.
+     * Si el paciente no tiene obra social, el número se guarda como null.
+     * Si tiene obra social, el número es obligatorio y no puede repetirse.
+     */
+    private Long validarYNormalizarNumeroAfiliado(Long numeroAfiliado,
+                                                  EntidadObraSocial obraSocial,
+                                                  Long idPaciente) {
+
+        if (esSinObraSocial(obraSocial)) {
+            return null;
+        }
+
+        if (numeroAfiliado == null) {
+            throw new ReglaNegocioException(
+                    "El número de afiliado es obligatorio cuando el paciente tiene obra social.");
+        }
+
+        if (numeroAfiliado <= 0) {
+            throw new ReglaNegocioException(
+                    "El número de afiliado debe ser mayor a 0.");
+        }
+
+        boolean repetido = idPaciente == null
+                ? repositorioPaciente.existsByNumeroAfiliado(numeroAfiliado)
+                : repositorioPaciente.existsByNumeroAfiliadoAndIdNot(numeroAfiliado, idPaciente);
+
+        if (repetido) {
+            throw new RecursoOcupadoException(
+                    "Ya existe un paciente con este número de afiliado: " + numeroAfiliado);
+        }
+
+        return numeroAfiliado;
+    }
+
+    private boolean esSinObraSocial(EntidadObraSocial obraSocial) {
+        return obraSocial == null
+                || (obraSocial.getNombre() != null
+                    && ObraSocialConstantes.NOMBRE_SIN_OBRA_SOCIAL
+                            .equalsIgnoreCase(obraSocial.getNombre().trim()));
     }
 
     private EntidadContacto actualizarContacto(EntidadContacto existente, ContactoNuevo datos) {

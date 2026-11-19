@@ -32,7 +32,7 @@ public class EntidadPaciente {
     private LocalDate fecha_nacimiento;
     @Column(name = "dni", nullable = false,unique = true)
     private String dni;
-    @Column(name = "numeroAfiliado",nullable = false,unique = true)
+    @Column(name = "numeroAfiliado", nullable = true, unique = true)
     private Long numeroAfiliado;
 
     //RELACIONES

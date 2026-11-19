@@ -21,7 +21,6 @@ public record PacienteNuevo(@NotBlank(message = "El nombre es obligatorio")
                             @NotBlank(message = "El DNI es obligatorio")
                             @Size(max = 20, message = "El DNI no puede superar los 20 caracteres")
                             String dni,
-                            @NotNull(message = "El número de afiliado es obligatorio")
                             @Positive(message = "El número de afiliado debe ser mayor a 0")
                             Long numeroAfiliado,
                             @NotNull(message = "El domicilio es obligatorio")

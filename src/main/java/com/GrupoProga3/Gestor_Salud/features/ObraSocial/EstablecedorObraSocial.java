@@ -17,7 +17,6 @@ import java.util.ArrayList;
 @Transactional
 public class EstablecedorObraSocial implements CommandLineRunner {
 
-    private static final String NOMBRE_SIN_OBRA = "Sin obra social";
     private static final String COBERTURA_SIN_OBRA = "Sin cobertura";
 
     private final RepositorioObraSocial repositorioObraSocial;
@@ -26,10 +25,10 @@ public class EstablecedorObraSocial implements CommandLineRunner {
     public void run(String... args) {
 
         if (Boolean.FALSE.equals(
-                repositorioObraSocial.existsByNombre(NOMBRE_SIN_OBRA))) {
+                repositorioObraSocial.existsByNombre(ObraSocialConstantes.NOMBRE_SIN_OBRA_SOCIAL))) {
 
             EntidadObraSocial sinObra = EntidadObraSocial.builder()
-                    .nombre(NOMBRE_SIN_OBRA)
+                    .nombre(ObraSocialConstantes.NOMBRE_SIN_OBRA_SOCIAL)
                     .cobertura(COBERTURA_SIN_OBRA)
                     .domicilios(new ArrayList<>())
                     .build();
