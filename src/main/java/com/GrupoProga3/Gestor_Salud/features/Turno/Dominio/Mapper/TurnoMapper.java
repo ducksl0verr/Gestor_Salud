@@ -3,6 +3,7 @@ package com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.Mapper;
 import com.GrupoProga3.Gestor_Salud.features.Consultorios.Dominio.EntidadConsultorio;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.features.Tratamientos.Doiminio.EntidadTratamiento;
+import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.PreciosTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.TurnoFacturable;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.TurnoNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.DTOs.TurnoRespuesta;
@@ -46,10 +47,14 @@ public interface TurnoMapper {
             return null;
         }
 
-        BigDecimal monto = turno.getTratamiento() == null
-                || turno.getTratamiento().getPrecio() == null
-                ? BigDecimal.ZERO
-                : turno.getTratamiento().getPrecio();
+        BigDecimal monto;
+        if (turno.getTratamiento() == null) {
+            monto = PreciosTurno.PRECIO_BASE_CONSULTA;
+        } else if (turno.getTratamiento().getPrecio() == null) {
+            monto = BigDecimal.ZERO;
+        } else {
+            monto = turno.getTratamiento().getPrecio();
+        }
 
         return new TurnoFacturable(
                 turno.getId(),

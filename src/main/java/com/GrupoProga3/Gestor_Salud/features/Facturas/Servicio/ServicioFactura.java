@@ -11,6 +11,7 @@ import com.GrupoProga3.Gestor_Salud.features.Facturas.Dominio.Mapper.FacturaMapp
 import com.GrupoProga3.Gestor_Salud.features.Facturas.Model.EntidadFacturas;
 import com.GrupoProga3.Gestor_Salud.features.Facturas.Repositorio.RepositorioFactura;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
+import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.PreciosTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.ENUMS.EstadoFacturacionDeTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.ENUMS.EstadoTurno;
 import com.GrupoProga3.Gestor_Salud.features.Turno.Dominio.EntidadTurno;
@@ -110,9 +111,9 @@ public class ServicioFactura implements IServicioFactura{
                         "El turno " + turno.getId() + " ya fue facturado");
             }
 
-            if (turno.getTratamiento() == null
-                    || turno.getTratamiento().getPrecio() == null
-                    || turno.getTratamiento().getPrecio().compareTo(BigDecimal.ZERO) <= 0) {
+            if (turno.getTratamiento() != null
+                    && (turno.getTratamiento().getPrecio() == null
+                    || turno.getTratamiento().getPrecio().compareTo(BigDecimal.ZERO) <= 0)) {
                 throw new ReglaNegocioException(
                         "El turno " + turno.getId() + " no tiene un tratamiento con precio válido para facturar.");
             }
@@ -130,12 +131,21 @@ public class ServicioFactura implements IServicioFactura{
         List<EntidadDetalleFacturas> detalles = new ArrayList<>();
 
         for (EntidadTurno turno : turnos) {
-            BigDecimal precio = turno.getTratamiento().getPrecio();
+            BigDecimal precio;
+            String concepto;
+
+            if (turno.getTratamiento() == null) {
+                precio = PreciosTurno.PRECIO_BASE_CONSULTA;
+                concepto = PreciosTurno.CONCEPTO_CONSULTA;
+            } else {
+                precio = turno.getTratamiento().getPrecio();
+                concepto = turno.getTratamiento().getNombre();
+            }
 
             EntidadDetalleFacturas detalleFactura = new EntidadDetalleFacturas();
             detalleFactura.setFactura(factura);
             detalleFactura.setTurno(turno);
-            detalleFactura.setConcepto(turno.getTratamiento().getNombre());
+            detalleFactura.setConcepto(concepto);
             detalleFactura.setCantidad(1L);
             detalleFactura.setImporte(precio);
             detalleFactura.setSubtotal(precio);
