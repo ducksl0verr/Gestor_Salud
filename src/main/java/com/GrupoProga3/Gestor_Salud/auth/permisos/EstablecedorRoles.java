@@ -139,7 +139,6 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.CREAR_PACIENTE,
-                        PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.INTERNAR_PACIENTE,
 
                         PERMISOS.VER_HISTORIA_CLINICA,
@@ -297,7 +296,6 @@ public class EstablecedorRoles implements CommandLineRunner {
 
                         PERMISOS.VER_PACIENTE,
                         PERMISOS.CREAR_PACIENTE,
-                        PERMISOS.EDITAR_PACIENTE,
                         PERMISOS.INTERNAR_PACIENTE,
 
                         PERMISOS.VER_HISTORIA_CLINICA,
@@ -336,6 +334,12 @@ public class EstablecedorRoles implements CommandLineRunner {
                         PERMISOS.VER_CIRUGIA
                 )
         );
+
+        // El profesional no puede editar pacientes. Se remueve también si ya
+        // estaba asignado en la base de datos, porque addAll solo agrega.
+        profesional.getPermisos().removeIf(permiso ->
+                permiso.getPermiso() == PERMISOS.EDITAR_PACIENTE);
+
         repositorioRole.save(profesional);
     }
 
