@@ -2,7 +2,6 @@ package com.GrupoProga3.Gestor_Salud.features.Pacientes.Servicio;
 
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Dominio.DTO.ContactoNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Contacto.Model.EntidadContacto;
-import com.GrupoProga3.Gestor_Salud.features.Contacto.Repositorio.RepositorioContacto;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.DTO.DomicilioNuevo;
 import com.GrupoProga3.Gestor_Salud.features.Domicilio.Dominio.EntidadDomicilio;
 import com.GrupoProga3.Gestor_Salud.features.ObraSocial.Dominio.EntidadObraSocial;
@@ -15,6 +14,7 @@ import com.GrupoProga3.Gestor_Salud.features.Pacientes.Model.EntidadPaciente;
 import com.GrupoProga3.Gestor_Salud.features.Pacientes.Repositorio.RepositorioPaciente;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.EntidadNoEncontradaException;
 import com.GrupoProga3.Gestor_Salud.common.excepciones.RecursoOcupadoException;
+import com.GrupoProga3.Gestor_Salud.common.validacion.ServicioValidacionUnicidad;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -27,18 +27,17 @@ import java.util.List;
 public class ServicioPaciente implements IServicioPaciente {
 
     private final RepositorioPaciente repositorioPaciente;
-    private final RepositorioContacto repositorioContacto;
     private final RepositorioObraSocial repositorioObraSocial;
     private final PacienteMapper pacienteMapper;
+    private final ServicioValidacionUnicidad validacionUnicidad;
 
     @Override
     @Transactional
     public PacienteRespuesta guardar(PacienteNuevo pacienteNuevo) {
 
-        if (repositorioPaciente.existsByDni(pacienteNuevo.dni())) {
-            throw new RecursoOcupadoException(
-                    "Ya existe un paciente con este DNI: " + pacienteNuevo.dni());
-        }
+        EntidadPaciente buscado = pacienteMapper.toEntity(pacienteNuevo);
+        buscado.setDni(validacionUnicidad.normalizarYValidarDni(buscado.getDni(), null, null));
+        validacionUnicidad.normalizarYValidarContacto(buscado.getContacto(), null);
 
         if (repositorioPaciente.existsByNumeroAfiliado(pacienteNuevo.numeroAfiliado())) {
             throw new RecursoOcupadoException(
@@ -46,19 +45,6 @@ public class ServicioPaciente implements IServicioPaciente {
                             + pacienteNuevo.numeroAfiliado());
         }
 
-        if (repositorioContacto.existsByTelefono(pacienteNuevo.contacto().telefono())) {
-            throw new RecursoOcupadoException(
-                    "Ya existe un contacto con este teléfono: "
-                            + pacienteNuevo.contacto().telefono());
-        }
-
-        if (repositorioContacto.existsByEmail(pacienteNuevo.contacto().email())) {
-            throw new RecursoOcupadoException(
-                    "Ya existe un contacto con este email: "
-                            + pacienteNuevo.contacto().email());
-        }
-
-        EntidadPaciente buscado = pacienteMapper.toEntity(pacienteNuevo);
         buscado.setDomicilio(normalizarDomicilio(buscado.getDomicilio()));
         buscado.setObraSocial(buscarObraSocial(pacienteNuevo.id_obraSocial()));
 
@@ -100,10 +86,7 @@ public class ServicioPaciente implements IServicioPaciente {
                         "No se ha encontrado a ningún paciente con aquel ID."
                 ));
 
-        if (repositorioPaciente.existsByDniAndIdNot(paciente.dni(), id)) {
-            throw new RecursoOcupadoException(
-                    "Ya existe otro paciente con este DNI: " + paciente.dni());
-        }
+        String dni = validacionUnicidad.normalizarYValidarDni(paciente.dni(), null, id);
 
         if (repositorioPaciente.existsByNumeroAfiliadoAndIdNot(paciente.numeroAfiliado(), id)) {
             throw new RecursoOcupadoException(
@@ -111,15 +94,16 @@ public class ServicioPaciente implements IServicioPaciente {
                             + paciente.numeroAfiliado());
         }
 
-        validarContactoDuplicado(pac.getContacto(), paciente.contacto());
+        EntidadContacto contacto = actualizarContacto(pac.getContacto(), paciente.contacto());
+        validacionUnicidad.normalizarYValidarContacto(contacto, contacto.getId());
 
         pac.setNombre(paciente.nombre());
         pac.setApellido(paciente.apellido());
         pac.setFecha_nacimiento(paciente.fecha_nacimiento());
-        pac.setDni(paciente.dni());
+        pac.setDni(dni);
         pac.setNumeroAfiliado(paciente.numeroAfiliado());
         pac.setObraSocial(buscarObraSocial(paciente.id_obraSocial()));
-        pac.setContacto(actualizarContacto(pac.getContacto(), paciente.contacto()));
+        pac.setContacto(contacto);
         pac.setDomicilio(actualizarDomicilio(pac.getDomicilio(), paciente.domicilio()));
 
         EntidadPaciente actualizado = repositorioPaciente.save(pac);
@@ -158,31 +142,12 @@ public class ServicioPaciente implements IServicioPaciente {
                 ));
     }
 
-    private void validarContactoDuplicado(EntidadContacto existente, ContactoNuevo datos) {
-        Long idContacto = existente == null ? null : existente.getId();
-
-        boolean telefonoRepetido = idContacto == null
-                ? repositorioContacto.existsByTelefono(datos.telefono())
-                : repositorioContacto.existsByTelefonoAndIdNot(datos.telefono(), idContacto);
-
-        if (telefonoRepetido) {
-            throw new RecursoOcupadoException(
-                    "Ya existe otro contacto con este teléfono: " + datos.telefono());
-        }
-
-        boolean emailRepetido = idContacto == null
-                ? repositorioContacto.existsByEmail(datos.email())
-                : repositorioContacto.existsByEmailAndIdNot(datos.email(), idContacto);
-
-        if (emailRepetido) {
-            throw new RecursoOcupadoException(
-                    "Ya existe otro contacto con este email: " + datos.email());
-        }
-    }
-
     private EntidadContacto actualizarContacto(EntidadContacto existente, ContactoNuevo datos) {
-        EntidadContacto contacto = existente == null ? new EntidadContacto() : existente;
+        if (datos == null) {
+            return existente;
+        }
 
+        EntidadContacto contacto = existente == null ? new EntidadContacto() : existente;
         contacto.setEmail(datos.email());
         contacto.setTelefono(datos.telefono());
 

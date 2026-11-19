@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepositorioProveedor extends JpaRepository<EntidadProveedor, Long> {
+
+    boolean existsByCuil(String cuil);
+
+    boolean existsByCuilAndIdNot(String cuil, Integer id);
 }

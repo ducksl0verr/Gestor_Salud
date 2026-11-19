@@ -11,4 +11,8 @@ public interface RepositorioUsuario extends JpaRepository<EntidadUsuarios,Long> 
     List<EntidadUsuarios> findAllByContactoEmail(String email);
 
     boolean existsByContactoEmail(String email);
+
+    boolean existsByDni(String dni);
+
+    boolean existsByDniAndIdNot(String dni, Long id);
 }
