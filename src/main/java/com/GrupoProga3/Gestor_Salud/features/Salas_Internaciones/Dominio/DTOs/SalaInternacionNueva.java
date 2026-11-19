@@ -1,10 +1,11 @@
 package com.GrupoProga3.Gestor_Salud.features.Salas_Internaciones.Dominio.DTOs;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
-public record SalaInternacionNueva(
-        @NotNull(message = "La capacidad máxima es obligatoria.")
-        @Positive(message = "La capacidad máxima debe ser mayor a 0.")
-        Integer capacidad_maxima) {
+public record SalaInternacionNueva(@NotNull
+                                   @Min(value = 1, message = "La capacidad máxima debe ser al menos 1.")
+                                   @Max(value = 20, message = "La capacidad máxima no puede superar 20.")
+                                   Integer capacidad_maxima) {
 }

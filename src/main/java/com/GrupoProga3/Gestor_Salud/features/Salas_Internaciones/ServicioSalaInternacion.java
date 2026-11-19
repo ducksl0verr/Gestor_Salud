@@ -14,7 +14,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,19 +25,19 @@ public class ServicioSalaInternacion implements IServicioSalaInternacion {
 
 
     public void validacionCapacidad (EntidadSalaInternacion sala){
-        int internados = sala.getPacientes() == null ? 0 : sala.getPacientes().size();
-
-        if(internados >= sala.getCapacidad_maxima()){
+        if(sala.getPacientes().size()>= sala.getCapacidad_maxima()){
             throw new RecursoOcupadoException("La sala ya está llena");
         }
     }
 
     public void validacionPaciente (EntidadPaciente paciente){
-        if(paciente.getSalaInternacion() != null){
-            throw new RecursoOcupadoException(
-                    "El paciente ya se encuentra internado en la sala "
-                            + paciente.getSalaInternacion().getId() + "."
-            );
+        List<EntidadSalaInternacion> salas = repositorioSalaInternacion.findAll();
+        for(EntidadSalaInternacion sala : salas){
+            if(sala.getPacientes().contains(paciente)){
+                throw new RecursoOcupadoException(
+                        "El paciente ya se encuentra internado."
+                );
+            }
         }
     }
 
@@ -60,11 +59,6 @@ public class ServicioSalaInternacion implements IServicioSalaInternacion {
 
         validacionPaciente(paciente);
         validacionCapacidad(sala);
-
-        if (sala.getPacientes() == null) {
-            sala.setPacientes(new ArrayList<>());
-        }
-
         sala.getPacientes().add(paciente);
         paciente.setSalaInternacion(sala);
 
@@ -75,43 +69,40 @@ public class ServicioSalaInternacion implements IServicioSalaInternacion {
 
     @Override
     @Transactional
-    public SalaInternacionRespuesta egresarPaciente(Long idSala, Long idPaciente) {
+    public SalaInternacionRespuesta egresarPaciente(Long idSala, Long idPaciente){
         EntidadSalaInternacion sala = repositorioSalaInternacion
                 .findById(idSala)
-                .orElseThrow(() -> new EntidadNoEncontradaException("Sala de Internación",
+                .orElseThrow(()-> new EntidadNoEncontradaException("Sala de Internación",
                         "No se ha encontrado.",
                         idSala,
                         "No se ha encontrado ninguna sala de internación con aquel ID."));
 
         EntidadPaciente paciente = repositorioPaciente
                 .findById(idPaciente)
-                .orElseThrow(() -> new EntidadNoEncontradaException("Paciente",
+                .orElseThrow(()-> new EntidadNoEncontradaException("Paciente",
                         "No se ha encontrado.",
                         idPaciente,
                         "No se ha encontrado ningún paciente con aquel ID."));
 
-        if (paciente.getSalaInternacion() == null
-                || !paciente.getSalaInternacion().getId().equals(idSala)) {
-            throw new ReglaNegocioException("El paciente no está internado en esta sala.");
+        if (!sala.getPacientes().contains(paciente)) {
+            throw new ReglaNegocioException("El paciente no se encuentra internado en esta sala.");
         }
 
         sala.getPacientes().remove(paciente);
         paciente.setSalaInternacion(null);
 
-        repositorioPaciente.save(paciente);
+        EntidadSalaInternacion salaactualizada = repositorioSalaInternacion.save(sala);
 
-        return salaInternacionMapper.toDTO(sala);
+        return salaInternacionMapper.toDTO(salaactualizada);
     }
 
     @Override
     @Transactional
     public SalaInternacionRespuesta crear(SalaInternacionNueva salaInternacionNueva) {
-        EntidadSalaInternacion sala = salaInternacionMapper.toEntity(salaInternacionNueva);
-        sala.setPacientes(new ArrayList<>());
-
-        EntidadSalaInternacion creada = repositorioSalaInternacion.save(sala);
-
-        return salaInternacionMapper.toDTO(creada);
+        System.out.println(salaInternacionNueva);
+        EntidadSalaInternacion sala = repositorioSalaInternacion.save(salaInternacionMapper.toEntity(salaInternacionNueva));
+        System.out.println(sala);
+        return salaInternacionMapper.toDTO(sala);
     }
 
     @Override
@@ -124,12 +115,10 @@ public class ServicioSalaInternacion implements IServicioSalaInternacion {
                                 id,
                                 "No se ha encontrado ninguna sala de internación con aquel ID."));
 
-        int internados = buscada.getPacientes() == null ? 0 : buscada.getPacientes().size();
-
+        int internados = buscada.getPacientes().size();
         if (salaInternacionActualizar.capacidad_maxima() < internados) {
             throw new ReglaNegocioException(
-                    "La capacidad no puede ser menor a la cantidad de pacientes internados ("
-                            + internados + ").");
+                    "La capacidad no puede ser menor a la cantidad de pacientes internados (" + internados + ").");
         }
 
         buscada.setCapacidad_maxima(salaInternacionActualizar.capacidad_maxima());
